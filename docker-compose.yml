@@ -1,0 +1,8 @@
+services:
+  sellbuy:
+    build: .
+    network_mode: "host"
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@localhost:5432/sellbuy
+      - NODE_ENV=production
+    restart: always
