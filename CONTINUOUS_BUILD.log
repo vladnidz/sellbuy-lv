@@ -1,0 +1,60 @@
+Starting build cycle Sat 22 Aug 09:57:43 BST 2026
+
+> sellbuy@0.1.0 build
+> next build
+
+▲ Next.js 16.3.1 (Turbopack)
+⚠ Warning: Next.js ignored package-lock.json in /home/shadow3 because it is outside the current Git repository (/home/shadow3/projects/sellbuy-v2).
+ To use this directory, set `turbopack.root` in your Next.js config.
+
+✓ Running next.config.ts took 391ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 28.2s
+  Running TypeScript ...
+app/categories/page.tsx(10,26): error TS7006: Parameter 'cat' implicitly has an 'any' type.
+app/lib/categories.ts(1,10): error TS2305: Module '"@prisma/client"' has no exported member 'PrismaClient'.
+app/lib/prisma.ts(1,10): error TS2305: Module '"@prisma/client"' has no exported member 'PrismaClient'.
+prisma/seed.ts(2,10): error TS2305: Module '"@prisma/client"' has no exported member 'PrismaClient'.
+Failed to type check.
+
+Starting build cycle Sat 22 Aug 10:18:41 BST 2026
+
+> sellbuy@0.1.0 build
+> next build
+
+▲ Next.js 16.3.1 (Turbopack)
+⚠ Warning: Next.js ignored package-lock.json in /home/shadow3 because it is outside the current Git repository (/home/shadow3/projects/sellbuy-v2).
+ To use this directory, set `turbopack.root` in your Next.js config.
+
+✓ Running next.config.ts took 393ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 2.7s
+  Running TypeScript ...
+app/categories/page.tsx(10,26): error TS7006: Parameter 'cat' implicitly has an 'any' type.
+app/lib/categories.ts(1,10): error TS2305: Module '"@prisma/client"' has no exported member 'PrismaClient'.
+app/lib/prisma.ts(1,10): error TS2305: Module '"@prisma/client"' has no exported member 'PrismaClient'.
+prisma/seed.ts(2,10): error TS2305: Module '"@prisma/client"' has no exported member 'PrismaClient'.
+Failed to type check.
+
+Starting build cycle Sat 22 Aug 11:00:07 BST 2026
+
+> sellbuy@0.1.0 build
+> next build
+
+▲ Next.js 16.3.1 (Turbopack)
+⚠ Warning: Next.js ignored package-lock.json in /home/shadow3 because it is outside the current Git repository (/home/shadow3/projects/sellbuy-v2).
+ To use this directory, set `turbopack.root` in your Next.js config.
+
+✓ Running next.config.ts took 334ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 2.8s
+  Running TypeScript ...
+app/categories/page.tsx(10,26): error TS7006: Parameter 'cat' implicitly has an 'any' type.
+app/lib/categories.ts(1,10): error TS2305: Module '"@prisma/client"' has no exported member 'PrismaClient'.
+app/lib/prisma.ts(1,10): error TS2305: Module '"@prisma/client"' has no exported member 'PrismaClient'.
+prisma/seed.ts(2,10): error TS2305: Module '"@prisma/client"' has no exported member 'PrismaClient'.
+Failed to type check.
+

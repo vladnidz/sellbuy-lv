@@ -7,7 +7,7 @@ export default async function CategoriesPage() {
     <div className="p-8">
       <h1 className="text-3xl font-bold mb-4">Kategorijas</h1>
       <ul className="grid grid-cols-2 gap-4">
-        {categories.map((cat) => (
+        {categories.map((cat: { id: string; name: string }) => (
           <li key={cat.id} className="p-4 border rounded shadow">
             {cat.name}
           </li>
