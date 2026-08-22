@@ -58,3 +58,72 @@ app/lib/prisma.ts(1,10): error TS2305: Module '"@prisma/client"' has no exported
 prisma/seed.ts(2,10): error TS2305: Module '"@prisma/client"' has no exported member 'PrismaClient'.
 Failed to type check.
 
+Starting build cycle Sat 22 Aug 11:05:00 BST 2026
+
+> sellbuy@0.1.0 build
+> next build
+
+▲ Next.js 16.3.1 (Turbopack)
+⚠ Warning: Next.js ignored package-lock.json in /home/shadow3 because it is outside the current Git repository (/home/shadow3/projects/sellbuy-v2).
+ To use this directory, set `turbopack.root` in your Next.js config.
+
+✓ Running next.config.ts took 161ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 3.5s
+  Running TypeScript ...
+  Finished TypeScript in 17.2s ...
+  Collecting page data using 3 workers ...
+  Generating static pages using 3 workers (0/4) ...
+  Generating static pages using 3 workers (1/4)
+  Generating static pages using 3 workers (2/4)
+  Generating static pages using 3 workers (3/4)
+✓ Generating static pages using 3 workers (4/4) in 1231ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+└ ƒ /categories
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+✓ BUILD SUCCESSFUL
+✓ LINT PASSED (0 errors, 0 warnings)
+✓ COMMITTED: c382131
+✓ PUSHED to origin/main
+
+--- END CYCLE Sat 22 Aug 11:05:00 BST 2026 ---Starting build cycle Sat 22 Aug 11:30:04 BST 2026
+
+> sellbuy@0.1.0 build
+> next build
+
+▲ Next.js 16.3.1 (Turbopack)
+⚠ Warning: Next.js ignored package-lock.json in /home/shadow3 because it is outside the current Git repository (/home/shadow3/projects/sellbuy-v2).
+ To use this directory, set `turbopack.root` in your Next.js config.
+
+✓ Running next.config.ts took 182ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 3.7s
+  Running TypeScript ...
+  Finished TypeScript in 14.7s ...
+  Collecting page data using 3 workers ...
+  Generating static pages using 3 workers (0/4) ...
+  Generating static pages using 3 workers (1/4) 
+  Generating static pages using 3 workers (2/4) 
+  Generating static pages using 3 workers (3/4) 
+✓ Generating static pages using 3 workers (4/4) in 1583ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+└ ƒ /categories
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+Build cycle completed Sat 22 Aug 11:30:36 BST 2026
