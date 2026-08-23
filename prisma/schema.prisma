@@ -31,7 +31,9 @@ model Category {
 model Listing {
   id         String   @id @default(uuid())
   title      String
+  description String
   price      Decimal
+  images     String[]
   category   Category @relation(fields: [categoryId], references: [id])
   categoryId String
   author     User     @relation(fields: [authorId], references: [id])
