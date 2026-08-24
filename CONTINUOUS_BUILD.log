@@ -1330,3 +1330,105 @@ Route (app)
 
 === BUILD SUCCESS ===
 === Mon 24 Aug 19:01:33 BST 2026 Agency build cycle complete ===
+=== Mon 24 Aug 21:30:59 +03 2026 Starting autonomous agency build cycle ===
+From https://github.com/vladnidz/sellbuy-lv
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+
+> sellbuy@0.1.0 build
+> prisma generate && next build
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+
+✔ Generated Prisma Client (v7.9.1) to ./node_modules/@prisma/client in 824ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+▲ Next.js 16.3.1 (Turbopack)
+- Environments: .env
+⚠ Warning: Next.js ignored package-lock.json in /home/shadow3/projects because it is outside the current Git repository (/home/shadow3/projects/sellbuy-v2).
+ To use this directory, set `turbopack.root` in your Next.js config.
+
+✓ Running next.config.ts took 162ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 2.1s
+  Running TypeScript ...
+  Finished TypeScript in 15.7s ...
+  Collecting page data using 3 workers ...
+  Generating static pages using 3 workers (0/7) ...
+  Generating static pages using 3 workers (1/7) 
+  Generating static pages using 3 workers (3/7) 
+  Generating static pages using 3 workers (5/7) 
+✓ Generating static pages using 3 workers (7/7) in 1775ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /about
+├ ƒ /api/listings
+├ ƒ /api/listings/[id]
+├ ƒ /categories
+├ ƒ /listings
+├ ƒ /listings/[id]
+└ ○ /new-listing
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+=== BUILD SUCCESS ===
+=== Mon 24 Aug 21:31:38 +03 2026 Agency build cycle complete ===
+=== Mon 24 Aug 22:00:59 +03 2026 Starting autonomous agency build cycle ===
+From https://github.com/vladnidz/sellbuy-lv
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+
+> sellbuy@0.1.0 build
+> prisma generate && next build
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+
+✔ Generated Prisma Client (v7.9.1) to ./node_modules/@prisma/client in 874ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+▲ Next.js 16.3.1 (Turbopack)
+- Environments: .env
+⚠ Warning: Next.js ignored package-lock.json in /home/shadow3/projects because it is outside the current Git repository (/home/shadow3/projects/sellbuy-v2).
+ To use this directory, set `turbopack.root` in your Next.js config.
+
+✓ Running next.config.ts took 168ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 9.2s
+  Running TypeScript ...
+app/categories/CategoryCard.tsx(9,15): error TS2614: Module '"./page"' has no exported member 'CategoryWithCounts'. Did you mean to use 'import CategoryWithCounts from "./page"' instead?
+app/categories/CategoryCard.tsx(159,50): error TS7006: Parameter 'sum' implicitly has an 'any' type.
+app/categories/CategoryCard.tsx(159,55): error TS7006: Parameter 'c' implicitly has an 'any' type.
+app/categories/CategoryCard.tsx(169,7): error TS2322: Type '{ hidden: { opacity: number; y: number; scale: number; }; visible: { opacity: number; y: number; scale: number; transition: { duration: number; delay: number; ease: number[]; }; }; hover: { y: number; scale: number; transition: { ...; }; }; tap: { ...; }; }' is not assignable to type 'Variants'.
+  Property 'visible' is incompatible with index signature.
+    Type '{ opacity: number; y: number; scale: number; transition: { duration: number; delay: number; ease: number[]; }; }' is not assignable to type 'Variant'.
+      Type '{ opacity: number; y: number; scale: number; transition: { duration: number; delay: number; ease: number[]; }; }' is not assignable to type 'TargetAndTransition'.
+        Type '{ opacity: number; y: number; scale: number; transition: { duration: number; delay: number; ease: number[]; }; }' is not assignable to type '{ transition?: Transition<any> | undefined; transitionEnd?: ResolvedValues$1 | undefined; }'.
+          Types of property 'transition' are incompatible.
+            Type '{ duration: number; delay: number; ease: number[]; }' is not assignable to type 'Transition<any> | undefined'.
+              Type '{ duration: number; delay: number; ease: number[]; }' is not assignable to type 'TransitionWithValueOverrides<any>'.
+                Type '{ duration: number; delay: number; ease: number[]; }' is not assignable to type 'ValueAnimationTransition<any>'.
+                  Types of property 'ease' are incompatible.
+                    Type 'number[]' is not assignable to type 'Easing | Easing[] | undefined'.
+                      Type 'number[]' is not assignable to type 'EasingFunction | Easing[]'.
+                        Type 'number[]' is not assignable to type 'Easing[]'.
+                          Type 'number' is not assignable to type 'Easing'.
+app/categories/CategoryCard.tsx(204,55): error TS7006: Parameter 'child' implicitly has an 'any' type.
+app/categories/CategoryCard.tsx(204,62): error TS7006: Parameter 'i' implicitly has an 'any' type.
+Failed to type check.
+
+=== BUILD FAILED ===
