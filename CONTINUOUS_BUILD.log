@@ -753,3 +753,210 @@ Route (app)
 ƒ  (Dynamic)  server-rendered on demand
 
 Build cycle completed Mon 24 Aug 13:01:11 BST 2026
+Starting build cycle Mon 24 Aug 13:30:32 BST 2026
+
+> sellbuy@0.1.0 build
+> prisma generate && next build
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+
+✔ Generated Prisma Client (v7.9.1) to ./node_modules/@prisma/client in 976ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+▲ Next.js 16.3.1 (Turbopack)
+- Environments: .env
+⚠ Warning: Next.js ignored package-lock.json in /home/shadow3 because it is outside the current Git repository (/home/shadow3/projects/sellbuy-v2).
+ To use this directory, set `turbopack.root` in your Next.js config.
+
+✓ Running next.config.ts took 162ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 3.3s
+  Running TypeScript ...
+  Finished TypeScript in 13.0s ...
+  Collecting page data using 3 workers ...
+  Generating static pages using 3 workers (0/7) ...
+  Generating static pages using 3 workers (1/7) 
+  Generating static pages using 3 workers (3/7) 
+  Generating static pages using 3 workers (5/7) 
+✓ Generating static pages using 3 workers (7/7) in 2.3s
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /about
+├ ƒ /api/listings
+├ ƒ /api/listings/[id]
+├ ƒ /categories
+├ ƒ /listings
+├ ƒ /listings/[id]
+└ ○ /new-listing
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+=== Mon 24 Aug 13:34:26 BST 2026 Starting autonomous agency build cycle ===
+From https://github.com/vladnidz/sellbuy-lv
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+
+> sellbuy@0.1.0 build
+> prisma generate && next build
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+
+✔ Generated Prisma Client (v7.9.1) to ./node_modules/@prisma/client in 799ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+▲ Next.js 16.3.1 (Turbopack)
+- Environments: .env
+⚠ Warning: Next.js ignored package-lock.json in /home/shadow3 because it is outside the current Git repository (/home/shadow3/projects/sellbuy-v2).
+ To use this directory, set `turbopack.root` in your Next.js config.
+
+✓ Running next.config.ts took 160ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 703ms
+  Running TypeScript ...
+  Finished TypeScript in 13.3s ...
+  Collecting page data using 3 workers ...
+  Generating static pages using 3 workers (0/7) ...
+  Generating static pages using 3 workers (1/7) 
+  Generating static pages using 3 workers (3/7) 
+  Generating static pages using 3 workers (5/7) 
+✓ Generating static pages using 3 workers (7/7) in 1789ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /about
+├ ƒ /api/listings
+├ ƒ /api/listings/[id]
+├ ƒ /categories
+├ ƒ /listings
+├ ƒ /listings/[id]
+└ ○ /new-listing
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+=== BUILD SUCCESS ===
+=== Mon 24 Aug 13:35:02 BST 2026 Agency build cycle complete ===
+=== Mon 24 Aug 13:38:31 BST 2026 Starting autonomous agency build cycle ===
+From https://github.com/vladnidz/sellbuy-lv
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+
+> sellbuy@0.1.0 build
+> prisma generate && next build
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+
+✔ Generated Prisma Client (v7.9.1) to ./node_modules/@prisma/client in 844ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+▲ Next.js 16.3.1 (Turbopack)
+- Environments: .env
+⚠ Warning: Next.js ignored package-lock.json in /home/shadow3 because it is outside the current Git repository (/home/shadow3/projects/sellbuy-v2).
+ To use this directory, set `turbopack.root` in your Next.js config.
+
+✓ Running next.config.ts took 165ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 707ms
+  Running TypeScript ...
+  Finished TypeScript in 13.3s ...
+  Collecting page data using 3 workers ...
+  Generating static pages using 3 workers (0/7) ...
+  Generating static pages using 3 workers (1/7) 
+  Generating static pages using 3 workers (3/7) 
+  Generating static pages using 3 workers (5/7) 
+✓ Generating static pages using 3 workers (7/7) in 1873ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /about
+├ ƒ /api/listings
+├ ƒ /api/listings/[id]
+├ ƒ /categories
+├ ƒ /listings
+├ ƒ /listings/[id]
+└ ○ /new-listing
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+=== BUILD SUCCESS ===
+=== Mon 24 Aug 13:39:18 BST 2026 Agency build cycle complete ===
+=== Mon 24 Aug 13:43:47 BST 2026 Starting autonomous agency build cycle ===
+From https://github.com/vladnidz/sellbuy-lv
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+
+> sellbuy@0.1.0 build
+> prisma generate && next build
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+
+✔ Generated Prisma Client (v7.9.1) to ./node_modules/@prisma/client in 835ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+▲ Next.js 16.3.1 (Turbopack)
+- Environments: .env
+⚠ Warning: Next.js ignored package-lock.json in /home/shadow3 because it is outside the current Git repository (/home/shadow3/projects/sellbuy-v2).
+ To use this directory, set `turbopack.root` in your Next.js config.
+
+✓ Running next.config.ts took 168ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 715ms
+  Running TypeScript ...
+  Finished TypeScript in 12.8s ...
+  Collecting page data using 3 workers ...
+  Generating static pages using 3 workers (0/7) ...
+  Generating static pages using 3 workers (1/7) 
+  Generating static pages using 3 workers (3/7) 
+  Generating static pages using 3 workers (5/7) 
+✓ Generating static pages using 3 workers (7/7) in 1758ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /about
+├ ƒ /api/listings
+├ ƒ /api/listings/[id]
+├ ƒ /categories
+├ ƒ /listings
+├ ƒ /listings/[id]
+└ ○ /new-listing
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+=== BUILD SUCCESS ===
+=== Mon 24 Aug 13:44:22 BST 2026 Agency build cycle complete ===
