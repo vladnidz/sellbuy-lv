@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/select";
 import Link from "next/link";
 import { ArrowLeft, Image as ImageIcon, Loader2, AlertCircle, CheckCircle } from "lucide-react";
-import { useAuth, useDemoAuth } from "@/app/lib/auth";
+import { useDemoAuth } from "@/app/lib/auth";
 import { useRouter } from "next/navigation";
 
 interface Category {
