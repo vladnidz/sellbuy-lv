@@ -18,16 +18,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Link from "next/link";
-import { ArrowLeft, Image as ImageIcon, Loader2, AlertCircle, CheckCircle } from "lucide-react";
+import { ArrowLeft, Image as ImageIcon, Loader2, AlertCircle, CheckCircle, Sparkles } from "lucide-react";
 import { useDemoAuth } from "@/app/lib/auth";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 interface Category {
   value: string;
   label: string;
 }
 
-const CATEGORIES: Category[] = [
+const FALLBACK_CATEGORIES: Category[] = [
   { value: "transports", label: "Transports" },
   { value: "nekustamie_ipasumi", label: "Nekustamie īpašumi" },
   { value: "elektronika_sadzives_tehnika", label: "Elektronika & Sadzīves tehnika" },
