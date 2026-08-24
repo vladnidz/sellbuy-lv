@@ -373,3 +373,178 @@ Route (app)
 > sellbuy@0.1.0 lint
 > eslint
 
+
+> sellbuy@0.1.0 build
+> next build
+
+▲ Next.js 16.3.1 (Turbopack)
+- Environments: .env
+⚠ Warning: Next.js ignored package-lock.json in /home/shadow3 because it is outside the current Git repository (/home/shadow3/projects/sellbuy-v2).
+ To use this directory, set `turbopack.root` in your Next.js config.
+
+✓ Running next.config.ts took 163ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 4.0s
+  Running TypeScript ...
+components/filters.tsx(48,24): error TS2339: Property 'minPrice' does not exist on type '{ page: undefined; }'.
+components/filters.tsx(49,24): error TS2339: Property 'maxPrice' does not exist on type '{ page: undefined; }'.
+components/filters.tsx(52,41): error TS2339: Property 'minPrice' does not exist on type '{ page: undefined; }'.
+components/filters.tsx(53,41): error TS2339: Property 'maxPrice' does not exist on type '{ page: undefined; }'.
+components/filters.tsx(54,46): error TS2339: Property 'maxPrice' does not exist on type '{ page: undefined; }'.
+Failed to type check.
+
+
+> sellbuy@0.1.0 build
+> next build
+
+▲ Next.js 16.3.1 (Turbopack)
+- Environments: .env
+⚠ Warning: Next.js ignored package-lock.json in /home/shadow3 because it is outside the current Git repository (/home/shadow3/projects/sellbuy-v2).
+ To use this directory, set `turbopack.root` in your Next.js config.
+
+✓ Running next.config.ts took 167ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 3.4s
+  Running TypeScript ...
+components/filters.tsx(48,24): error TS2339: Property 'minPrice' does not exist on type '{ page: undefined; }'.
+components/filters.tsx(49,24): error TS2339: Property 'maxPrice' does not exist on type '{ page: undefined; }'.
+components/filters.tsx(52,41): error TS2339: Property 'minPrice' does not exist on type '{ page: undefined; }'.
+components/filters.tsx(53,41): error TS2339: Property 'maxPrice' does not exist on type '{ page: undefined; }'.
+components/filters.tsx(54,46): error TS2339: Property 'maxPrice' does not exist on type '{ page: undefined; }'.
+Failed to type check.
+
+
+> sellbuy@0.1.0 build
+> next build
+
+▲ Next.js 16.3.1 (Turbopack)
+- Environments: .env
+⚠ Warning: Next.js ignored package-lock.json in /home/shadow3 because it is outside the current Git repository (/home/shadow3/projects/sellbuy-v2).
+ To use this directory, set `turbopack.root` in your Next.js config.
+
+✓ Running next.config.ts took 157ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 3.5s
+  Running TypeScript ...
+  Finished TypeScript in 16.4s ...
+  Collecting page data using 3 workers ...
+  Generating static pages using 3 workers (0/9) ...
+  Generating static pages using 3 workers (2/9) 
+  Generating static pages using 3 workers (4/9) 
+  Generating static pages using 3 workers (6/9) 
+✓ Generating static pages using 3 workers (9/9) in 3.4s
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /about
+├ ƒ /api/listings
+├ ƒ /api/listings/[id]
+├ ○ /categories
+├ ƒ /listings
+├ ƒ /listings/[id]
+└ ○ /new-listing
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+
+> sellbuy@0.1.0 lint
+> eslint
+
+
+/home/shadow3/projects/sellbuy-v2/app/listings/page.tsx
+   33:10  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  @typescript-eslint/no-explicit-any
+  256:17  error  Error: This value cannot be modified
+
+Modifying a variable defined outside a component or hook is not allowed. Consider using an effect.
+
+/home/shadow3/projects/sellbuy-v2/app/listings/page.tsx:256:17
+  254 |               value={category}
+  255 |               onValueChange={(value) => {
+> 256 |                 window.location.href = buildUrl({ ...resolvedParams, category: value || undefined, page: 1 });
+      |                 ^^^^^^^^^^^^^^^ value cannot be modified
+  257 |               }}
+  258 |             >
+  259 |               <SelectTrigger className="bg-slate-900 border-slate-700">  react-hooks/immutability
+  280:17  error  Error: This value cannot be modified
+
+Modifying a variable defined outside a component or hook is not allowed. Consider using an effect.
+
+/home/shadow3/projects/sellbuy-v2/app/listings/page.tsx:280:17
+  278 |               value={resolvedParams.priceRange || ''}
+  279 |               onValueChange={(value) => {
+> 280 |                 window.location.href = handlePriceRangeChange(value);
+      |                 ^^^^^^^^^^^^^^^ value cannot be modified
+  281 |               }}
+  282 |             >
+  283 |               <SelectTrigger className="bg-slate-900 border-slate-700">                    react-hooks/immutability
+
+/home/shadow3/projects/sellbuy-v2/components/listings-filters.tsx
+  11:10  warning  'Input' is defined but never used   @typescript-eslint/no-unused-vars
+  12:10  warning  'Button' is defined but never used  @typescript-eslint/no-unused-vars
+  13:10  warning  'Search' is defined but never used  @typescript-eslint/no-unused-vars
+
+✖ 6 problems (3 errors, 3 warnings)
+
+
+> sellbuy@0.1.0 lint
+> eslint
+
+
+/home/shadow3/projects/sellbuy-v2/app/listings/page.tsx
+  305:17  warning  Unused eslint-disable directive (no problems were reported from 'react-hooks/immutability')
+
+/home/shadow3/projects/sellbuy-v2/components/listings-filters.tsx
+  11:10  warning  'Search' is defined but never used  @typescript-eslint/no-unused-vars
+
+✖ 2 problems (0 errors, 2 warnings)
+  0 errors and 1 warning potentially fixable with the `--fix` option.
+
+
+> sellbuy@0.1.0 lint
+> eslint
+
+
+> sellbuy@0.1.0 build
+> next build
+
+▲ Next.js 16.3.1 (Turbopack)
+- Environments: .env
+⚠ Warning: Next.js ignored package-lock.json in /home/shadow3 because it is outside the current Git repository (/home/shadow3/projects/sellbuy-v2).
+ To use this directory, set `turbopack.root` in your Next.js config.
+
+✓ Running next.config.ts took 177ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 3.3s
+  Running TypeScript ...
+  Finished TypeScript in 19.7s ...
+  Collecting page data using 3 workers ...
+  Generating static pages using 3 workers (0/9) ...
+  Generating static pages using 3 workers (2/9) 
+  Generating static pages using 3 workers (4/9) 
+  Generating static pages using 3 workers (6/9) 
+✓ Generating static pages using 3 workers (9/9) in 3.5s
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /about
+├ ƒ /api/listings
+├ ƒ /api/listings/[id]
+├ ○ /categories
+├ ƒ /listings
+├ ƒ /listings/[id]
+└ ○ /new-listing
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
