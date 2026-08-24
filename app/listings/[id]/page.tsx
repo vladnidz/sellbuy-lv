@@ -105,9 +105,9 @@ export default async function ListingDetailPage({
               </Badge>
               {listing.category && (
                 <span className="text-xs text-slate-500">
-                  {(listing.category as CategoryWithPath).path
-                    ? String((listing.category as CategoryWithPath).path).replace(/\./g, ' › ')
-                    : ''}
+                  {String(
+                    (listing.category as unknown as Partial<CategoryWithPath>).path ?? ''
+                  ).replace(/\./g, ' › ')}
                 </span>
               )}
             </div>

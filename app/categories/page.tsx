@@ -51,7 +51,7 @@ async function getCategoriesWithCounts(): Promise<CategoryWithCounts[]> {
     _count: { listings: cat._count.listings },
   }));
 
-  return categoriesWithCounts as CategoryWithCounts[];
+  return categoriesWithCounts as unknown as CategoryWithCounts[];
 }
 
 export default async function CategoriesPage() {

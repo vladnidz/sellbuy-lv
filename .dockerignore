@@ -1,0 +1,15 @@
+node_modules
+.next
+.git
+.env
+.env.*
+*.log
+coverage
+app/generated/prisma
+check_users.ts
+create_demo_user.ts
+CONTINUOUS_BUILD.log
+.agents
+.claude
+.codex
+.mcp.json

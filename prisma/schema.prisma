@@ -19,6 +19,10 @@ model User {
 model Category {
   id       String   @id @default(uuid())
   name     String
+  nameLv   String?
+  nameRu   String?
+  nameEn   String?
+  attributes Json?
   path     Unsupported("ltree") @unique
   parentId String?
   parent   Category? @relation("CategoryHierarchy", fields: [parentId], references: [id])
