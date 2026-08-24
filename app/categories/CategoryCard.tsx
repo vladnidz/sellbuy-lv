@@ -6,7 +6,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import type { CategoryWithCounts } from "./page";
+import { CategoryWithCounts } from "./page";
 
 interface CategoryCardProps {
   category: CategoryWithCounts;
@@ -121,37 +121,48 @@ function getCategoryIcon(categoryName: string) {
   );
 }
 
+const CARD_EASING = [0.16, 1, 0.3, 1] as const;
+
+const cardVariantsBase = {
+  hidden: { opacity: 0, y: 20, scale: 0.96 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.5,
+      delay: 0.06,
+      ease: CARD_EASING,
+    },
+  },
+  hover: {
+    y: -4,
+    scale: 1.01,
+    transition: { duration: 0.2, ease: CARD_EASING },
+  },
+  tap: { scale: 0.98 },
+};
+
+const badgeVariantsBase = {
+  hidden: { opacity: 0, scale: 0.8 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.3, delay: 0.1 },
+  },
+};
+
 export function CategoryCard({ category, index, level = 0 }: CategoryCardProps) {
   const shouldReduceMotion = useReducedMotion();
 
-  const cardVariants = {
-    hidden: { opacity: 0, y: 20, scale: 0.96 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        duration: shouldReduceMotion ? 0 : 0.5,
-        delay: shouldReduceMotion ? 0 : index * 0.06,
-        ease: [0.16, 1, 0.3, 1] as const,
-      },
-    },
-    hover: {
-      y: -4,
-      scale: 1.01,
-      transition: { duration: 0.2, ease: [0.16, 1, 0.3, 1] as const },
-    },
-    tap: { scale: 0.98 },
-  };
+  const cardVariants = shouldReduceMotion
+    ? {
+        ...cardVariantsBase,
+        visible: { ...cardVariantsBase.visible, transition: { ...cardVariantsBase.visible.transition, duration: 0, delay: 0 } },
+      }
+    : cardVariantsBase;
 
-  const badgeVariants = {
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: { duration: 0.3, delay: 0.1 },
-    },
-  };
+  const badgeVariants = badgeVariantsBase;
 
   const isParent = category.children && category.children.length > 0;
   const listingCount = category._count?.listings || 0;
@@ -202,71 +213,39 @@ export function CategoryCard({ category, index, level = 0 }: CategoryCardProps) 
               {isParent && category.children && category.children.length > 0 && (
                 <div className="mt-2 flex flex-wrap gap-1.5" role="list" aria-label="Apakškategorijas">
                   {category.children.slice(0, 4).map((child: CategoryWithCounts, i: number) => (
-                    <motion.span
+                    <Badge
                       key={child.id}
-                      initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.9 }}
-                      animate={shouldReduceMotion ? { opacity: 1, scale: 1 } : { opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.15 + i * 0.04, duration: 0.2 }}
-                      className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium text-slate-300 bg-slate-800/50 border border-slate-700/50 rounded-full hover:bg-blue-500/10 hover:border-blue-500/30 hover:text-blue-300 transition-all duration-200 cursor-pointer"
-                      role="listitem"
+                      variant="outline"
+                      className="text-xs h-5 px-2 text-slate-300 border-slate-700 hover:border-blue-500/50 hover:text-blue-300 transition-all"
                     >
                       {child.name}
-                      {child._count?.listings && (
-                        <Badge variant="secondary" className="h-4 px-1.5 text-[10px] bg-blue-950 text-blue-300 border-blue-800">
-                          {child._count.listings}
-                        </Badge>
-                      )}
-                    </motion.span>
+                    </Badge>
                   ))}
                   {category.children.length > 4 && (
-                    <Badge variant="outline" className="h-4 px-2 text-[10px] border-slate-700 text-slate-400 hover:border-blue-500/50 hover:text-blue-400 transition-colors">
-                      +{category.children.length - 4} vairāk
+                    <Badge variant="secondary" className="text-xs h-5 px-2">
+                      +{category.children.length - 4}
                     </Badge>
                   )}
                 </div>
               )}
 
-              {/* Listing Count */}
-              <div className="mt-auto pt-3 flex items-center justify-between border-t border-slate-800/50">
-                <div className="flex items-center gap-2 text-slate-400">
-                  <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-                    <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
-                    <line x1="12" y1="22.08" x2="12" y2="12" />
-                  </svg>
-                  <span className="text-sm font-medium">
-                    {totalCount} sludinājumu{totalCount !== 1 ? "i" : ""}
-                  </span>
-                </div>
-
-                {isParent && (
-                  <Badge variant="secondary" className="h-5 px-2 text-xs bg-blue-950/50 text-blue-300 border-blue-800/50">
-                    {category.children?.length || 0} apakškategoriju
-                  </Badge>
-                )}
+              <div className="mt-auto pt-4 flex items-center justify-between border-t border-slate-800/50">
+                <Badge
+                  variant="secondary"
+                  className="text-xs h-5 px-2 bg-slate-800/50 border-slate-700"
+                >
+                  {totalCount} slud.
+                </Badge>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-slate-400 hover:text-blue-400 h-7 px-3"
+                  aria-label={`Apskatīt ${category.name}`}
+                >
+                  Apskatīt
+                </Button>
               </div>
             </div>
-
-            {/* Browse CTA - appears on hover */}
-            <motion.div
-              initial={shouldReduceMotion ? false : { opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.2 }}
-              className="group-hover:opacity-100 opacity-0 transition-opacity duration-200 mt-4"
-            >
-              <Button
-                variant="outline"
-                className="w-full bg-blue-600/10 border-blue-500/30 text-blue-300 hover:bg-blue-600/20 hover:border-blue-500 hover:text-white transition-all duration-200"
-                aria-label={`Atvērt ${category.name}`}
-              >
-                <span className="flex items-center justify-center gap-2">
-                  Pārlūkot
-                  <svg className="h-4 w-4 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
-                </span>
-              </Button>
-            </motion.div>
           </CardContent>
         </Card>
       </Link>

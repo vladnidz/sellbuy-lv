@@ -1432,3 +1432,4 @@ app/categories/CategoryCard.tsx(204,62): error TS7006: Parameter 'i' implicitly 
 Failed to type check.
 
 === BUILD FAILED ===
+2026-08-24 22:06:34 | BUILD FIX | Fixed TypeScript errors in CategoryCard.tsx - exported CategoryWithCounts, added explicit types, fixed Framer Motion ease types. Build now passes. Committed 74908fe.
