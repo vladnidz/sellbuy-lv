@@ -43,7 +43,7 @@ fi
 
 # 3. Delegate ONE specialist via hermes CLI (uses hermes-coder route through gateway)
 echo "--- Delegating to $AGENT_SLUG ---" | tee -a "$LOG"
-timeout 900 hermes --route hermes-coder -p "Use the agency-agents-router plugin. First call agency_agents_load for '$AGENT_SLUG', then execute its instructions as that specialist. TASK: $TASK Project dir: $PROJECT" >> "$LOG" 2>&1
+timeout 900 hermes chat -q "Use the agency-agents-router plugin. First call agency_agents_load for '$AGENT_SLUG', then execute its instructions as that specialist. TASK: $TASK Project dir: $PROJECT" >> "$LOG" 2>&1
 DELEGATE_OK=$?
 
 if [ $DELEGATE_OK -eq 0 ]; then

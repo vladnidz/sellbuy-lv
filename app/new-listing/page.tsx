@@ -28,6 +28,14 @@ interface Category {
   label: string;
 }
 
+interface CategoryTreeNode {
+  id: string;
+  path: string;
+  names: { lv: string; ru: string; en: string };
+  children?: CategoryTreeNode[];
+}
+
+
 const FALLBACK_CATEGORIES: Category[] = [
   { value: "transports", label: "Transports" },
   { value: "nekustamie_ipasumi", label: "Nekustamie īpašumi" },
@@ -48,6 +56,48 @@ export default function NewListingPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
+  const [isFormVisible, setIsFormVisible] = useState(false);
+
+  // Fetch the live category tree and flatten it into flat <Select> options.
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadCategories() {
+      try {
+        const res = await fetch("/api/categories/tree");
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const json = await res.json();
+
+        const flatten = (nodes: CategoryTreeNode[], depth = 0): Category[] =>
+          (nodes ?? []).flatMap((node) => [
+            { value: node.id, label: `${depth > 0 ? "— ".repeat(depth) : ""}${node.names.lv}` },
+            ...flatten(node.children ?? [], depth + 1),
+          ]);
+
+        const flattened = flatten(json?.data ?? []);
+        if (!cancelled && flattened.length > 0) {
+          setCategories(flattened);
+        }
+        // If the API returned an empty tree, keep the fallback list.
+      } catch (err) {
+        console.error("Failed to load categories, using fallback:", err);
+        // Keep FALLBACK_CATEGORIES on error.
+      } finally {
+        if (!cancelled) {
+          setIsLoadingCategories(false);
+          // Small delay so the fade-in transition plays after data lands.
+          requestAnimationFrame(() => setIsFormVisible(true));
+        }
+      }
+    }
+
+    loadCategories();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -136,7 +186,12 @@ export default function NewListingPage() {
           Atpakaļ uz sākumlapu
         </Link>
 
-        <Card className="bg-slate-900/50 border-slate-800 backdrop-blur-xl">
+        <Card
+          className={`bg-slate-900/50 border-slate-800 backdrop-blur-xl transition-all duration-700 ease-out ${
+            isFormVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+          }`}
+        >
+
           <CardHeader className="border-b border-slate-800">
             <CardTitle className="text-3xl font-bold">Izveidot jaunu sludinājumu</CardTitle>
             <CardDescription className="text-slate-400">Aizpildiet formu, lai publicētu savu sludinājumu</CardDescription>
@@ -165,14 +220,17 @@ export default function NewListingPage() {
                 <Select
                   value={formData.category}
                   onValueChange={(value) => setFormData({ ...formData, category: value })}
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || isLoadingCategories}
                 >
                   <SelectTrigger className="bg-slate-900 border-slate-700">
-                    <SelectValue placeholder="Izvēlēties kategoriju" />
+                    <SelectValue
+                      placeholder={
+                        isLoadingCategories ? "Ielādē kategorijas…" : "Izvēlēties kategoriju"
+                      }
+                    />
                   </SelectTrigger>
-                  <SelectContent className="bg-slate-900 border-slate-700">
-                    <SelectItem value="">Izvēlēties kategoriju</SelectItem>
-                    {CATEGORIES.map((cat) => (
+                  <SelectContent className="bg-slate-900 border-slate-700 max-h-72 overflow-y-auto">
+                    {(categories.length > 0 ? categories : FALLBACK_CATEGORIES).map((cat) => (
                       <SelectItem key={cat.value} value={cat.value}>
                         {cat.label}
                       </SelectItem>

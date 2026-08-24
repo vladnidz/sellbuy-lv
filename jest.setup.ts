@@ -1,6 +1,7 @@
 import '@testing-library/jest-dom';
 
-// jsdom lacks matchMedia, needed by framer-motion
+// jsdom lacks matchMedia, needed by framer-motion (skip under node environment)
+if (typeof window !== 'undefined') {
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
   value: jest.fn().mockImplementation((query) => ({
