@@ -1864,3 +1864,28 @@ I'll start by loading the specialist agent and surveying the relevant skills and
   ┊ ⚡ preparing tool_call…
   ┊ ⚡ agency_ag   0.0s [agent or slug is required]
   ┊ ⚡ preparing tool_call…
+⚡ Interrupted during API call.
+Traceback (most recent call last):
+  File "/usr/local/lib/hermes-agent/hermes", line 11, in <module>
+    main()
+  File "/usr/local/lib/hermes-agent/hermes_cli/main.py", line 11742, in main
+    if _try_fast_chat_launch():
+       ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/hermes-agent/hermes_cli/main.py", line 11353, in _try_fast_chat_launch
+    cmd_chat(args)
+  File "/usr/local/lib/hermes-agent/hermes_cli/main.py", line 2886, in cmd_chat
+    cli_main(**kwargs)
+  File "/usr/local/lib/hermes-agent/cli.py", line 20056, in main
+    cli.chat(query, images=single_query_images or None)
+  File "/usr/local/lib/hermes-agent/cli.py", line 15530, in chat
+    interrupt_msg = self._interrupt_queue.get(timeout=0.1)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/share/uv/python/cpython-3.11.16-linux-aarch64-gnu/lib/python3.11/queue.py", line 180, in get
+    self.not_empty.wait(remaining)
+  File "/usr/local/share/uv/python/cpython-3.11.16-linux-aarch64-gnu/lib/python3.11/threading.py", line 331, in wait
+    gotit = waiter.acquire(True, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/hermes-agent/cli.py", line 19823, in _signal_handler_q
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+--- Delegation failed (exit 124), will retry next cycle with same slot ---
