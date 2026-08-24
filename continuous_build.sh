@@ -3,7 +3,7 @@ set -e
 
 cd ~/projects/sellbuy-v2
 
-echo "=== $(date) Starting build cycle ===" | tee -a CONTINUOUS_BUILD.log
+echo "=== $(date) Starting autonomous agency build cycle ===" | tee -a CONTINUOUS_BUILD.log
 
 # Pull latest
 git pull origin main 2>&1 | tee -a CONTINUOUS_BUILD.log
@@ -24,4 +24,4 @@ else
   exit 1
 fi
 
-echo "=== $(date) Build cycle complete ===" | tee -a CONTINUOUS_BUILD.log
+echo "=== $(date) Agency build cycle complete ===" | tee -a CONTINUOUS_BUILD.log
