@@ -549,3 +549,52 @@ Route (app)
 ƒ  (Dynamic)  server-rendered on demand
 
 Build cycle completed Mon 24 Aug 07:48:29 BST 2026
+
+=== Starting build cycle Mon 24 Aug 10:39:25 BST 2026 ===
+
+> sellbuy@0.1.0 build
+> next build
+
+▲ Next.js 16.3.1 (Turbopack)
+- Environments: .env
+⚠ Warning: Next.js ignored package-lock.json in /home/shadow3 because it is outside the current Git repository (/home/shadow3/projects/sellbuy-v2).
+ To use this directory, set `turbopack.root` in your Next.js config.
+
+✓ Running next.config.ts took 159ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 7.2s
+  Running TypeScript ...
+  Finished TypeScript in 20.9s ...
+  Collecting page data using 3 workers ...
+  Generating static pages using 3 workers (0/9) ...
+  Generating static pages using 3 workers (2/9) 
+  Generating static pages using 3 workers (4/9) 
+  Generating static pages using 3 workers (6/9) 
+✓ Generating static pages using 3 workers (9/9) in 3.4s
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /about
+├ ƒ /api/listings
+├ ƒ /api/listings/[id]
+├ ○ /categories
+├ ƒ /listings
+├ ƒ /listings/[id]
+└ ○ /new-listing
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+> sellbuy@0.1.0 lint
+> eslint
+
+✓ BUILD SUCCESSFUL
+✓ LINT PASSED (0 errors, 0 warnings)
+✓ GIT STATUS: Clean (nothing to commit, working tree clean)
+✓ HEAD: 74258e9 chore: update build log
+
+--- END CYCLE Mon 24 Aug 10:39:25 BST 2026 ---
