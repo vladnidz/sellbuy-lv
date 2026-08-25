@@ -7,10 +7,10 @@ import { TextEncoder, TextDecoder } from 'util';
 // resolution. A global jest.mock here (hoisted above all imports) is reliable:
 // babel rewrites the alias in this string identically to the test imports, so
 // both resolve to the same module id and every test gets this mock instance.
-const mockPrisma = {
+const mockPrisma: any = {
   $queryRaw: jest.fn(),
   $executeRaw: jest.fn(),
-  $transaction: jest.fn(async (ops: unknown) => {
+  $transaction: jest.fn(async (ops: unknown): Promise<any> => {
     if (Array.isArray(ops)) return Promise.all(ops as Promise<unknown>[]);
     if (typeof ops === 'function') return (ops as (c: unknown) => unknown)(mockPrisma);
     return undefined;

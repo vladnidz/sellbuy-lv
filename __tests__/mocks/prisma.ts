@@ -6,10 +6,10 @@ console.error('>>> MOCK FILE EXECUTED <<<');
  * and lib helpers so each is a jest.Mock in tests.
  */
 
-export const prisma = {
+export const prisma: any = {
   $queryRaw: jest.fn(),
   $executeRaw: jest.fn(),
-  $transaction: jest.fn(async (ops: unknown) => {
+  $transaction: jest.fn(async (ops: unknown): Promise<any> => {
     if (Array.isArray(ops)) return Promise.all(ops);
     if (typeof ops === 'function') return ops(prisma);
     return undefined;
