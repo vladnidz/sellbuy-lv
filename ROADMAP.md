@@ -1,9 +1,8 @@
 # SellBuy.lv v2 — Roadmap
 
-Last updated: 2026-08-25 (from git log through `56a0e27`, cycle 2026-08-25_03:21).
+## Next-cycle Goal: Deployment readiness (see DEPLOYMENT_READINESS.md)
 
-## Completed this cycle (~Aug 20–25)
-
+## Done
 ### Features
 - Category taxonomy API (`/api/categories` + `/api/categories/tree`) with ltree queries and JSONB attribute schema
 - `/new-listing` and `/about` pages with shadcn/ui components
