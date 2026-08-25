@@ -4329,3 +4329,182 @@ Traceback (most recent call last):
   File "/usr/local/lib/hermes-agent/cli.py", line 19823, in _signal_handler_q
     raise KeyboardInterrupt()
 KeyboardInterrupt
+[main 95b5561] feat(agency): parallel crew cycle 2026-08-25_23:26
+ 4 files changed, 213 insertions(+), 5 deletions(-)
+ create mode 100644 __tests__/__diag__/mock-diag.test.ts
+error: cannot pull with rebase: You have unstaged changes.
+error: Please commit or stash them.
+fatal: unable to access 'https://github.com/vladnidz/sellbuy-lv.git/': Could not resolve host: github.com
+=== Tue 25 Aug 23:26:37 +03 2026 Parallel crew cycle complete ===
+=== Tue 25 Aug 23:45:42 +03 2026 Starting agency crew cycle (parallel) ===
+fatal: unable to access 'https://github.com/vladnidz/sellbuy-lv.git/': Could not resolve host: github.com
+
+> sellbuy@0.1.0 build
+> prisma generate && next build
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+
+✔ Generated Prisma Client (v7.9.1) to ./node_modules/@prisma/client in 1.07s
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+▲ Next.js 16.3.1 (Turbopack)
+- Environments: .env
+⚠ Warning: Next.js ignored package-lock.json in /home/shadow3/projects because it is outside the current Git repository (/home/shadow3/projects/sellbuy-v2).
+ To use this directory, set `turbopack.root` in your Next.js config.
+
+✓ Running next.config.ts took 214ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 1433ms
+  Running TypeScript ...
+__tests__/mocks/prisma.ts(9,14): error TS7022: 'prisma' implicitly has type 'any' because it does not have a type annotation and is referenced directly or indirectly in its own initializer.
+__tests__/mocks/prisma.ts(12,25): error TS7024: Function implicitly has return type 'any' because it does not have a return type annotation and is referenced directly or indirectly in one of its return expressions.
+jest.setup.ts(10,7): error TS7022: 'mockPrisma' implicitly has type 'any' because it does not have a type annotation and is referenced directly or indirectly in its own initializer.
+jest.setup.ts(13,25): error TS7024: Function implicitly has return type 'any' because it does not have a return type annotation and is referenced directly or indirectly in one of its return expressions.
+Failed to type check.
+
+=== BUILD FAILED — dispatching reality-checker ===
+Query: Use agency-agents-router: agency_agents_load 'testing-reality-checker', 
+then act as that specialist. TASK: Build failed this cycle. Read tail of 
+CONTINUOUS_BUILD.log, diagnose root cause, apply minimal fix directly, commit. 
+Project dir: /home/shadow3/projects/sellbuy-v2
+Initializing agent...
+────────────────────────────────────────
+
+[33m⚠ Deprecated .env settings detected:[0m
+  [33m⚠[0m TERMINAL_CWD=/home/shadow3 found in .env — this is deprecated.
+  [2mMove to config.yaml instead:  terminal:\n    cwd: /your/project/path[0m
+  [2mThen remove the old entries from ~/.hermes/.env[0m
+
+⚠ Auxiliary title generation failed: Request timed out.
+=== Wed 26 Aug 00:00:58 +03 2026 Starting agency crew cycle (parallel) ===
+From https://github.com/vladnidz/sellbuy-lv
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+
+> sellbuy@0.1.0 build
+> prisma generate && next build
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+
+✔ Generated Prisma Client (v7.9.1) to ./node_modules/@prisma/client in 1.32s
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+▲ Next.js 16.3.1 (Turbopack)
+- Environments: .env
+⚠ Warning: Next.js ignored package-lock.json in /home/shadow3/projects because it is outside the current Git repository (/home/shadow3/projects/sellbuy-v2).
+ To use this directory, set `turbopack.root` in your Next.js config.
+
+✓ Running next.config.ts took 400ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 8.6s
+  Running TypeScript ...
+__tests__/mocks/prisma.ts(9,14): error TS7022: 'prisma' implicitly has type 'any' because it does not have a type annotation and is referenced directly or indirectly in its own initializer.
+__tests__/mocks/prisma.ts(12,25): error TS7024: Function implicitly has return type 'any' because it does not have a return type annotation and is referenced directly or indirectly in one of its return expressions.
+jest.setup.ts(10,7): error TS7022: 'mockPrisma' implicitly has type 'any' because it does not have a type annotation and is referenced directly or indirectly in its own initializer.
+jest.setup.ts(13,25): error TS7024: Function implicitly has return type 'any' because it does not have a return type annotation and is referenced directly or indirectly in one of its return expressions.
+Failed to type check.
+
+=== BUILD FAILED — dispatching reality-checker ===
+Warning: Unknown toolsets: agency_agents
+Query: Use agency-agents-router: agency_agents_load 'testing-reality-checker', 
+then act as that specialist. TASK: Build failed this cycle. Read tail of 
+CONTINUOUS_BUILD.log, diagnose root cause, apply minimal fix directly, commit. 
+Project dir: /home/shadow3/projects/sellbuy-v2
+Initializing agent...
+────────────────────────────────────────
+
+[33m⚠ Deprecated .env settings detected:[0m
+  [33m⚠[0m TERMINAL_CWD=/home/shadow3 found in .env — this is deprecated.
+  [2mMove to config.yaml instead:  terminal:\n    cwd: /your/project/path[0m
+  [2mThen remove the old entries from ~/.hermes/.env[0m
+
+  ┊ ⚡ preparing tool_call…
+  ┊ ⚡ agency_ag   0.0s [agent or slug is required]
+  ┊ ⚡ preparing tool_describe…
+  ┊ ⚡ tool_desc agency_agents_load  0.0s
+  ┊ ⚡ preparing tool_call…
+  ┊ ⚡ agency_ag   0.0s [error]
+  ┊ ⚡ preparing tool_call…
+  ┊ ⚡ preparing tool_call…
+  ┊ ⚡ preparing tool_call…
+  ┊ ⚡ preparing tool_call…
+⚠ Auxiliary title generation failed: Request timed out.
+  ┊ 💻 preparing terminal…
+  ┊ 💻 $         ls -F /home/shadow3/projects/sellbuy-v2/CONTINUOUS_BUILD.log  0.5s
+  ┊ 💻 preparing terminal…
+  ┊ 💻 $         tail -n 50 /home/shadow3/projects/sellbuy-v2/CONTINUOUS_BUILD.log  0.3s
+  ┊ 📖 preparing read_file…
+  ┊ 📖 read      prisma.ts  0.2s
+  ┊ 📖 preparing read_file…
+  ┊ 📖 read      jest.setup.ts  0.2s
+  ┊ 🔧 preparing patch…
+  ┊ 🔧 patch     /home/shadow3/projects/sellbuy-v2/__tests__/mocks/prisma.ts  12.1s
+  ┊ review diff
+a//home/shadow3/projects/sellbuy-v2/__tests__/mocks/prisma.ts → b//home/shadow3/projects/sellbuy-v2/__tests__/mocks/prisma.ts
+@@ -6,10 +6,10 @@
+  * and lib helpers so each is a jest.Mock in tests.
+  */
+ 
+-export const prisma = {
++export const prisma: any = {
+   $queryRaw: jest.fn(),
+   $executeRaw: jest.fn(),
+-  $transaction: jest.fn(async (ops: unknown) => {
++  $transaction: jest.fn(async (ops: unknown): Promise<any> => {
+     if (Array.isArray(ops)) return Promise.all(ops);
+     if (typeof ops === 'function') return ops(prisma);
+     return undefined;
+  ┊ 🔧 preparing patch…
+  ┊ 🔧 patch     /home/shadow3/projects/sellbuy-v2/jest.setup.ts  10.4s
+  ┊ review diff
+a//home/shadow3/projects/sellbuy-v2/jest.setup.ts → b//home/shadow3/projects/sellbuy-v2/jest.setup.ts
+@@ -7,10 +7,10 @@
+ // resolution. A global jest.mock here (hoisted above all imports) is reliable:
+ // babel rewrites the alias in this string identically to the test imports, so
+ // both resolve to the same module id and every test gets this mock instance.
+-const mockPrisma = {
++const mockPrisma: any = {
+   $queryRaw: jest.fn(),
+   $executeRaw: jest.fn(),
+-  $transaction: jest.fn(async (ops: unknown) => {
++  $transaction: jest.fn(async (ops: unknown): Promise<any> => {
+     if (Array.isArray(ops)) return Promise.all(ops as Promise<unknown>[]);
+     if (typeof ops === 'function') return (ops as (c: unknown) => unknown)(mockPrisma);
+     return undefined;
+  ┊ 💻 preparing terminal…
+  ┊ 💻 $         git add __tests__/mocks/prisma.ts jest.setup.ts + 1 command  0.8s
+  ┊ 📖 preparing read_file…
+  ┊ 📖 read      package.json  0.4s
+  ┊ 💻 preparing terminal…
+  ┊ 💻 $         npm run build  82.5s
+
+╭─ ⚕ Hermes ───────────────────────────────────────────────────────────────────╮
+The build failure in /home/shadow3/projects/sellbuy-v2 was caused by TypeScript errors (TS7022 and TS7024) in tests/mocks/prisma.ts and jest.setup.ts. These errors occurred because the prisma mock objects and their $transaction functions lacked explicit type annotations, which violates the noImplicitAny rule likely enabled in the project's tsconfig.json.
+
+I have applied the following fixes:
+
+1.  Modified tests/mocks/prisma.ts: Added : any type annotation to the prisma export and : Promise<any> return type to the $transaction function.
+2.  Modified jest.setup.ts: Added : any type annotation to the mockPrisma constant and : Promise<any> return type to the $transaction function.
+
+⚠️  Response truncated — stream ended before completion
+These changes were committed as fix(test): add type annotations to prisma mocks to satisfy noImplicitAny and then verified the build by running npm run build inside the project directory, which successfully compiled the Next.js application without any further TypeScript errors.
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+Resume this session with:
+  hermes --resume 20260826_000156_009e0c
+  hermes -c "Use agency-agents-router: agency_agents_load… #47"
+
+Session:        20260826_000156_009e0c
+Title:          Use agency-agents-router: agency_agents_load… #47
+Duration:       9m 49s
+Messages:       36 (2 user, 32 tool calls)
