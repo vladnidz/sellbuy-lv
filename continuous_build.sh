@@ -1,63 +1,65 @@
 #!/bin/bash
-# SellBuy.lv autonomous crew cycle - rotates through 8 specialists, one per cycle
-# Each cycle: build -> delegate ONE agent (small request avoids 503) -> commit
-
+# SellBuy.lv autonomous crew - PARALLEL mode: 4 build-crew agents run CONCURRENTLY each cycle
+# Plus 1 rotating strategy agent. Total: 5 specialists per 15-min cycle = 20 agent-hours/day.
 PROJECT=~/projects/sellbuy-v2
 LOG=$PROJECT/CONTINUOUS_BUILD.log
 STATE_FILE=$PROJECT/.crew_state
 cd "$PROJECT" || exit 1
 
-echo "=== $(date) Starting agency crew cycle ===" | tee -a "$LOG"
+echo "=== $(date) Starting agency crew cycle (parallel) ===" | tee -a "$LOG"
 
-# 1. Sync & build
+# ── 1. Sync & build ──────────────────────────────────────────────
 git pull origin main >> "$LOG" 2>&1
 if [ ! -d node_modules ]; then npm install >> "$LOG" 2>&1; fi
 npm run build >> "$LOG" 2>&1
 BUILD_OK=$?
 
 if [ $BUILD_OK -ne 0 ]; then
-  echo "=== BUILD FAILED ===" | tee -a "$LOG"
-  # On failure, always delegate to reality-checker to diagnose
-  AGENT_SLUG="testing-reality-checker"
-  TASK="Build failed this cycle. Read CONTINUOUS_BUILD.log tail, diagnose root cause, propose minimal fix."
+  echo "=== BUILD FAILED — dispatching reality-checker ===" | tee -a "$LOG"
+  timeout 600 hermes chat -q "Use agency-agents-router: agency_agents_load 'testing-reality-checker', then act as that specialist. TASK: Build failed this cycle. Read tail of CONTINUOUS_BUILD.log, diagnose root cause, apply minimal fix directly, commit. Project dir: $PROJECT" >> "$LOG" 2>&1
 else
   echo "=== BUILD SUCCESS ===" | tee -a "$LOG"
-  # 2. Rotate crew: read state, pick next agent
+
+  # ── 2. CORE CREW — 4 specialists in PARALLEL (background jobs) ──
+  echo "--- Dispatching core crew (4 agents in parallel) ---" | tee -a "$LOG"
+
+  timeout 700 hermes chat -q "Use agency-agents-router: agency_agents_load 'engineering-backend-architect', then act as that specialist. TASK: Extend the category taxonomy API in app/api/categories/: add attribute-schema endpoint returning per-category JSONB filter schema from SellBuy-lv-Category-Taxonomy.md (cars, real estate, phones, fashion, animals, jobs). Use Prisma skills. Commit when done. Project dir: $PROJECT" > /tmp/crew_backend.log 2>&1 &
+  P1=$!
+
+  timeout 700 hermes chat -q "Use agency-agents-router: agency_agents_load 'engineering-frontend-developer', then act as that specialist. TASK: Build the faceted filter sidebar for /listings using the attribute schema from /api/categories/schema. Use shadcn/ui components, Taste-skill glassmorphic Pro Max style, framer-motion transitions (find-animation-opportunities). Commit when done. Project dir: $PROJECT" > /tmp/crew_frontend.log 2>&1 &
+  P2=$!
+
+  timeout 700 hermes chat -q "Use agency-agents-router: agency_agents_load 'testing-reality-checker', then act as that specialist. TASK: Run existing tests in __tests__/, fix any failures, then add integration test for /api/categories/tree covering nested paths and i18n names. Commit when done. Project dir: $PROJECT" > /tmp/crew_qa.log 2>&1 &
+  P3=$!
+
+  timeout 700 hermes chat -q "Use agency-agents-router: agency_agents_load 'design-brand-guardian', then act as that specialist. TASK: Audit all pages under app/ against DESIGN_AUDIT.md findings; fix top 3 deviations (spacing, typography, token usage) directly in code. Commit when done. Project dir: $PROJECT" > /tmp/crew_brand.log 2>&1 &
+  P4=$!
+
+  # Wait for core crew (max ~12 min)
+  wait $P1 $P2 $P3 $P4
+  echo "--- Core crew finished ---" | tee -a "$LOG"
+
+  # ── 3. STRATEGY CREW — 1 rotating specialist per cycle ──────────
   IDX=$(cat "$STATE_FILE" 2>/dev/null || echo 0)
-  AGENTS=(
-    "engineering-backend-architect|Implement category taxonomy API from app/: /api/categories tree endpoint with ltree queries and JSONB attribute schema. Use Prisma skills. Commit changes."
-    "engineering-frontend-developer|Implement listing creation form improvements at app/new-listing with AI auto-fill fields. Use shadcn/ui components, glassmorphic Pro Max style, framer-motion transitions. Commit changes."
-    "engineering-devops-automator|Review Dockerfile and Vercel config in repo root. Verify env vars documented in README. Run lint. Fix any issues found. Commit changes."
-    "testing-reality-checker|Write tests for CategoryCard component and /api/listings endpoint. Add to project as __tests__/. Commit changes."
-    "product-trend-researcher|Read docs/ or README, analyze SellBuy MVP gaps vs SS.lv, write FEATURE_BACKLOG.md top 10 priorities ranked by impact. Commit."
-    "design-brand-guardian|Audit components/ and app/ UI consistency: verify all pages use shadcn tokens, consistent spacing/typography. Write DESIGN_AUDIT.md with fixes needed. Commit."
-    "marketing-growth-hacker|Write SEO strategy: add metadata+OpenGraph to all pages, JSON-LD structured data for listings. Implement directly. Commit changes."
-    "project-management-project-shepherd|Update ROADMAP.md: mark done items, reorder remaining by dependency. Review git log last 20 commits for progress summary. Commit."
+  STRATEGY=(
+    "product-trend-researcher|Re-rank FEATURE_BACKLOG.md by user impact vs effort after this cycle's changes."
+    "marketing-growth-hacker|Add hreflang tags + trilingual meta descriptions (LV/RU/EN) to categories and listings pages. Commit."
+    "project-management-project-shepherd|Update ROADMAP.md: move completed items to Done, set next-cycle goal at top."
+    "support-support-responder|Draft in-app help tooltips for listing form fields; store as constants file for frontend use. Commit."
+    "design-ui-finish-gate-reviewer|Final visual QA pass on /new-listing and /listings; fix small polish issues directly. Commit."
   )
-  COUNT=${#AGENTS[@]}
-  IDX=$(( (IDX % COUNT) ))
-  IFS='|' read -r AGENT_SLUG TASK <<< "${AGENTS[$IDX]}"
+  COUNT=${#STRATEGY[@]}
+  IDX=$(( IDX % COUNT ))
+  IFS='|' read -r S_SLUG S_TASK <<< "${STRATEGY[$IDX]}"
   echo $((IDX + 1)) > "$STATE_FILE"
-  echo "--- Crew rotation: agent $((IDX+1))/$COUNT = $AGENT_SLUG ---" | tee -a "$LOG"
+  echo "--- Strategy slot: $S_SLUG ---" | tee -a "$LOG"
+  timeout 500 hermes chat -q "Use agency-agents-router: agency_agents_load '$S_SLUG', then act as that specialist. TASK: $S_TASK Project dir: $PROJECT" >> "$LOG" 2>&1
 fi
 
-# 3. Delegate ONE specialist via hermes CLI (uses hermes-coder route through gateway)
-echo "--- Delegating to $AGENT_SLUG ---" | tee -a "$LOG"
-timeout 900 hermes chat -q "Use the agency-agents-router plugin. First call agency_agents_load for '$AGENT_SLUG', then execute its instructions as that specialist. TASK: $TASK Project dir: $PROJECT" >> "$LOG" 2>&1
-DELEGATE_OK=$?
-
-if [ $DELEGATE_OK -eq 0 ]; then
-  echo "--- Delegation OK ---" | tee -a "$LOG"
-else
-  echo "--- Delegation failed (exit $DELEGATE_OK), will retry next cycle with same slot ---" | tee -a "$LOG"
-  # rewind state so next cycle retries this agent
-  PREV=$((IDX))
-  echo $PREV > "$STATE_FILE"
-fi
-
-# 4. Commit any produced work
+# ── 4. Reconcile & ship everything ───────────────────────────────
 git add -A
-git diff --cached --quiet || git commit -m "feat(agency): $AGENT_SLUG cycle $(date +%Y-%m-%d_%H:%M)" >> "$LOG" 2>&1
+git diff --cached --quiet || git commit -m "feat(agency): parallel crew cycle $(date +%Y-%m-%d_%H:%M)" >> "$LOG" 2>&1
+git pull --rebase origin main >> "$LOG" 2>&1 || true
 git push origin main >> "$LOG" 2>&1 || true
 
-echo "=== $(date) Crew cycle complete ===" | tee -a "$LOG"
+echo "=== $(date) Parallel crew cycle complete ===" | tee -a "$LOG"
