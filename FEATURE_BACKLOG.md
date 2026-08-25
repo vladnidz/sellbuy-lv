@@ -1,10 +1,10 @@
 # SellBuy.lv v2 — Feature Backlog
 
-> Cross-references each feature to the owning agent context and the deliverable file on disk. Reflects actual state as of `56a0e27` (2026-08-25_03:21). Re-verified against files on disk 2026-08-25 (see Next Cycle Plan for deltas: attribute filters now shipped, auth demo-only, search still ILIKE-based). No git commit/push performed.
+> Cross-references each feature to the owning agent context and the deliverable file on disk. Reflects actual state as of `0a549e1` (2026-08-26_00:11). Re-verified against files on disk 2026-08-26 against `git log --oneline -20` (category taxonomy API + listings API + core pages shipped ✅; auth still demo-only; full-text search still ILIKE-based; image upload still a stub). No pending git commit/push beyond this doc update.
 
 ## Completed items
 
-Status = ✅ shipped on disk (verified via file inspection + git log through `56a0e27`).
+Status = ✅ shipped on disk (verified via file inspection + git log through `0a549e1`).
 
 | Feature | Cycle | Agent context | Deliverable file(s) |
 |---|---|---|---|
@@ -27,6 +27,9 @@ Status = ✅ shipped on disk (verified via file inspection + git log through `56
 | `DESIGN_AUDIT.md` produced (token-layer gap analysis) | 2026-08-25_02:25 (`69e3d17`) | agency/frontend | `DESIGN_AUDIT.md` |
 | Jest test suite added (taxonomy API x2, listing CRUD x2, CategoryCard) — Prisma mocked | 2026-08-25_02:02 (testing-reality-checker) | agency/testing | `__tests__/api-categories-tree.test.ts`, `__tests__/api-categories-id.test.ts`, `__tests__/api-listings.test.ts`, `__tests__/api-listings-id.test.ts`, `__tests__/category-card.test.tsx`, `__tests__/mocks/prisma.ts` |
 | `continuous_build.sh` hardened; `.gitignore` for local dev scripts | 2026-08-24 | agency/CI | `continuous_build.sh`, `.gitignore` |
+| Postgres `db:` service in `docker-compose.yml` (image: postgres:16-alpine, healthcheck, volume, shared network, externalized `${DATABASE_URL}`/`${POSTGRES_PASSWORD}` from `.env`) | 2026-08-25_06:36 | devops-automator | `docker-compose.yml`, `.gitignore` |
+| Runtime auth (server-side) — **still demo-only (see Remaining #3)** | 2026-08-25 | agency/frontend | `app/lib/auth.tsx`, `app/auth.tsx` |
+| `ltree` extension init script wired to compose (`docker/initdb/01-ltree.sql`) | 2026-08-25 | devops-automator | `docker/initdb/01-ltree.sql`, `docker-compose.yml` |
 
 ## Remaining items — re-ranked by user impact vs effort
 
