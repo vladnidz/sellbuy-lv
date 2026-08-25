@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { randomUUID } from 'crypto';
 import { prisma } from '@/app/lib/prisma';
 import { Prisma } from '@prisma/client';
 
@@ -200,10 +201,12 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      const parent = await prisma.category.findUnique({
-        where: { id: body.parentId },
-        select: { id: true, path: true },
-      });
+      // `path` is an Unsupported ltree column, so we must read it via raw
+      // SQL — Prisma Client's typed select omits Unsupported fields.
+      const parents = await prisma.$queryRaw<
+        Array<{ id: string; path: string }>
+      >`SELECT id, text(path) AS "path" FROM "Category" WHERE id = ${body.parentId}`;
+      const parent = parents[0];
       if (!parent) {
         return NextResponse.json(
           { error: 'parent category not found' },
@@ -225,29 +228,48 @@ export async function POST(request: NextRequest) {
     }
 
     try {
-      const category = await prisma.category.create({
-        data: {
-          name: body.name.trim(),
-          nameLv:
-            (body.nameLv as string | undefined) && (body.nameLv as string).trim()
-              ? (body.nameLv as string).trim()
-              : undefined,
-          nameRu:
-            (body.nameRu as string | undefined) && (body.nameRu as string).trim()
-              ? (body.nameRu as string).trim()
-              : undefined,
-          nameEn:
-            (body.nameEn as string | undefined) && (body.nameEn as string).trim()
-              ? (body.nameEn as string).trim()
-              : undefined,
-          attributes: body.attributes ?? undefined,
-          parentId: resolvedParentId,
-          path: path as any, // ltree Unsupported type — computed from parent
-        },
-        include: {
-          parent: { select: { id: true, name: true } },
-        },
-      });
+      // Prisma Client does not generate `create` for models with a required
+      // Unsupported column (ltree `path`), so insert via raw SQL.
+      const newId = randomUUID();
+      const nameLv = (body.nameLv as string | undefined)?.trim() || null;
+      const nameRu = (body.nameRu as string | undefined)?.trim() || null;
+      const nameEn = (body.nameEn as string | undefined)?.trim() || null;
+      const attributes =
+        body.attributes === undefined ? null : JSON.stringify(body.attributes);
+
+      await prisma.$executeRaw`
+        INSERT INTO "Category"
+          ("id", "name", "nameLv", "nameRu", "nameEn", "attributes", "parentId", "path")
+        VALUES (
+          ${newId}::text,
+          ${body.name.trim()}::text,
+          ${nameLv}::text,
+          ${nameRu}::text,
+          ${nameEn}::text,
+          ${attributes}::jsonb,
+          ${resolvedParentId}::text,
+          ${path}::ltree
+        )`;
+
+      // Fetch the created row plus parent info for the response.
+      const inserted = await prisma.$queryRaw<
+        Array<{
+          id: string;
+          name: string;
+          nameLv: string | null;
+          nameRu: string | null;
+          nameEn: string | null;
+          attributes: Prisma.JsonValue | null;
+          parentId: string | null;
+          parentName?: string | null;
+        }>
+      >`
+        SELECT c.id, c.name, c."nameLv", c."nameRu", c."nameEn", c.attributes,
+               c."parentId", p.name AS "parentName"
+        FROM "Category" c
+        LEFT JOIN "Category" p ON p.id = c."parentId"
+        WHERE c.id = ${newId}`;
+      const category = inserted[0];
 
       return NextResponse.json(
         {
@@ -261,14 +283,20 @@ export async function POST(request: NextRequest) {
           attributes: category.attributes,
           path,
           parentId: category.parentId,
-          parent: category.parent,
+          parent:
+            category.parentId && category.parentName
+              ? { id: category.parentId, name: category.parentName }
+              : null,
         },
         { status: 201 }
       );
     } catch (dbError: any) {
+      // Raw SQL raises the Postgres unique-violation code 23505 (typed client
+      // would surface P2002) — handle both so duplicates still map to 409.
       if (
-        dbError.code === 'P2002' &&
-        (dbError.meta?.target as string[])?.includes('path')
+        dbError.code === 'P2002' ||
+        dbError.code === '23505' ||
+        String(dbError.message ?? '').includes('duplicate key')
       ) {
         return NextResponse.json(
           { error: `A category with path "${path}" already exists` },

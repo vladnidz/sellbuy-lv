@@ -60,7 +60,50 @@ All P0 blockers below have been remediated and verified on disk:
 | Seed raw-query safety | parameterized ✅ |
 | `npm run build` | compiled OK; TS type-check FAILS (pre-existing, see below) |
 
-### ⚠️ Caveat / remaining work (application-side, not infra)
+---
+
+## Review pass 2 — 2026-08-25 (DevOps Automator: deployment readiness)
+
+Scope re-checked on disk: `Dockerfile`, `docker-compose.yml`,
+`docker-entrypoint.js`, `.env.example` vs `.env` (values not printed),
+migration strategy, and `npx tsc --noEmit`. Nothing deployed, nothing pushed.
+
+### Verification
+
+| Check | Result |
+|---|---|
+| `npx tsc --noEmit` | ✅ passes, exit 0 |
+| Env var audit (runtime reads) | only `DATABASE_URL`, `NODE_ENV` (app), `RUN_MIGRATIONS`, `RUN_SEED` (entrypoint), `SEED_RESET` (seed) — all now documented in `.env.example` ✅ |
+| Secrets in `.env` vs `.env.example` | no secret values echoed; `.env` gitignored & dockerignored ✅ |
+| Compose wiring | db healthcheck + `depends_on: service_healthy`; required vars use `${VAR:?...}` fail-fast ✅ |
+
+### Findings & resolutions this pass
+
+1. **[Fixed] `SEED_RESET` undocumented** → added to `.env.example`
+   (commented out by default; destructive TRUNCATE is opt-in via
+   `prisma/seed.ts`).
+2. **[Resolved] Stale TS caveat below** → `app/api/categories/route.ts` has
+   been rewritten to raw SQL (`Prisma.sql`) with an explicit local `path`
+   type; the previous TS2353/TS2339 errors are gone and `npx tsc --noEmit`
+   is green.
+3. **[OK] Migration strategy sane** → entrypoint runs
+   `npx prisma migrate deploy` (idempotent, applied-only) before server start,
+   guarded by `RUN_MIGRATIONS=false`; seed separate (`RUN_SEED=true`);
+   ltree covered both by init migration and `docker/initdb/01-ltree.sql`.
+   Non-root runtime user, standalone Next build, secrets excluded from image.
+
+### Remaining gaps (non-blocking, pre-deploy)
+
+- No container smoke test performed here (`docker compose up` + health probe)
+  — recommend one dry-run before first real deploy.
+- No app-level healthcheck defined for the `sellbuy` service in compose;
+  consider adding one once a `/api/health` endpoint exists.
+
+### ⚠️ Caveat / remaining work (application-side, not infra) — RESOLVED
+
+The TS2353/TS2339 errors previously reported here no longer reproduce;
+`app/api/categories/route.ts` now uses raw SQL and `npx tsc --noEmit`
+passes (exit 0). Kept for history:
 
 `npm run build` fails type-checking:
 
