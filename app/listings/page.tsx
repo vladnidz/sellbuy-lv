@@ -20,11 +20,32 @@ import { ArrowLeft, Search, ChevronLeft, ChevronRight, Truck, Shield } from 'luc
 import { Metadata } from 'next';
 import { Prisma } from '@prisma/client';
 
+interface AttributeField {
+  type?: unknown;
+  label?: unknown;
+  options?: unknown;
+  required?: unknown;
+}
+
+interface NormalizedAttrField {
+  name: string;
+  type: 'string' | 'number' | 'enum' | 'boolean';
+  label: string;
+  options: string[];
+}
+
+/** Latvian city/district options for the location filter. */
+const CITIES = [
+  'Rīga', 'Daugavpils', 'Jelgava', 'Jūrmala', 'Liepāja', 'Rēzekne',
+  'Valmiera', 'Ventspils', 'Ogre', 'Jēkabpils', 'Tukums', 'Salaspils',
+];
+
 interface CategoryWithPath {
   id: string;
   name: string;
-  path: string | null;
+  path?: string | null;
   parentId: string | null;
+  attributes?: Prisma.JsonValue | null;
 }
 
 interface ListingWithRelations {
@@ -34,6 +55,7 @@ interface ListingWithRelations {
   price: number;
   images: string[];
   createdAt: Date;
+  city?: string | null;
   category: CategoryWithPath | null;
   author: {
     id: string;
@@ -51,6 +73,10 @@ interface ListingsPageProps {
     sort?: string;
     page?: string;
     priceRange?: string;
+    city?: string;
+    [key: `attr_${string}`]: string | undefined;
+    [key: `attrmin_${string}`]: string | undefined;
+    [key: `attrmax_${string}`]: string | undefined;
   }>;
 }
 
@@ -73,7 +99,103 @@ const PRICE_RANGES = [
 async function getCategories() {
   return prisma.category.findMany({
     orderBy: { name: 'asc' },
+    select: {
+      id: true,
+      name: true,
+      parentId: true,
+      attributes: true,
+    },
   });
+}
+
+/**
+ * Normalize a category's raw JSONB `attributes` schema into filterable fields.
+ * Malformed entries are skipped defensively, mirroring the /api/categories/schema
+ * endpoint's contract.
+ */
+function normalizeAttrFields(attributes: Prisma.JsonValue | null): NormalizedAttrField[] {
+  if (attributes === null || typeof attributes !== 'object') return [];
+  return Object.entries(attributes as Record<string, unknown>)
+    .filter((entry): entry is [string, AttributeField] => {
+      const v = entry[1];
+      return v !== null && typeof v === 'object';
+    })
+    .map(([name, field]) => {
+      const type = ['string', 'number', 'enum', 'boolean'].includes(String(field.type))
+        ? (String(field.type) as NormalizedAttrField['type'])
+        : 'string';
+      const label =
+        field.label && typeof field.label === 'object'
+          ? String((field.label as Record<string, unknown>).lv ?? name)
+          : name;
+      const options = Array.isArray(field.options)
+        ? field.options.map((o) => String(o))
+        : [];
+      return { name, type, label, options };
+    });
+}
+
+/** Collect attr_* equality and numeric-range filters from resolved search params. */
+function parseAttrParams(resolved: Record<string, string | undefined>) {
+  const eq: Record<string, string> = {};
+  const range: Record<string, { min?: number; max?: number }> = {};
+  for (const [key, value] of Object.entries(resolved)) {
+    if (!value) continue;
+    if (key.startsWith('attr_')) {
+      eq[key.slice(5)] = value;
+    } else if (key.startsWith('attrmin_')) {
+      const name = key.slice(8);
+      const n = parseFloat(value);
+      if (!Number.isNaN(n)) (range[name] ??= {}).min = n;
+    } else if (key.startsWith('attrmax_')) {
+      const name = key.slice(8);
+      const n = parseFloat(value);
+      if (!Number.isNaN(n)) (range[name] ??= {}).max = n;
+    }
+  }
+  return { eq, range };
+}
+
+/**
+ * Resolve Listing ids matching JSONB attribute predicates via parameterized SQL
+ * (Prisma's Json filter does not support numeric gte/lte). Returns null when no
+ * attribute filters are present so callers can skip the query entirely.
+ */
+async function getAttrMatchingIds(
+  eq: Record<string, string>,
+  range: Record<string, { min?: number; max?: number }>
+): Promise<string[] | null> {
+  const conditions: string[] = [];
+  const values: (string | number)[] = [];
+
+  for (const [name, value] of Object.entries(eq)) {
+    values.push(name);
+    const idx = values.length;
+    // Boolean/numeric-looking values are compared as jsonb, everything else as text.
+    if (value === 'true' || value === 'false') {
+      conditions.push(`("attributes" ->> $${idx})::boolean = ${value}`);
+    } else if (value !== '' && !Number.isNaN(Number(value))) {
+      conditions.push(`("attributes" ->> $${idx})::numeric = ${Number(value)}`);
+    } else {
+      conditions.push(`"attributes" ->> $${idx} = '${value.replace(/'/g, "''")}'`);
+    }
+  }
+
+  for (const [name, { min, max }] of Object.entries(range)) {
+    values.push(name);
+    const idx = values.length;
+    const guard = `("attributes" ? $${idx} AND ("attributes" ->> $${idx}) ~ '^-?[0-9]+(\\.[0-9]+)?$')`;
+    if (min !== undefined) conditions.push(`${guard} AND ("attributes" ->> $${idx})::numeric >= ${min}`);
+    if (max !== undefined) conditions.push(`${guard} AND ("attributes" ->> $${idx})::numeric <= ${max}`);
+  }
+
+  if (conditions.length === 0) return null;
+
+  const rows = await prisma.$queryRaw<Array<{ id: string }>>(
+    Prisma.sql`SELECT id FROM "Listing" WHERE ${Prisma.raw(conditions.join(' AND '))}`,
+    ...values
+  );
+  return rows.map((r) => r.id);
 }
 
 async function getListings(params: {
@@ -84,8 +206,11 @@ async function getListings(params: {
   sort?: string;
   page?: number;
   limit?: number;
+  city?: string;
+  attrEq?: Record<string, string>;
+  attrRange?: Record<string, { min?: number; max?: number }>;
 }) {
-  const { q, category, minPrice, maxPrice, sort = 'newest', page = 1, limit = 12 } = params;
+  const { q, category, minPrice, maxPrice, sort = 'newest', page = 1, limit = 12, city, attrEq, attrRange } = params;
 
   const where: Prisma.ListingWhereInput = {};
 
@@ -114,6 +239,16 @@ async function getListings(params: {
     where.price = {};
     if (minPrice !== undefined) where.price.gte = minPrice;
     if (maxPrice !== undefined) where.price.lte = maxPrice;
+  }
+
+  if (city) {
+    where.city = { equals: city, mode: 'insensitive' };
+  }
+
+  // JSONB attribute facet filters (attr_<name>=..., attrmin_/attrmax_).
+  const attrIds = await getAttrMatchingIds(attrEq ?? {}, attrRange ?? {});
+  if (attrIds !== null) {
+    where.id = attrIds.length > 0 ? { in: attrIds } : { in: ['__no_match__'] };
   }
 
   let orderBy: Prisma.ListingOrderByWithRelationInput = { createdAt: 'desc' };
@@ -166,19 +301,34 @@ export default async function ListingsPage({ searchParams }: ListingsPageProps) 
   const sort = resolvedParams.sort || 'newest';
   const page = parseInt(resolvedParams.page || '1');
   const limit = 12;
+  const city = resolvedParams.city || '';
+  const { eq: attrEq, range: attrRange } = parseAttrParams(resolvedParams);
 
   const [categories, { listings, pagination }] = await Promise.all([
     getCategories(),
-    getListings({ q, category, minPrice, maxPrice, sort, page, limit }),
+    getListings({ q, category, minPrice, maxPrice, sort, page, limit, city, attrEq, attrRange }),
   ]);
 
-  const formatPrice = (price: number | string) => {
-    return new Intl.NumberFormat('lv-LV', {
-      style: 'currency',
-      currency: 'EUR',
-    }).format(Number(price));
-  };
+  // Merge attribute schemas from the selected category's ancestor chain
+  // (nearest category wins), so e.g. "Automobīli" inherits "Transports.make".
+  const categoriesById = new Map(categories.map((c) => [c.id, c]));
+  const mergedAttrs: Record<string, unknown> = {};
+  if (category) {
+    const chain: CategoryWithPath[] = [];
+    let cursor: CategoryWithPath | undefined = categoriesById.get(category);
+    while (cursor) {
+      chain.unshift(cursor);
+      cursor = cursor.parentId ? categoriesById.get(cursor.parentId) : undefined;
+    }
+    for (const node of chain) {
+      if (node.attributes && typeof node.attributes === 'object') {
+        Object.assign(mergedAttrs, node.attributes as Record<string, unknown>);
+      }
+    }
+  }
+  const attrFields = normalizeAttrFields(JSON.parse(JSON.stringify(mergedAttrs)) as Prisma.JsonValue);
 
+  // URL with all attribute facet params removed (for the "Notīrīt" link).
   const buildUrl = (params: Record<string, string | number | undefined>) => {
     const searchParams = new URLSearchParams();
     Object.entries(params).forEach(([key, value]) => {
@@ -187,6 +337,21 @@ export default async function ListingsPage({ searchParams }: ListingsPageProps) 
       }
     });
     return `/listings?${searchParams.toString()}`;
+  };
+
+  const clearAttrUrl = buildUrl(
+    Object.fromEntries(
+      Object.entries(resolvedParams)
+        .filter(([k]) => !k.startsWith('attr_'))
+        .concat([['page', '1']])
+    )
+  );
+
+  const formatPrice = (price: number | string) => {
+    return new Intl.NumberFormat('lv-LV', {
+      style: 'currency',
+      currency: 'EUR',
+    }).format(Number(price));
   };
 
   const handlePriceRangeChange = (range: string) => {
@@ -273,6 +438,28 @@ export default async function ListingsPage({ searchParams }: ListingsPageProps) 
           </div>
 
           <div className="flex-1">
+            <label className="block text-sm font-medium text-slate-300 mb-2">Pilsēta / novads</label>
+            <Select
+              value={city}
+              onValueChange={(value) => {
+                window.location.href = buildUrl({ ...resolvedParams, city: value || undefined, page: 1 });
+              }}
+            >
+              <SelectTrigger className="bg-slate-900/60 border-slate-700 backdrop-blur-sm transition-colors focus:border-blue-500/60">
+                <SelectValue placeholder="Visa Latvija" />
+              </SelectTrigger>
+              <SelectContent className="bg-slate-900/95 backdrop-blur-xl border-slate-700">
+                <SelectItem value="">Visa Latvija</SelectItem>
+                {CITIES.map((c) => (
+                  <SelectItem key={c} value={c}>
+                    {c}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="flex-1">
             <label htmlFor="priceRange" className="block text-sm font-medium text-slate-300 mb-2">
               Cenas diapazons
             </label>
@@ -319,6 +506,101 @@ export default async function ListingsPage({ searchParams }: ListingsPageProps) 
             </Select>
           </div>
         </div>
+
+        {/* Category Attribute Facets */}
+        {attrFields.length > 0 && (
+          <div className="mb-8 p-5 bg-slate-900/40 backdrop-blur-xl border border-slate-700/50 rounded-2xl shadow-lg shadow-black/20 transition-colors hover:border-slate-600/50">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-slate-400">
+                Kategorijas parametri
+              </h3>
+              <Link
+                href={clearAttrUrl}
+                className="text-xs text-blue-400 hover:text-blue-300 transition-colors"
+              >
+                Notīrīt
+              </Link>
+            </div>
+            <form method="GET" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {/* Preserve non-attribute filters across form submits */}
+              {q && <input type="hidden" name="q" value={q} />}
+              {category && <input type="hidden" name="category" value={category} />}
+              {resolvedParams.minPrice && <input type="hidden" name="minPrice" value={resolvedParams.minPrice} />}
+              {resolvedParams.maxPrice && <input type="hidden" name="maxPrice" value={resolvedParams.maxPrice} />}
+              {city && <input type="hidden" name="city" value={city} />}
+              {sort !== 'newest' && <input type="hidden" name="sort" value={sort} />}
+
+              {attrFields.map((field) => {
+                const current = attrEq[field.name] ?? '';
+                const min = resolvedParams[`attrmin_${field.name}`] ?? '';
+                const max = resolvedParams[`attrmax_${field.name}`] ?? '';
+                return (
+                  <div key={field.name}>
+                    <label htmlFor={`attr-${field.name}`} className="block text-sm font-medium text-slate-300 mb-2">
+                      {field.label}
+                    </label>
+                    {(field.type === 'enum' || field.type === 'boolean') ? (
+                      <select
+                        id={`attr-${field.name}`}
+                        name={`attr_${field.name}`}
+                        defaultValue={current}
+                        className="w-full h-10 rounded-md border border-slate-700 bg-slate-900/60 px-3 text-sm text-white backdrop-blur-sm transition-colors focus:border-blue-500/60 focus:outline-none"
+                      >
+                        <option value="">Visi</option>
+                        {field.type === 'boolean'
+                          ? [
+                              { value: 'true', label: 'Jā' },
+                              { value: 'false', label: 'Nē' },
+                            ].map((o) => (
+                              <option key={o.value} value={o.value}>{o.label}</option>
+                            ))
+                          : field.options.map((o) => (
+                              <option key={o} value={o}>{o}</option>
+                            ))}
+                      </select>
+                    ) : field.type === 'number' ? (
+                      <div className="flex items-center gap-2">
+                        <Input
+                          id={`attr-${field.name}-min`}
+                          name={`attrmin_${field.name}`}
+                          type="number"
+                          inputMode="numeric"
+                          placeholder="no"
+                          defaultValue={min}
+                          className="bg-slate-900/60 border-slate-700 h-10 backdrop-blur-sm transition-colors focus:border-blue-500/60"
+                        />
+                        <span className="text-slate-500">–</span>
+                        <Input
+                          id={`attr-${field.name}-max`}
+                          name={`attrmax_${field.name}`}
+                          type="number"
+                          inputMode="numeric"
+                          placeholder="līdz"
+                          defaultValue={max}
+                          className="bg-slate-900/60 border-slate-700 h-10 backdrop-blur-sm transition-colors focus:border-blue-500/60"
+                        />
+                      </div>
+                    ) : (
+                      <Input
+                        id={`attr-${field.name}`}
+                        name={`attr_${field.name}`}
+                        defaultValue={current}
+                        placeholder={`${field.label}...`}
+                        className="bg-slate-900/60 border-slate-700 h-10 backdrop-blur-sm transition-colors focus:border-blue-500/60"
+                      />
+                    )}
+                  </div>
+                );
+              })}
+
+              <div className="flex items-end sm:col-span-2 lg:col-span-4">
+                <Button type="submit" size="sm" className="bg-blue-600 hover:bg-blue-700 transition-colors">
+                  Piemērot filtrus
+                </Button>
+              </div>
+            </form>
+          </div>
+        )}
 
         {/* Results Count */}
         <div className="flex items-center justify-between mb-6">
@@ -368,6 +650,11 @@ export default async function ListingsPage({ searchParams }: ListingsPageProps) 
                           <Badge variant="secondary" className="bg-blue-950 text-blue-300 border-blue-800 text-xs">
                             {listing.category?.name || 'Kategorija'}
                           </Badge>
+                          {listing.city && (
+                            <Badge variant="secondary" className="bg-slate-800 text-slate-300 border-slate-700 text-xs">
+                              {listing.city}
+                            </Badge>
+                          )}
                         </div>
 
                         <h3 className="font-semibold text-lg mb-2 group-hover:text-blue-400 transition-colors line-clamp-2">

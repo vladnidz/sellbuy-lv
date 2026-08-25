@@ -9,52 +9,54 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  name      String?
-  listings  Listing[]
-  chats     Chat[]
+  id       String    @id @default(uuid())
+  email    String    @unique
+  name     String?
+  listings Listing[]
+  chats    Chat[]
 }
 
 model Category {
-  id       String   @id @default(uuid())
-  name     String
-  nameLv   String?
-  nameRu   String?
-  nameEn   String?
+  id         String               @id @default(uuid())
+  name       String
+  nameLv     String?
+  nameRu     String?
+  nameEn     String?
   attributes Json?
-  path     Unsupported("ltree") @unique
-  parentId String?
-  parent   Category? @relation("CategoryHierarchy", fields: [parentId], references: [id])
-  children Category[] @relation("CategoryHierarchy")
-  listings Listing[]
+  path       Unsupported("ltree") @unique
+  parentId   String?
+  parent     Category?            @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children   Category[]           @relation("CategoryHierarchy")
+  listings   Listing[]
 
   @@index([path], type: Gist)
 }
 
 model Listing {
-  id         String   @id @default(uuid())
-  title      String
+  id          String   @id @default(uuid())
+  title       String
   description String
-  price      Decimal
-  images     String[]
-  category   Category @relation(fields: [categoryId], references: [id])
-  categoryId String
-  author     User     @relation(fields: [authorId], references: [id])
-  authorId   String
-  createdAt  DateTime @default(now())
+  price       Decimal
+  images      String[]
+  city        String?
+  attributes  Json?
+  category    Category @relation(fields: [categoryId], references: [id])
+  categoryId  String
+  author      User     @relation(fields: [authorId], references: [id])
+  authorId    String
+  createdAt   DateTime @default(now())
 }
 
 model Chat {
-  id        String   @id @default(uuid())
+  id           String    @id @default(uuid())
   participants User[]
-  messages  Message[]
+  messages     Message[]
 }
 
 model Message {
-  id      String @id @default(uuid())
-  chat    Chat   @relation(fields: [chatId], references: [id])
-  chatId  String
+  id       String @id @default(uuid())
+  chat     Chat   @relation(fields: [chatId], references: [id])
+  chatId   String
   senderId String
-  content String
+  content  String
 }

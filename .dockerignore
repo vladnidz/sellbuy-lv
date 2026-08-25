@@ -30,7 +30,8 @@ create_demo_user.ts
 .git
 
 # NOTE: docker-entrypoint.js must NOT be ignored here — the builder stage
-# COPYs it into the image.
+# COPYs it into the image (Dockerfile line 47). The other Docker config files
+# (below) are only needed by the docker CLI, not copied into the image.
 Dockerfile
 docker-compose.yml
 

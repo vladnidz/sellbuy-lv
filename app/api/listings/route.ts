@@ -14,8 +14,106 @@ export async function GET(request: NextRequest) {
     const minPrice = searchParams.get('minPrice');
     const maxPrice = searchParams.get('maxPrice');
     const sort = searchParams.get('sort') || 'newest';
+    const city = searchParams.get('city');
+    const attributesParam = searchParams.get('attributes');
 
     const where: Prisma.ListingWhereInput = {};
+
+    if (city) {
+      // Exact match on city (case-insensitive) to keep results predictable.
+      where.city = { equals: city, mode: 'insensitive' };
+    }
+
+    // Attribute-driven JSONB filtering. Accepts a JSON object where each key
+    // is an attribute name and the value is either:
+    //   - a scalar  -> exact containment: attributes @> {"key": value}
+    //   - an object -> range filter:     { min, max } on the numeric value
+    // e.g. ?attributes={"color":"red","year":{"min":2015,"max":2020}}
+    if (attributesParam) {
+      let attrFilter: Record<string, unknown>;
+      try {
+        attrFilter = JSON.parse(attributesParam);
+      } catch {
+        return NextResponse.json(
+          { error: 'Invalid `attributes` param: must be valid JSON' },
+          { status: 400 }
+        );
+      }
+      if (
+        typeof attrFilter !== 'object' ||
+        attrFilter === null ||
+        Array.isArray(attrFilter)
+      ) {
+        return NextResponse.json(
+          { error: 'Invalid `attributes` param: must be a JSON object' },
+          { status: 400 }
+        );
+      }
+
+      const equalityKeys: string[] = [];
+      const rangeKeys: Array<{ key: string; min?: number; max?: number }> = [];
+
+      for (const [key, value] of Object.entries(attrFilter)) {
+        if (value !== null && typeof value === 'object') {
+          const range = value as { min?: unknown; max?: unknown };
+          const min = typeof range.min === 'number' ? range.min : undefined;
+          const max = typeof range.max === 'number' ? range.max : undefined;
+          if (min === undefined && max === undefined) {
+            return NextResponse.json(
+              { error: `Invalid attribute range for key "${key}": min/max must be numbers` },
+              { status: 400 }
+            );
+          }
+          rangeKeys.push({ key, min, max });
+        } else {
+          equalityKeys.push(key);
+        }
+      }
+
+      // If there are attribute filters, fetch matching listing IDs first,
+      // then intersect with the Prisma where via id IN (...).
+      if (equalityKeys.length > 0 || rangeKeys.length > 0) {
+        const conditions: Prisma.Sql[] = [];
+        const params: unknown[] = [];
+
+        // Equality conditions: attributes @> jsonb_build_object('key', 'value')
+        for (const key of equalityKeys) {
+          const value = attrFilter[key];
+          conditions.push(
+            Prisma.sql`"attributes" @> jsonb_build_object(${key}::text, ${value}::jsonb)`
+          );
+        }
+
+        // Range conditions: extract numeric value and compare
+        for (const { key, min, max } of rangeKeys) {
+          const numericExpr = Prisma.sql`NULLIF(regexp_replace("attributes"->>${key}, '[^0-9.\-]', '', 'g'), '')::numeric`;
+          if (min !== undefined && max !== undefined) {
+            conditions.push(
+              Prisma.sql`${numericExpr} BETWEEN ${min} AND ${max}`
+            );
+          } else if (min !== undefined) {
+            conditions.push(Prisma.sql`${numericExpr} >= ${min}`);
+          } else if (max !== undefined) {
+            conditions.push(Prisma.sql`${numericExpr} <= ${max}`);
+          }
+        }
+
+        const whereClause = Prisma.join(conditions, ' AND ');
+        const matchingIds = await prisma.$queryRaw<Array<{ id: string }>>(
+          Prisma.sql`SELECT id FROM "Listing" WHERE ${whereClause}`
+        );
+
+        if (matchingIds.length === 0) {
+          // No listings match the attribute filters; return empty result early.
+          return NextResponse.json({
+            listings: [],
+            pagination: { page, limit, total: 0, totalPages: 0 },
+          });
+        }
+
+        where.id = { in: matchingIds.map(m => m.id) };
+      }
+    }
 
     if (query) {
       where.OR = [
@@ -79,7 +177,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { title, price, categoryId, description, images, authorId } = body;
+    const { title, price, categoryId, description, images, authorId, city, attributes } = body;
 
     if (!title || !price || !categoryId || !description || !authorId) {
       return NextResponse.json(
@@ -106,6 +204,8 @@ export async function POST(request: NextRequest) {
         description,
         authorId,
         images: images || [],
+        city: city || null,
+        attributes: attributes || null,
       },
       include: {
         category: true,
