@@ -26,40 +26,30 @@ Status = ✅ shipped on disk (verified via file inspection + git log through `56
 | Jest test suite added (taxonomy API x2, listing CRUD x2, CategoryCard) — Prisma mocked | 2026-08-25_02:02 (testing-reality-checker) | agency/testing | `__tests__/api-categories-tree.test.ts`, `__tests__/api-categories-id.test.ts`, `__tests__/api-listings.test.ts`, `__tests__/api-listings-id.test.ts`, `__tests__/category-card.test.tsx`, `__tests__/mocks/prisma.ts` |
 | `continuous_build.sh` hardened; `.gitignore` for local dev scripts | 2026-08-24 | agency/CI | `continuous_build.sh`, `.gitignore` |
 
-## Remaining items — prioritized (P0–P2)
+## Remaining items — re-ranked by user impact vs effort
 
-Legend: ✅ done · ⏳ in progress · ◻️ not started — all against actual on-disk state.
+Re-ranked 2026-08-25 against Latvian-market fit and SS.lv gap analysis: SS.lv's moat is instant full-text search, fast ad posting, and trustworthy presentation — so user-facing marketplace gaps outrank internal ops work of equal size. Impact = value to LV/RU/EN buyers & sellers; Effort = engineering cost to ship. Legend: ✅ done · ⏳ in progress · ◻️ not started — all against actual on-disk state.
 
-### P0 — Deployment readiness (see DEPLOYMENT_READINESS.md, status: NOT ready)
+| Rank | # | Item | Impact | Effort | Status | Agent | Deliverable file(s) | Notes / gap |
+|---|---|---|---|---|---|---|---|---|
+| 1 | 8 | Full end-to-end text search (query param parsing, debounce, result scoring) | High | Medium | ⏳ | frontend-fullstack | `app/listings/page.tsx`, `components/filters.tsx` | category-filter wiring done; text-search param handling partial. Search is the #1 SS.lv behavior; trilingual query handling is the biggest buyer-side gap |
+| 2 | 7 | Listing creation flow completed: image upload handling beyond `handleImageUpload` stub, schema validation, draft→publish state machine | High | Medium-High | ⏳ | frontend-fullstack | `app/new-listing/page.tsx`, API routes | upload handler exists as stub; validation/draft state not implemented. Photo-led ads are how SS.lv sellers operate; posting friction directly suppresses supply |
+| 3 | 6 | Auth flows beyond page-level fixes: provider config, session persistence, register/login | High | Medium | ◻️ | frontend-fullstack | `app/auth.tsx`, `lib/`, `prisma/schema.prisma` | no session provider / persistence present on disk. Hard prerequisite for both #2 (author attachment) and any future saved-searches/messaging features |
+| 4 | 10 | UI pass using installed design skills (categories / listings / new-listing pages) | Medium-High | Low-Medium | ◻️ | frontend-fullstack / soft-design | `app/**/*`, `app/globals.css` | DESIGN_AUDIT found `globals.css` lacks shadcn token layer → card/muted vars undefined. Trust-driven market: polished UI is cheap differentiation vs aging SS.lv |
+| 5 | 1 | Add Postgres `db:` service to `docker-compose.yml` (image: postgres:16-alpine, healthcheck, volume, shared network) or document external DB | Medium | Low | ◻️ | devops-automator | `docker-compose.yml` | compose still `network_mode: host` + hardcoded `DATABASE_URL`; no `db:` service. Small change that unblocks every other deployment item |
+| 6 | 2 | Externalize DB credentials → `${DATABASE_URL}` from secrets/env file; confirm `.env` in `.gitignore` | Medium | Low | ◻️ | devops-automator | `docker-compose.yml`, `.gitignore` | credentials still embedded in compose. Trivial effort, removes launch blocker + security exposure |
+| 7 | 3 | Run `prisma migrate deploy` (+ guarded seed) in Docker entrypoint | Medium | Low-Medium | ◻️ | devops-automator | `Dockerfile`, entrypoint script | Dockerfile only runs `prisma generate` + `npm start`; empty/unmigrated DB on first start. Required for a working first boot |
+| 8 | 4 | Multi-stage Dockerfile (`npm ci --omit=dev`, Next `output: 'standalone'`, non-root user, `.dockerignore`) | Low-Medium | Medium | ◻️ | devops-automator | `Dockerfile` | currently single-stage, dev-flavored (`npm install`), runs as root; `.dockerignore` exists but unverified. Ops hardening, no direct user impact |
+| 9 | 5 | ltree extension enablement in DB image / init script | Medium | Low | ⏳ | devops-automator | `docker-compose.yml`, migration SQL | schema uses `ltree`; runtime extension creation not yet wired for fresh DB boot. Silent failure risk on category tree — pairs with #1 |
+| 10 | 12 | ltree migration hygiene review per DEPLOYMENT_READINESS.md recommendations | Low | Low-Medium | ⏳ | agency/backend | `prisma/migrations/*`, `prisma/seed.ts` | seeded via upserts; migration init/cleanup script not yet added. Internal hygiene, no visible user effect |
+| 11 | 9 | Expand Jest coverage to listing creation mutations, image-upload path, auth session persistence | Low-Medium | Medium | ◻️ | testing-reality-checker | `__tests__/*` | base suite added; mutation + upload + auth coverage still missing. Protects high-impact flows (#2, #6) indirectly |
+| 12 | 11 | CI pipeline: typecheck + lint + build + tests on PRs | Low | Low-Medium | ◻️ | devops-automator / agency/CI | `.github/workflows/*` | no `.github/workflows` present. Developer-facing only; existing `continuous_build.sh` loop already provides a partial gate |
 
-| # | Item | Status | Agent | Deliverable file(s) | Notes / gap |
-|---|---|---|---|---|---|
-| 1 | Add Postgres `db:` service to `docker-compose.yml` (image: postgres:16-alpine, healthcheck, volume, shared network) or document external DB | ◻️ | devops-automator | `docker-compose.yml` | compose still `network_mode: host` + hardcoded `DATABASE_URL`; no `db:` service |
-| 2 | Externalize DB credentials → `${DATABASE_URL}` from secrets/env file; confirm `.env` in `.gitignore` | ◻️ | devops-automator | `docker-compose.yml`, `.gitignore` | credentials still embedded in compose |
-| 3 | Run `prisma migrate deploy` (+ guarded seed) in Docker entrypoint | ◻️ | devops-automator | `Dockerfile`, entrypoint script | Dockerfile only runs `prisma generate` + `npm start`; empty/unmigrated DB on first start |
-| 4 | Multi-stage Dockerfile (`npm ci --omit=dev`, Next `output: 'standalone'`, non-root user, `.dockerignore`) | ◻️ | devops-automator | `Dockerfile` | currently single-stage, dev-flavored (`npm install`), runs as root; `.dockerignore` exists but unverified |
-| 5 | ltree extension enablement in DB image / init script | ⏳ | devops-automator | `docker-compose.yml`, migration SQL | schema uses `ltree`; runtime extension creation not yet wired for fresh DB boot |
-
-### P1 — Core marketplace functionality
-
-| # | Item | Status | Agent | Deliverable file(s) | Notes / gap |
-|---|---|---|---|---|---|
-| 6 | Auth flows beyond page-level fixes: provider config, session persistence, register/login | ◻️ | frontend-fullstack | `app/auth.tsx`, `lib/`, `prisma/schema.prisma` | no session provider / persistence present on disk |
-| 7 | Listing creation flow completed: image upload handling beyond `handleImageUpload` stub, schema validation, draft→publish state machine | ⏳ | frontend-fullstack | `app/new-listing/page.tsx`, API routes | upload handler exists as stub; validation/draft state not implemented |
-| 8 | Full end-to-end text search (query param parsing, debounce, result scoring) | ⏳ | frontend-fullstack | `app/listings/page.tsx`, `components/filters.tsx` | category-filter wiring done; text-search param handling partial |
-| 9 | Expand Jest coverage to listing creation mutations, image-upload path, auth session persistence | ◻️ | testing-reality-checker | `__tests__/*` | base suite added; mutation + upload + auth coverage still missing |
-
-### P2 — Polish & ops
-
-| # | Item | Status | Agent | Deliverable file(s) | Notes / gap |
-|---|---|---|---|---|---|
-| 10 | UI pass using installed design skills (categories / listings / new-listing pages) | ◻️ | frontend-fullstack / soft-design | `app/**/*`, `app/globals.css` | DESIGN_AUDIT found `globals.css` lacks shadcn token layer → card/muted vars undefined |
-| 11 | CI pipeline: typecheck + lint + build + tests on PRs | ◻️ | devops-automator / agency/CI | `.github/workflows/*` | no `.github/workflows` present |
-| 12 | ltree migration hygiene review per DEPLOYMENT_READINESS.md recommendations | ⏳ | agency/backend | `prisma/migrations/*`, `prisma/seed.ts` | seeded via upserts; migration init/cleanup script not yet added |
+Ranking rationale (SS.lv gap analysis): ranks 1–4 are all user-facing marketplace gaps where SellBuy.lv trails SS.lv today (search depth, posting speed, accounts, visual trust). Ranks 5–9 are deployment-readiness items grouped together because they are small-effort enablers with shared context (one Docker/compose session covers most). Ranks 10–12 are internal quality work deferred because they have near-zero immediate user impact in the Latvian market.
 
 ## Next cycle focus
 
-- **Primary:** Ship P0 deployment block — add `db:` Postgres service with healthcheck/volume + `initdb` ltree enablement, switch compose to `${DATABASE_URL}`, and add an entrypoint that runs `prisma migrate deploy` (guarded seed) before `npm start`. Goal: turn `DEPLOYMENT_READINESS.md` status from `NOT ready` to `ready`.
-- **Secondary:** Implement auth provider + session persistence (P1.6) so listing creation can attach an `author`, and finish the listing creation flow: real image upload + draft→publish (P1.7).
-- **Sustaining:** Expand Jest suite toward P1.9 (mutations/uploads/auth) and stand up a CI workflow (P2.11) running the existing build+test loop on PRs. The `continuous_build.sh` + `CONTINUOUS_BUILD.log` loop can be wired into CI as the canonical "green build" gate.
-- **Nice-to-have:** Apply the DESIGN_AUDIT token-layer fix to `globals.css` (P2.10) so shadcn primitives render with the intended slate-900 glass aesthetic before a public-facing UI review.
+- **Primary:** Ship the top user-facing gap — finish end-to-end text search (P1.8, now rank 1): query param parsing, debounce, and result scoring that behaves sensibly across LV/RU/EN queries. This is the single biggest behavioral gap vs SS.lv for buyers.
+- **Secondary:** Complete the listing creation flow (P1.7, rank 2): real image upload, schema validation, draft→publish — plus auth provider + session persistence (P1.6, rank 3), since listing creation needs an attached author. Together these close the seller-side gap vs SS.lv.
+- **Sustaining:** In parallel, clear the low-effort deployment blockers as one batch (P0.1 db: service, P0.2 `${DATABASE_URL}` externalization, P0.3 migrate-deploy entrypoint, P0.5 ltree enablement — ranks 5/6/7/9) to move `DEPLOYMENT_READINESS.md` from `NOT ready` toward `ready`. Apply the DESIGN_AUDIT token-layer fix to `globals.css` (P2.10, rank 4) in the same cycle if frontend capacity allows.
+- **Deferred:** Multi-stage Dockerfile hardening (P0.4), ltree migration hygiene (P2.12), Jest mutation/upload/auth coverage expansion (P1.9), and CI workflow (P2.11) drop to the back of the queue — valuable, but no direct user-visible impact this cycle.

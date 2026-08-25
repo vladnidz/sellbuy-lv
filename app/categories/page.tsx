@@ -8,11 +8,26 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { CategoryCard } from "./CategoryCard";
+import { buildTrilingualMetadata } from "@/app/lib/seo";
+import { BRAND } from "@/app/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Kategorijas | SellBuy.lv",
-  description: "Pārlūkojiet visas kategorijas SellBuy.lv. Transports, nekustamie īpašumi, elektronika, celtniecība, darbs, māja, apģērbi, bērniem un daudz kas cits.",
-};
+export const metadata: Metadata = buildTrilingualMetadata("/categories", {
+  lv: {
+    title: "Kategorijas | SellBuy.lv",
+    description:
+      "Pārlūkojiet visas kategorijas SellBuy.lv. Transports, nekustamie īpašumi, elektronika, celtniecība, darbs, māja, apģērbi, bērniem un daudz kas cits.",
+  },
+  ru: {
+    title: `Категории | ${BRAND}`,
+    description:
+      "Просмотр всех категорий SellBuy.lv. Транспорт, недвижимость, электроника, строительство, работа, дом, одежда, дети и многое другое.",
+  },
+  en: {
+    title: `Categories | ${BRAND}`,
+    description:
+      "Browse all categories on SellBuy.lv. Vehicles, real estate, electronics, construction, jobs, home & garden, clothing, kids and more.",
+  },
+});
 
 export interface CategoryWithCounts {
   id: string;
