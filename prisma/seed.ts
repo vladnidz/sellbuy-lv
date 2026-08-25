@@ -202,10 +202,19 @@ async function insertNode(
   }
 }
 
+async function resetTables(): Promise<void> {
+  // Destructive reset is opt-in via SEED_RESET=true so production/repeated
+  // runs are idempotent-safe by default. The statement is a constant (no
+  // interpolation) so we use the tagged $executeRaw form — never $executeRawUnsafe.
+  if (process.env.SEED_RESET !== 'true') {
+    console.log('[seed] SEED_RESET != true; skipping TRUNCATE (idempotent upserts only).');
+    return;
+  }
+  await prisma.$executeRaw`TRUNCATE TABLE "Listing", "Category" RESTART IDENTITY CASCADE`;
+}
+
 async function main() {
-  await prisma.$executeRawUnsafe(
-    'TRUNCATE TABLE "Listing", "Category" RESTART IDENTITY CASCADE'
-  );
+  await resetTables();
 
   for (const node of tree) {
     await insertNode(node, null, null);

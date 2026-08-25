@@ -1,8 +1,53 @@
+# SellBuy.lv v2 — Docker Compose
+#
+# Pi host-network compatibility note:
+# The previous setup used `network_mode: "host"` on the app service to reach a
+# Postgres running directly on the Pi at localhost:5432. If you still run an
+# external/host Postgres, set DATABASE_URL in .env to point at the host
+# (e.g. postgresql://user:pass@172.17.0.1:5432/sellbuy or the Pi LAN IP) and
+# re-add `network_mode: "host"` + remove `ports:` on the sellbuy service.
+#
 services:
+  db:
+    image: postgres:16-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: ${POSTGRES_DB:-sellbuy}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-sellbuy}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - sellbuy
+
   sellbuy:
     build: .
-    network_mode: "host"
-    environment:
-      - DATABASE_URL=postgresql://postgres:postgres@localhost:5432/sellbuy
-      - NODE_ENV=production
     restart: always
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+      # Must be provided via .env; inside the compose network use the db hostname.
+      - DATABASE_URL=${DATABASE_URL:?set DATABASE_URL in .env, e.g. postgresql://postgres:...@db:5432/sellbuy?schema=public}
+      # Set RUN_MIGRATIONS=true (default) to run `prisma migrate deploy` on start,
+      # RUN_SEED=true to also seed categories on start.
+      - RUN_MIGRATIONS=${RUN_MIGRATIONS:-true}
+      - RUN_SEED=${RUN_SEED:-false}
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    networks:
+      - sellbuy
+
+volumes:
+  pgdata:
+
+networks:
+  sellbuy:
