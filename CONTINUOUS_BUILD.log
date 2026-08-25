@@ -2280,3 +2280,152 @@ Traceback (most recent call last):
   File "/usr/local/lib/hermes-agent/cli.py", line 19823, in _signal_handler_q
     raise KeyboardInterrupt()
 KeyboardInterrupt
+[main 24619ba] feat(agency): parallel crew cycle 2026-08-25_04:11
+ 18 files changed, 1505 insertions(+), 35 deletions(-)
+ create mode 100644 FEATURE_BACKLOG.md
+ create mode 100644 SEO_STRATEGY.md
+ create mode 100644 STRATEGY_NOTES.md
+ create mode 100644 UI_CONSISTENCY_AUDIT.md
+ create mode 100644 __tests__/api-categories-id.test.ts
+ create mode 100644 __tests__/api-categories.test.ts
+ create mode 100644 __tests__/api-listings-id.test.ts
+ create mode 100644 docker-entrypoint.js
+error: cannot pull with rebase: You have unstaged changes.
+error: Please commit or stash them.
+To https://github.com/vladnidz/sellbuy-lv.git
+   56a0e27..24619ba  main -> main
+=== Tue 25 Aug 04:11:44 +03 2026 Parallel crew cycle complete ===
+=== Tue 25 Aug 04:45:15 +03 2026 Starting agency crew cycle (parallel) ===
+From https://github.com/vladnidz/sellbuy-lv
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+
+> sellbuy@0.1.0 build
+> prisma generate && next build
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+
+✔ Generated Prisma Client (v7.9.1) to ./node_modules/@prisma/client in 1.25s
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+▲ Next.js 16.3.1 (Turbopack)
+- Environments: .env
+⚠ Warning: Next.js ignored package-lock.json in /home/shadow3/projects because it is outside the current Git repository (/home/shadow3/projects/sellbuy-v2).
+ To use this directory, set `turbopack.root` in your Next.js config.
+
+✓ Running next.config.ts took 271ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 11.9s
+  Running TypeScript ...
+app/api/categories/route.ts(205,29): error TS2353: Object literal may only specify known properties, and 'path' does not exist in type 'CategorySelect<DefaultArgs>'.
+app/api/categories/route.ts(215,24): error TS2339: Property 'path' does not exist on type '{ name: string; id: string; attributes: JsonValue; nameLv: string | null; nameRu: string | null; nameEn: string | null; parentId: string | null; }'.
+app/api/categories/route.ts(228,46): error TS2339: Property 'create' does not exist on type 'CategoryDelegate<DefaultArgs, PrismaClientOptions>'.
+Failed to type check.
+
+=== BUILD FAILED — dispatching reality-checker ===
+Warning: Unknown toolsets: agency_agents
+Query: Use agency-agents-router: agency_agents_load 'testing-reality-checker', 
+then act as that specialist. TASK: Build failed this cycle. Read tail of 
+CONTINUOUS_BUILD.log, diagnose root cause, apply minimal fix directly, commit. 
+Project dir: /home/shadow3/projects/sellbuy-v2
+Initializing agent...
+────────────────────────────────────────
+
+[33m⚠ Deprecated .env settings detected:[0m
+  [33m⚠[0m TERMINAL_CWD=/home/shadow3 found in .env — this is deprecated.
+  [2mMove to config.yaml instead:  terminal:\n    cwd: /your/project/path[0m
+  [2mThen remove the old entries from ~/.hermes/.env[0m
+
+  ┊ ⚡ preparing tool_call…
+  ┊ ⚡ agency_ag   0.2s [agent not found]
+⚠ Auxiliary title generation failed: Request timed out.
+  ┊ ⚡ preparing tool_call…
+  ┊ ⚡ preparing tool_call…
+  ┊ ⚡ agency_ag testing reality checker  0.5s
+  ┊ ⚡ preparing tool_call…
+  ┊ ⚡ agency_ag   0.0s
+  ┊ 💻 preparing terminal…
+  ┊ 💻 $         tail -100 /home/shadow3/projects/sellbuy-v2/CONTINUOUS_BUILD.log  0.4s
+  ┊ 💻 preparing terminal…
+  ┊ 💻 $         npm run build  44.4s
+  ┊ 🐍 preparing execute_code…
+  ┊ 🐍 exec      from hermes_tools import read_file  0.6s
+  ┊ 🐍 preparing execute_code…
+  ┊ 🐍 exec      from hermes_tools import read_file  0.5s
+
+╭─ ⚕ Hermes ───────────────────────────────────────────────────────────────────╮
+    *   prisma/schema.prisma shows Category model has a path field of type Unsupported("ltree").
+    *   app/api/categories/route.ts tries to use path in prisma.category.findUnique({ select: { id: true, path: true } }).
+    *   Diagnosis: Prisma's generated client does not fully support Unsupported types in select clauses in the same way as standard types. That's why it complains.
+    *   The "create" error: error TS2339: Property 'create' does not exist on type 'CategoryDelegate<DefaultArgs, PrismaClientOptions>'. This is strange because prisma.category.create should exist.
+    *   Wait, looking at the route.ts code snippet:
+        const category = await prisma.category.create({ ...
+    *   Actually, the error might be a consequence of the TypeScript error above it (sometimes TS gets confused when types fail to resolve).
+    *   Hypothesis: Because path is Unsupported, prisma.category.findUnique type signature for select fails, making the whole category delegate's type inferred incorrectly or broken, thus create appears missing.
+
+    *   Fix: If path is Unsupported("ltree"), I shouldn't be querying it via select like that. I might need to cast or just not select it and rely on the database logic, but the code needs the path.
+    *   Alternatively, maybe I need to update the prisma.config.ts or just fix how path is handled.
+    *   Wait, the user wants a minimal fix. If I can't select it, I might have to fetch the whole object or just id, then somehow get the path. But findUnique should be able to return it if it's in the schema.
+    *   Wait, is prisma generate actually producing the ltree support correctly? The schema says previewFeatures = ["postgresqlExtensions"] and extensions = [ltree()]. This is correct for Prisma to support ltree.
+
+    *   Wait! Look at the error again: Object literal may only specify known properties, and 'path' does not exist in type 'CategorySelect<DefaultArgs>'.
+    *   This suggests the generated CategorySelect does not know about path because it's Unsupported.
+
+    *   Workaround: To get the path without select, I might just do a raw query, or maybe I don't need to select it if I can just assume the path? No, the code needs parent.path.
+
+    *   Reality Checker Analysis: This is a classic "the generated client doesn't know about custom DB types" problem.
+
+    *   Action:
+        1. Remove path: true from the select clause.
+        2. If I need the path, I will have to fetch the whole object await prisma.category.findUnique({ where: { id: ... } }) without select for the path field, but that will select everything.
+        3. Actually, since it's Unsupported, maybe it can't be selected.
+
+    *   Wait, the error error TS2339: Property 'create' does not exist on type 'CategoryDelegate<DefaultArgs, PrismaClientOptions>' might also be a problem. If the generated client is broken, I should re-run prisma generate. The terminal showed it already ran.
+
+    *   Let's try a minimal fix:
+        Remove path: true from the select, and see if I can get the path from the object anyway, or if I have to fetch the object without select.
+
+    *   Wait, if path is Unsupported, parent.path will be any or similar in TS.
+
+    *   Let's check route.ts line 205 again: select: { id: true, path: true },. If I just remove path: true, will it work?
+
+    *   Self-Correction: As TestingRealityChecker, I should verify if I can even access parent.path if it's Unsupported. Yes, it should just be available in the object if I fetch it.
+
+    *   Let's try removing path: true and fetching the whole object (or at least id and parentId). Wait, if I don't select, it fetches everything. That is not a minimal fix if performance matters, but it is a minimal code change to fix the type error.
+
+    *   Actually, let me check the error Property 'path' does not exist on type '{ name: string; ... }' in line 215. This is definitely because the select didn't include it (or couldn't).
+
+    *   Wait! If I fetch the object without a select clause, it will have all fields.
+
+    *   Final Plan:
+        1. Remove the select clause from prisma.category.findUnique.
+⚡ Interrupted during API call.
+Traceback (most recent call last):
+  File "/usr/local/lib/hermes-agent/venv/bin/hermes", line 10, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/hermes-agent/hermes_cli/main.py", line 11742, in main
+    if _try_fast_chat_launch():
+       ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/hermes-agent/hermes_cli/main.py", line 11353, in _try_fast_chat_launch
+    cmd_chat(args)
+  File "/usr/local/lib/hermes-agent/hermes_cli/main.py", line 2886, in cmd_chat
+    cli_main(**kwargs)
+  File "/usr/local/lib/hermes-agent/cli.py", line 20056, in main
+    cli.chat(query, images=single_query_images or None)
+  File "/usr/local/lib/hermes-agent/cli.py", line 15530, in chat
+    interrupt_msg = self._interrupt_queue.get(timeout=0.1)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/share/uv/python/cpython-3.11.16-linux-aarch64-gnu/lib/python3.11/queue.py", line 180, in get
+    self.not_empty.wait(remaining)
+  File "/usr/local/share/uv/python/cpython-3.11.16-linux-aarch64-gnu/lib/python3.11/threading.py", line 331, in wait
+    gotit = waiter.acquire(True, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/hermes-agent/cli.py", line 19823, in _signal_handler_q
+    raise KeyboardInterrupt()
+KeyboardInterrupt

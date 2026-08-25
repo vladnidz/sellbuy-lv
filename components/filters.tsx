@@ -1,131 +1,64 @@
-"use client";
+// Shared constants + URL builders for the /listings faceted filtering system.
 
-import { useSearchParams } from 'next/navigation';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-
-interface FilterProps {
-  categories: Array<{ id: string; name: string }>;
+export interface FlatCategory {
+  id: string;
+  name: string;
 }
 
-const SORT_OPTIONS = [
+export const SORT_OPTIONS = [
   { value: 'newest', label: 'Jaunākie' },
   { value: 'oldest', label: 'Vecākie' },
-  { value: 'price_asc', label: 'Cena: no zēmākās' },
+  { value: 'price_asc', label: 'Cena: no zemākās' },
   { value: 'price_desc', label: 'Cena: no augstākās' },
-];
+] as const;
 
-const PRICE_RANGES = [
-  { value: '', label: 'Jebkura cena' },
-  { value: '0-50', label: '0 - 50 EUR' },
-  { value: '50-100', label: '50 - 100 EUR' },
-  { value: '100-500', label: '100 - 500 EUR' },
-  { value: '500-1000', label: '500 - 1000 EUR' },
-  { value: '1000-', label: '1000+ EUR' },
-];
+export type SortValue = (typeof SORT_OPTIONS)[number]['value'];
 
-function buildUrl(params: Record<string, string | number | undefined>) {
-  const searchParams = new URLSearchParams();
-  Object.entries(params).forEach(([key, value]) => {
-    if (value !== undefined && value !== '' && value !== 'newest') {
-      searchParams.set(key, String(value));
-    }
-  });
-  return `/listings?${searchParams.toString()}`;
+export const PRICE_RANGES = [
+  { value: '', label: 'Jebkura cena', min: undefined, max: undefined },
+  { value: '0-50', label: '0 – 50 €', min: 0, max: 50 },
+  { value: '50-100', label: '50 – 100 €', min: 50, max: 100 },
+  { value: '100-500', label: '100 – 500 €', min: 100, max: 500 },
+  { value: '500-1000', label: '500 – 1 000 €', min: 500, max: 1000 },
+  { value: '1000-', label: '1 000 €+', min: 1000, max: undefined },
+] as const;
+
+/** Canonical query params understood by /listings. */
+export interface ListingsQuery {
+  q?: string;
+  category?: string;
+  minPrice?: string;
+  maxPrice?: string;
+  sort?: string;
+  page?: number | string;
 }
 
-export function Filters({ categories }: FilterProps) {
-  const searchParams = useSearchParams();
-  const currentParams: Record<string, string | undefined> = Object.fromEntries(searchParams.entries());
+/**
+ * Build a /listings URL from a partial query. Empty/default values are
+ * omitted so URLs stay clean and shareable.
+ */
+export function buildListingsUrl(query: ListingsQuery): string {
+  const params = new URLSearchParams();
+  if (query.q) params.set('q', query.q);
+  if (query.category) params.set('category', query.category);
+  if (query.minPrice) params.set('minPrice', String(query.minPrice));
+  if (query.maxPrice) params.set('maxPrice', String(query.maxPrice));
+  if (query.sort && query.sort !== 'newest') params.set('sort', query.sort);
+  if (query.page && Number(query.page) > 1) params.set('page', String(query.page));
+  const qs = params.toString();
+  return qs ? `/listings?${qs}` : '/listings';
+}
 
-  const handleCategoryChange = (value: string) => {
-    const newParams: Record<string, string | undefined> = { ...currentParams, category: value || undefined, page: undefined };
-    window.location.href = buildUrl(newParams);
-  };
+/** Derive a canonical price-range key ("min-max") from raw min/max params. */
+export function priceRangeKey(minPrice?: string, maxPrice?: string): string {
+  if (!minPrice && !maxPrice) return '';
+  return `${minPrice ?? ''}-${maxPrice ?? ''}`;
+}
 
-  const handlePriceRangeChange = (range: string) => {
-    const newParams: Record<string, string | undefined> = { ...currentParams, page: undefined };
-    if (!range) {
-      delete newParams.minPrice;
-      delete newParams.maxPrice;
-    } else {
-      const [min, max] = range.split('-');
-      if (min && min !== '0') newParams.minPrice = min;
-      if (max && max !== '-') newParams.maxPrice = max;
-      else if (max === '-') delete newParams.maxPrice;
-    }
-    window.location.href = buildUrl(newParams);
-  };
-
-  const handleSortChange = (value: string) => {
-    const newParams: Record<string, string | undefined> = { ...currentParams, sort: value, page: undefined };
-    window.location.href = buildUrl(newParams);
-  };
-
-  return (
-    <div className="flex flex-col md:flex-row gap-4 mb-8 p-4 bg-slate-900/30 border border-slate-800 rounded-xl">
-      <div className="flex-1">
-        <label htmlFor="category" className="block text-sm font-medium text-slate-300 mb-2">
-          Kategorija
-        </label>
-        <Select
-          value={currentParams.category || ''}
-          onValueChange={handleCategoryChange}
-        >
-          <SelectTrigger className="bg-slate-900 border-slate-700">
-            <SelectValue placeholder="Visas kategorijas" />
-          </SelectTrigger>
-          <SelectContent className="bg-slate-900 border-slate-700">
-            <SelectItem value="">Visas kategorijas</SelectItem>
-            {categories.map((cat) => (
-              <SelectItem key={cat.id} value={cat.id}>
-                {cat.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
-      <div className="flex-1">
-        <label htmlFor="priceRange" className="block text-sm font-medium text-slate-300 mb-2">
-          Cenas diapazons
-        </label>
-        <Select
-          value={currentParams.priceRange || ''}
-          onValueChange={handlePriceRangeChange}
-        >
-          <SelectTrigger className="bg-slate-900 border-slate-700">
-            <SelectValue placeholder="Jebkura cena" />
-          </SelectTrigger>
-          <SelectContent className="bg-slate-900 border-slate-700">
-            {PRICE_RANGES.map((range) => (
-              <SelectItem key={range.value} value={range.value}>
-                {range.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
-      <div className="flex-1">
-        <label htmlFor="sort" className="block text-sm font-medium text-slate-300 mb-2">
-          Kārtot
-        </label>
-        <Select
-          value={currentParams.sort || 'newest'}
-          onValueChange={handleSortChange}
-        >
-          <SelectTrigger className="bg-slate-900 border-slate-700">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent className="bg-slate-900 border-slate-700">
-            {SORT_OPTIONS.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-    </div>
-  );
+export function formatPrice(price: number): string {
+  return new Intl.NumberFormat('lv-LV', {
+    style: 'currency',
+    currency: 'EUR',
+    maximumFractionDigits: price % 1 === 0 ? 0 : 2,
+  }).format(price);
 }

@@ -94,3 +94,71 @@ No arbitrary-value spacing found; standard scale dominates (mb-2/4/6/8, gap-*, p
 | 7 | 🟡 Low | Normalize section rhythm to single step (mb-16 recommended) | all pages |
 
 **Sequencing note:** #1 must land first — #2/#3/#6 all depend on tokens existing; doing them before #1 means re-touching the same lines twice.
+
+---
+
+## Verification Log — 2026-08-25 (Brand Guardian re-check)
+
+Independently re-grepped the current tree; every pre-existing finding below holds against HEAD with no edits since the original write. No code changes were made to the repo by this pass.
+
+### P1 — Token layer
+`app/globals.css` exposes only `--background`/`--foreground`; Tailwind v4 `@theme inline` block carries no color tokens; `font-family` at L25 is still `Arial` (Geist loaded in `layout.tsx` is shadowed). Confirmed:
+```
+app/globals.css:15:@media (prefers-color-scheme: dark) {
+app/globals.css:25:  font-family: Arial, Helvetica, sans-serif;
+```
+`components.json` (`baseColor:"neutral"`, `cssVariables:true`) still mismatch the hand-maintained CSS. ✗ unchanged.
+
+### P2 — Semantic-token consumption
+```
+$ grep -rn "bg-card|bg-primary|text-muted-foreground|bg-accent|border-border" \
+    app/categories app/listings app/about app/new-listing components/filters.tsx
+0
+```
+Zero semantic classes in app code. Raw palette totals (re-counted):
+- `blue-*`: **91** occurrences (was ~90) — e.g. `app/categories/page.tsx:100` gradient `from-white via-blue-100 to-indigo-200`, `bg-blue-600/70`, `border-blue-700` in CategoryCard, etc.
+- `green-*`: 3× `text-green-400` (`app/listings/[id]/page.tsx:144,174`; `app/listings/page.tsx:383`) + 2× status banners (`app/new-listing/page.tsx:315` red, `:322` green).
+- `slate-*` opacities span `-300`…`-950/80` with per-file subsets (e.g. listings index alone uses `-950,-900×10,-800×10,-700×10,-500,-400,-300,-900/50,-800/50`) → no single canonical neutral opacity.
+
+### P3 — Raw controls
+`app/new-listing/page.tsx:280` native `<input type="file">` with `focus:ring-blue-500 focus:border-transparent`; `:297` bare `<button>` (remove chip). Confirmed unchanged vs. `components/ui/input.tsx` (`focus-visible:ring-[3px] ring-ring`) and `components/ui/button.tsx` recipes.
+
+### P4 — Dark mode
+Light-mode media query still present; every route hardcodes dark surfaces (verified gradients `from-slate-950 via-slate-900` etc.). Light-mode users still get light chrome around dark content. ✗
+
+### P5 — Typography
+Hero/section sizes verified fresh:
+| Route | Hero | Section |
+|---|---|---|
+| home | `text-5xl font-extrabold` (L45) | `text-2xl` |
+| about | `text-5xl font-extrabold` (L23) | `text-3xl font-bold` ×5 |
+| categories | `text-4xl sm:text-5xl font-extrabold` (L100) — responsive jump | `text-2xl` |
+| listing detail | `text-3xl lg:text-4xl font-extrabold` (L115) — smaller hero | `text-xl` |
+| new-listing | — | `text-2xl`/`text-3xl` mixed |
+
+New detail: 4× `text-6xl` used for decorative emoji/illustrations (`📂`/`🔍` at categories & listings index, placeholder icon at detail & listings index) — consistent visually but untokenized, so any future ramp change requires a sweep. Weight drift confirmed: `font-extrabold` (home/about/categories/new-listing) vs `font-bold` (listings `[id]:119`, about) co-existing on near-equal sizes. Arial confirmed at L25 overrides Geist. ✗
+
+### P6 — Glass treatment
+`backdrop-blur-*` appears on only **6** elements (app/listings/page.tsx, app/new-listing/page.tsx, app/categories/CategoryCard.tsx, plus page.tsx & categories/page.tsx sticky navs) — listing detail (`app/listings/[id]/page.tsx`) and `app/about/page.tsx` use flat `bg-slate-900/50` with no blur.
+```
+$ grep -rcn "border-white/10|ring-white/10" app/... components/filters.tsx
+# all 0
+```
+**Key deviation:** the canonical `ring-1 ring-white/10` glass-border recipe is **never used** — every border is a `border-slate-*` raw value instead, which is why surfaces don't visually cohere across routes. Verified 6 distinct surface recipes: `bg-slate-900` (solid), `/50`, `/40`, `/30`, `bg-black/70`, `bg-slate-950/80`. Border recipes drift between `slate-700`, `-800`, `-800/50`, `-700/50`, `-950` even within `app/listings/page.tsx`. ✗
+
+### P7 — Spacing
+No arbitrary spacing (no `px-[…]`, `mt-[…]` hacks). Standard `mb-2/4/6/8/12/16/20`, `gap-*`, `px/py` on-scale. Section vertical rhythm confirmed drifting: `mb-16`×3, `mb-12`×1, `mb-20`×3, `mt-20`×3 across hero→grid transitions. ✅ low-priority.
+
+### Mobile-first / breakpoints
+`text-4xl sm:text-5xl` (`categories/page.tsx:100`) and `text-3xl lg:text-4xl` (`[id]/page.tsx:115`) show ad-hoc breakpoint use — categories jumps at `sm` while detail jumps at `lg` for near-identical hero roles. No shared `PageHeading` component; each route reinvents the gradient `bg-clip-text text-transparent` link (5× duplicate recipes) instead of a token-produced `text-primary`. ✗ minor.
+
+### What's Already Compliant (unchanged)
+- ✅ shadcn/ui primitives used throughout (Button, Card, Select, Badge, DropdownMenu).
+- ✅ `cn()` + tailwind-merge; **0** inline `style={{}}` in app/components.
+- ✅ No arbitrary-value spacing/font-size hacks.
+
+---
+
+## Action for frontend-developer (append to existing priority list)
+
+The above is a re-verification, not new scope. **No file changes** were made; counts below can be copy-pasted into the next PR description.

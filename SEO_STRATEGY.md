@@ -266,3 +266,160 @@ Pagination: use `rel` semantics via self-canonical unique URLs + visible numbere
 3. **P1:** `[locale]` routing + hreflang alternates + 301s from legacy URLs.
 4. **P1:** Category description columns + faceted-filter robots rules.
 5. **P2:** BreadcrumbList everywhere, ItemList on categories, facet landing-page experiments, IndexNow automation.
+
+---
+
+## 6. Addendum — 2026-08-25: Category-page trilingual SEO + structured data for listings
+
+Grounded in current codebase state:
+
+- `app/categories/page.tsx` — static `metadata`, renders root + child categories with listing counts from Prisma; no locale segment yet.
+- `app/listings/page.tsx` / `app/listings/[id]/page.tsx` — no `generateMetadata` anywhere.
+- `app/api/categories/tree/route.ts` — returns nested tree with `{ id, path, names: {lv,ru,en}, children }`; single ordered ltree query over GiST index; supports `?root=` subtree param. This is the canonical source for hreflang alternates, breadcrumbs, and sitemaps.
+- `prisma/schema.prisma` — `Category`: `nameLv/nameRu/nameEn` (nullable, fallback `name`), `path` (ltree, unique), `attributes` (JSONB); `Listing`: `title`, `description`, `price Decimal`, `images String[]`, one `categoryId`.
+
+### 6.1 Hreflang & URL architecture for category pages
+
+**URL pattern** (`app/[locale]/kategorijas/[...path]` catch-all mapped from ltree segments):
+
+| Locale | Segment word | Example |
+|---|---|---|
+| LV (default, `x-default`) | `/lv/kategorijas/…` | `/lv/kategorijas/transports/auto-pardosana` |
+| RU | `/ru/kategorii/…` | `/ru/kategorii/transport/prodazha-avto` |
+| EN | `/en/categories/…` | `/en/categories/vehicles/car-sales` |
+
+Slug derivation: per-segment slug map keyed by `(path_label, lang)` seeded initially by transliterating `nameLv/nameRu/nameEn` (ASCII-fold LV diacritics: `ā→a, ē→e, ī→i, ū→u, č→c, ģ→g, ķ→k, ļ→l, ņ→n, š→s, ž→z`). Store slugs as a DB table so renames don't break URLs; resolve incoming `[...path]` → ltree `path` via reverse lookup, then validate with `path @> full_path::ltree` before rendering (404 on mismatch).
+
+Hreflang cluster per category page (Next.js `generateMetadata` → `alternates.languages`):
+
+```
+lv-LV → /lv/kategorijas/transports/auto-pardosana
+ru    → /ru/kategorii/transport/prodazha-avto      (ru-RU not needed; ru targets all)
+en    → /en/categories/vehicles/car-sales          (no en-LV; plain en)
+x-default → LV URL
+```
+
+Rules:
+- All three are self-canonical alternates — never canonicalize across languages.
+- Emit identical cluster in `<html>` head links AND sitemap `<xhtml:link rel="alternate">` entries (both; Google treats either as sufficient but consistency catches errors).
+- Legacy unlocalized URLs (`/categories`, `/listings`) → middleware 301 to `/lv/...`; keep ≥12 months.
+- The `/api/categories/tree` endpoint is internal-only (`robots.txt: Disallow /api/`); UI must consume it server-side, never render API URLs as links.
+- Root category hub gets its own 3-way hreflang cluster (`/lv/kategorijas`, `/ru/kategorii`, `/en/categories`).
+
+### 6.2 Localized keyword targets vs ss.lv
+
+ss.lv dominates generic queries ("auto", "dzīvokļi"). Win on long-tail modifiers where ss.lv's titles are thin (they use raw IDs and boilerplate titles).
+
+Priority modifier patterns per language (attach to every leaf category):
+
+| Modifier class | LV | RU | EN |
+|---|---|---|---|
+| Cheap/budget | lēti, lētākie | дешево, недорого | cheap |
+| Under-price | zem X eur, līdz X eur | до X евро | under X eur |
+| Used/new | lietoti, bez pārbaudes | б/у, новые | used |
+| City | Rīgā, Rīgas rajonā | в Риге | in Riga |
+| Urgency/private | no privātpersonas, steidzami | от частного лица, срочно | private sellers |
+| Deal verbs | pērc un pārdod | купить, продать | buy and sell |
+
+Category keyword examples (leaf-level intent):
+- Auto pārdošana: `lietotas mašīnas Latvijā`, `auto Rīgā zem 5000 eur` / RU `купить авто в Латвии б/у` / EN `used cars Latvia`
+- Dzīvokļi: `dzīvokļi Rīgā pārdod lēti`, `dzīvokļa izīrēšana Rīgā` / RU `купить квартиру в Риге недорого` / EN `apartments for sale Riga`
+- Elektronika: `telefoni lēti`, `izlietoti telefoni Latvija` / RU `телефоны б/у Латвия купить`
+
+Where to inject: title/description templates §1.3, category description block (§4.1), and H2 subheads on facet landing pages. Do NOT keyword-stuff category names themselves — keep nav labels clean; put modifiers in descriptive copy below the grid.
+
+RU audience note: Yandex matters (~30% of RU-search share in LV). IndexNow ping (already planned) + Yandex Webmaster registration are P1, not P2.
+
+### 6.3 Structured data (JSON-LD)
+
+One `<script type="application/ld+json">` per type, injected server-side (RSC — safe, crawlers see it).
+
+**Listing detail — `app/listings/[id]/page.tsx`** (`@graph` combining):
+
+```jsonc
+{
+  "@context": "https://schema.org",
+  "@graph": [{
+    "@type": "Product",
+    "name": "{listing.title}",
+    "description": "{truncated 300ch}",
+    "image": ["{listing.images[]}"],           // absolute URLs
+    "category": "{category.nameEn path}",       // e.g. "Vehicles > Car Sales"
+    "sku": "{listing.id}",
+    "offers": {
+      "@type": "Offer",
+      "url": "https://sellbuy.lv/lv/listings/{id}",
+      "priceCurrency": "EUR",
+      "price": "{listing.price}",
+      "availability": "https://schema.org/InStock",   // map listing status
+      "itemCondition": "https://schema.org/NewCondition" // NewCondition | UsedCondition from attributes JSONB if present
+    }
+  }, {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type":"ListItem","position":1,"name":"Transports","item":"/lv/kategorijas/transports"},
+      {"@type":"ListItem","position":2,"name":"Auto pārdošana","item":"/lv/kategorijas/transports/auto-pardosana"},
+      {"@type":"ListItem","position":3,"name":"{listing.title}","item":"/lv/listings/{id}"}
+    ]
+  }]
+}
+```
+
+Notes:
+- No `AggregateRating`/`review` until real reviews exist — fake or missing required fields trigger manual actions.
+- Don't mark up seller personal info (no `seller` Person with name/email).
+- Localized breadcrumb names from `/api/categories/tree`'s `names.{locale}` — build helper `buildBreadcrumbJsonLd(path, locale)` in `lib/seo/`.
+- For vehicles/real estate later: extend Product with `Vehicle`/`RealEstateListing` subtypes driven off `attributes` JSONB keys — schema allows additional properties.
+
+**Category pages — `app/categories/[...path]/page.tsx`**:
+
+```jsonc
+{
+  "@type": "CollectionPage" + "BreadcrumbList",
+  // mainEntity as ItemList of first N=20 listings:
+  "mainEntity": {
+    "@type": "ItemList",
+    "numberOfItems": "{N}",
+    "itemListElement": [{ "@type":"ListItem","position":i,"url":"/lv/listings/{id}" }]
+  }
+}
+```
+
+Do NOT use `OfferCatalog` on category pages — Google's guidance favors ItemList for browse surfaces, and OfferCatalog requires an offer-per-child which we can't truthfully populate. Reserve `OfferCatalog` only for a future "top deals" widget that genuinely lists concrete Offers.
+
+**Root hub `/[locale]/kategorijas`**: `CollectionPage` + top-level `BreadcrumbList` (single item) only. Keep light.
+
+Validation gate: every JSON-LD template ships with a jest snapshot test (`__tests__/seo/jsonld.test.ts`) asserting required fields present + Rich Results Test passes on staging URLs before enabling in prod.
+
+### 6.4 Programmatic SEO angles — long-tail Latvian
+
+Latvia-specific long-tail that ss.lv underserves (their URLs are opaque `/msg/{id}.html`, zero content pages):
+
+1. **City × category facets** — `/lv/kategorijas/{cat}/riga`, `/daugavpils`, `/liepaja`… Generate when `COUNT(listings WHERE city=X AND categoryId=Y) >= 15`. Unique intro paragraph templated: *"Sludinājumi kategorijā {cat} Rīgā — {N} aktīvi sludinājumi no privātpersonām un uzņēmumiem."* Start indexable; noindex any combo below threshold (thin-content risk).
+2. **Price-band facets** — `zem 1000 eur`, `100–500 eur` per high-volume category (autos, phones). Same ≥15 threshold. These match the highest-intent queries ("auto zem 2000").
+3. **Attribute-driven pages** — `attributes` JSONB already exists: generate `/lv/kategorijas/auto/marka-bmw`, `/dzivokli/istabas-2` from distinct attribute values × counts. This is the biggest surface area — thousands of legit pages vs ss.lv which does this only inside filters (non-indexable).
+4. **LV/RU query-gap pages**: RU-speaking users search transliterated Latvian terms (`arenda Riga`, `kupit avto Latvija`) — capture via RU meta descriptions containing both Cyrillic and common transliterations once, naturally.
+5. **Comparison/guide content** (phase 2): "Kā droši pirkt auto ar brīvroku režīmu Latvijā" style guides linking into categories — builds topical authority classifieds competitors lack entirely.
+
+Guardrails: every programmatic page needs ≥1 unique sentence beyond template + live count; auto-noindex when listing count drops < 10; cap total programmatic URLs at ~3× organic listing count to stay out of crawl-budget trouble.
+
+### 6.5 Prioritized implementation checklist (mapped to actual routes)
+
+| # | Pri | Task | Route/file | Effort |
+|---|---|---|---|---|
+| 1 | P0 | `generateMetadata`: title/desc/canonical/OG from listing data | `app/listings/[id]/page.tsx` | S |
+| 2 | P0 | Product+Breadcrumb JSON-LD `@graph` (§6.3) | `app/listings/[id]/page.tsx`, new `lib/seo/jsonld.ts` | M |
+| 3 | P0 | Dynamic sitemap.ts incl. hreflang alternate entries; robots.txt disallowing `/api/` | `app/sitemap.ts`, `app/robots.ts` | M |
+| 4 | P0 | Slug tables + resolver (ltree ↔ localized slug path); ASCII transliterator | new `lib/seo/slugs.ts`, migration | L |
+| 5 | P1 | `[locale]` segment + middleware 301s legacy→`/lv/…`; `lang` attr dynamic | `middleware.ts`, move `app/*`→`app/[locale]/*` | L |
+| 6 | P1 | `alternates.languages` (hreflang) in every page's `generateMetadata` | all page files | S |
+| 7 | P1 | Category page `generateMetadata` w/ live `{N}` counts + CollectionPage/BreadcrumbList JSON-LD | `app/[locale]/kategorijas/[...path]/page.tsx` | M |
+| 8 | P1 | Per-language category descriptions (§4.1 columns) rendered below grid | `prisma/schema.prisma`, category page | M |
+| 9 | P1 | Yandex Webmaster + IndexNow ping on listing create/delete | `app/api/indexnow/route.ts` | S |
+| 10 | P2 | Facet robots rules (`sort/q/minPrice` noindex) — see §4.2 | `generateMetadata` in category route | S |
+| 11 | P2 | City × category programmatic pages (§6.4.1) w/ ≥15 threshold | new `app/[locale]/kategorijas/[...path]/[city]/page.tsx` | L |
+| 12 | P2 | Attribute-value programmatic pages (§6.4.3) | same pattern | L |
+| 13 | P2 | Redirect table for moved categories (`old_path→new_path` 301s) | new `CategoryRedirect` model | S |
+| 14 | P2 | JSON-LD snapshot tests + Rich Results validation in CI | `__tests__/seo/` | S |
+
+Dependency order: 4 → 5 → (6,7) ; 1–3 independent and shippable immediately.
