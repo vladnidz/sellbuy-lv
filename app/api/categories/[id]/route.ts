@@ -269,11 +269,17 @@ export async function PATCH(
             WHERE path <@ ${current.path}::ltree`;
         }
       });
-    } catch (dbError: any) {
+    } catch (dbError: unknown) {
+      const code = typeof dbError === 'object' && dbError !== null && 'code' in dbError
+        ? String((dbError as { code?: unknown }).code)
+        : undefined;
+      const message = typeof dbError === 'object' && dbError !== null && 'message' in dbError
+        ? String((dbError as { message?: unknown }).message)
+        : '';
       if (
-        dbError.code === 'P2002' ||
-        dbError.code === '23505' ||
-        String(dbError.message ?? '').includes('duplicate key')
+        code === 'P2002' ||
+        code === '23505' ||
+        String(message ?? '').includes('duplicate key')
       ) {
         return NextResponse.json(
           { error: `A category with path "${newPath}" already exists` },

@@ -290,13 +290,19 @@ export async function POST(request: NextRequest) {
         },
         { status: 201 }
       );
-    } catch (dbError: any) {
+    } catch (dbError: unknown) {
+      const code = typeof dbError === 'object' && dbError !== null && 'code' in dbError
+        ? String((dbError as { code?: unknown }).code)
+        : undefined;
+      const message = typeof dbError === 'object' && dbError !== null && 'message' in dbError
+        ? String((dbError as { message?: unknown }).message)
+        : '';
       // Raw SQL raises the Postgres unique-violation code 23505 (typed client
       // would surface P2002) — handle both so duplicates still map to 409.
       if (
-        dbError.code === 'P2002' ||
-        dbError.code === '23505' ||
-        String(dbError.message ?? '').includes('duplicate key')
+        code === 'P2002' ||
+        code === '23505' ||
+        String(message ?? '').includes('duplicate key')
       ) {
         return NextResponse.json(
           { error: `A category with path "${path}" already exists` },
