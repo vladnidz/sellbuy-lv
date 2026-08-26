@@ -23,7 +23,9 @@ FROM node:20-alpine AS runner
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
-ENV HOST=0.0.0.0
+# Next.js standalone server.js reads the hostname from `HOSTNAME` (or
+# defaults to 0.0.0.0). Setting `HOST` here is ignored, so bind explicitly.
+ENV HOSTNAME=0.0.0.0
 ENV PORT=3000
 
 WORKDIR /app

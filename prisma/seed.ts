@@ -4,7 +4,8 @@ import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
 
-console.log('DATABASE_URL:', process.env.DATABASE_URL);
+// Don't log the full connection string (contains credentials); just confirm it was found.
+console.log('DATABASE_URL:', process.env.DATABASE_URL ? '<set>' : '<not set>');
 
 const connectionString = process.env.DATABASE_URL;
 const pool = new Pool({ connectionString });

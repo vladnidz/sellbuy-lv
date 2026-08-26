@@ -22,6 +22,7 @@ import { ArrowLeft, Image as ImageIcon, Loader2, AlertCircle, CheckCircle, Spark
 import { useDemoAuth } from "@/app/lib/auth";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { useAiAutofill } from "@/app/lib/ai-autofill";
 
 interface Category {
   value: string;
@@ -59,6 +60,33 @@ export default function NewListingPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoadingCategories, setIsLoadingCategories] = useState(true);
   const [isFormVisible, setIsFormVisible] = useState(false);
+  const {
+    suggest: suggestAi,
+    status: aiStatus,
+    message: aiMessage,
+  } = useAiAutofill();
+
+  /** Apply AI suggestions (or offline fallback) to the form fields. */
+  const handleAiAutofill = async () => {
+    if (!formData.title.trim()) return;
+    // Only fill fields the user hasn't already filled.
+    const needsDescription = !formData.description.trim();
+    if (!needsDescription) return;
+    const suggestion = await suggestAi({
+      title: formData.title,
+      categoryId: formData.category || undefined,
+    });
+    setFormData((prev) => ({
+      ...prev,
+      ...(suggestion.description && !prev.description.trim()
+        ? { description: suggestion.description }
+        : {}),
+      ...(suggestion.price && !prev.price ? { price: String(suggestion.price) } : {}),
+      ...(suggestion.categoryId && !prev.category
+        ? { category: suggestion.categoryId }
+        : {}),
+    }));
+  };
 
   // Fetch the live category tree and flatten it into flat <Select> options.
   useEffect(() => {
@@ -199,9 +227,35 @@ export default function NewListingPage() {
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6" noValidate>
               <div>
-                <label htmlFor="title" className="block text-sm font-medium text-slate-300 mb-2">
-                  Nosaukums *
-                </label>
+                <div className="flex items-center justify-between mb-2">
+                  <label htmlFor="title" className="block text-sm font-medium text-slate-300">
+                    Nosaukums *
+                  </label>
+                  <button
+                    type="button"
+                    onClick={handleAiAutofill}
+                    disabled={!formData.title.trim() || aiStatus === "loading"}
+                    className="inline-flex items-center gap-1.5 text-xs font-medium text-indigo-300 hover:text-indigo-200 disabled:text-slate-600 disabled:hover:text-slate-600 transition-colors cursor-pointer disabled:cursor-not-allowed"
+                    title="Aizpildīt aprakstu (un cenu/kategoriju, ja tukši) automātiski"
+                  >
+                    {aiStatus === "loading" ? (
+                      <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                    ) : (
+                      <Sparkles className="h-3.5 w-3.5" />
+                    )}
+                    AI aizpilde
+                  </button>
+                </div>
+                {(aiStatus === "success" || aiStatus === "fallback") && (
+                  <p className="mb-2 text-xs text-emerald-400 flex items-center gap-1">
+                    <CheckCircle className="h-3 w-3" /> {aiMessage}
+                  </p>
+                )}
+                {aiStatus === "error" && (
+                  <p className="mb-2 text-xs text-amber-400 flex items-center gap-1">
+                    <AlertCircle className="h-3 w-3" /> {aiMessage}
+                  </p>
+                )}
                 <Input
                   id="title"
                   placeholder="Piemēram: iPhone 15 Pro 256GB"
