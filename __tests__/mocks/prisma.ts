@@ -1,4 +1,3 @@
-console.error('>>> MOCK FILE EXECUTED <<<');
 /**
  * Shared Prisma mock for unit tests.
  * Mapped over '@/app/lib/prisma' via jest.config.mjs moduleNameMapper.
