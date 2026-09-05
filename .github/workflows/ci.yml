@@ -42,7 +42,7 @@ jobs:
         run: npx prisma generate
 
       - name: Check migrations are in sync with schema
-        run: npx prisma migrate diff --exit-code --from-migrations prisma/migrations --to-schema-datamodel prisma/schema.prisma
+        run: npx prisma migrate diff --exit-code --from-migrations prisma/migrations --to-schema prisma/schema.prisma
 
       - name: Lint
         run: npm run lint
