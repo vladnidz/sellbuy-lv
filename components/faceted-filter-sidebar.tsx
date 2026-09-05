@@ -68,7 +68,7 @@ export function FacetedFilterSidebar({ attributes, currentParams, onFilterChange
                          max={1000} 
                          step={10}
                          className="w-full"
-                         onValueChange={(val) => onFilterChange(attr.name, val.join('-'))}
+                         onValueChange={(val) => onFilterChange(attr.name, Array.isArray(val) ? val.join('-') : String(val))}
                        />
                     </div>
                   )}

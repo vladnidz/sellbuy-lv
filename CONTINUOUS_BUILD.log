@@ -19074,3 +19074,1325 @@ Traceback (most recent call last):
   File "/usr/local/lib/hermes-agent/cli.py", line 19823, in _signal_handler_q
     raise KeyboardInterrupt()
 KeyboardInterrupt
+[main c2b7453] feat(agency): crew cycle 2026-09-05_07:22
+ 3 files changed, 279 insertions(+), 1 deletion(-)
+ create mode 100644 components/faceted-filter-sidebar.tsx
+error: cannot pull with rebase: You have unstaged changes.
+error: Please commit or stash them.
+To https://github.com/vladnidz/sellbuy-lv.git
+   fdf229d..c2b7453  main -> main
+=== Sat  5 Sep 07:22:54 +03 2026 Crew cycle complete ===
+
+> sellbuy@0.1.0 build
+> rm -rf .next && prisma generate && next build
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+
+✔ Generated Prisma Client (v7.9.1) to ./node_modules/@prisma/client in 1.16s
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+▲ Next.js 16.3.1 (Turbopack)
+- Environments: .env
+⚠ Warning: Next.js ignored package-lock.json in /home/shadow3/projects because it is outside the current Git repository (/home/shadow3/projects/sellbuy-v2).
+ To use this directory, set `turbopack.root` in your Next.js config.
+
+✓ Running next.config.ts took 435ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 53s
+  Running TypeScript ...
+components/faceted-filter-sidebar.tsx(6,26): error TS2307: Cannot find module '@/components/ui/checkbox' or its corresponding type declarations.
+components/faceted-filter-sidebar.tsx(7,23): error TS2307: Cannot find module '@/components/ui/label' or its corresponding type declarations.
+components/faceted-filter-sidebar.tsx(8,24): error TS2307: Cannot find module '@/components/ui/slider' or its corresponding type declarations.
+components/faceted-filter-sidebar.tsx(58,43): error TS7006: Parameter 'checked' implicitly has an 'any' type.
+components/faceted-filter-sidebar.tsx(71,42): error TS7006: Parameter 'val' implicitly has an 'any' type.
+components/faceted-filter-sidebar.tsx(80,43): error TS7006: Parameter 'checked' implicitly has an 'any' type.
+Failed to type check.
+
+
+> sellbuy@0.1.0 build
+> rm -rf .next && prisma generate && next build
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+
+✔ Generated Prisma Client (v7.10.0) to ./node_modules/@prisma/client in 1.54s
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+▲ Next.js 16.3.1 (Turbopack)
+- Environments: .env
+⚠ Warning: Next.js ignored package-lock.json in /home/shadow3/projects because it is outside the current Git repository (/home/shadow3/projects/sellbuy-v2).
+ To use this directory, set `turbopack.root` in your Next.js config.
+
+✓ Running next.config.ts took 654ms
+
+  Creating an optimized production build ...
+
+> Build error occurred
+Error: Turbopack build failed with 5 errors:
+./app/globals.css
+Error: Error evaluating Node.js code
+Error: Cannot find module '@tailwindcss/postcss'
+Require stack:
+- /home/shadow3/projects/sellbuy-v2/.next/build/chunks/[root-of-the-server]__1kki86f._.js
+- /home/shadow3/projects/sellbuy-v2/.next/build/chunks/[turbopack]_runtime.js
+- /home/shadow3/projects/sellbuy-v2/.next/build/chunks/pool_entry-[turbopack-node]_transforms_postcss_ts_0tp-k2v._.js
+    [at Module._resolveFilename (node:internal/modules/cjs/loader:1212:15)]
+    [at Module._load (node:internal/modules/cjs/loader:1043:27)]
+    [at Module.require (node:internal/modules/cjs/loader:1298:19)]
+    [at require (node:internal/modules/helpers:182:18)]
+    at require (turbopack:///[turbopack-node]/transforms/postcss.ts?config=[project]/postcss.config.mjs:49:25) [/home/shadow3/projects/sellbuy-v2/.next/build/chunks/[root-of-the-server]__1kki86f._.js:86:33]
+    [at <anonymous>]
+    at map (turbopack:///[turbopack-node]/transforms/postcss.ts?config=[project]/postcss.config.mjs:43:33) [/home/shadow3/projects/sellbuy-v2/.next/build/chunks/[root-of-the-server]__1kki86f._.js:81:35]
+    at init (turbopack:///[turbopack-node]/child_process/evaluate.ts:74:20) [/home/shadow3/projects/sellbuy-v2/.next/build/chunks/[root-of-the-server]__05i36w1._.js:59:26]
+    [at process.processTicksAndRejections (node:internal/process/task_queues:95:5)]
+
+Import trace:
+  Client Component Browser:
+    ./app/globals.css [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+
+./components/ui/button.tsx:1:1
+Error: Module not found: Can't resolve '@base-ui/react/button'
+[31m[1m>[0m [90m1 |[0m [36mimport[0m { [33mButton[0m [36mas[0m [33mButtonPrimitive[0m } [36mfrom[0m [32m"@base-ui/react/button"[0m
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m2 |[0m [36mimport[0m { cva, [36mtype[0m [33mVariantProps[0m } [36mfrom[0m [32m"class-variance-authority"[0m
+  [90m3 |[0m
+  [90m4 |[0m [36mimport[0m { cn } [36mfrom[0m [32m"@/lib/utils"[0m
+
+
+
+Import traces:
+  Server Component:
+    ./components/ui/button.tsx
+    ./app/listings/[id]/page.tsx
+
+  Client Component Browser:
+    ./components/ui/button.tsx [Client Component Browser]
+    ./app/new-listing/page.tsx [Client Component Browser]
+    ./app/new-listing/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/ui/button.tsx [Client Component SSR]
+    ./app/new-listing/page.tsx [Client Component SSR]
+    ./app/new-listing/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./components/ui/input.tsx:2:1
+Error: Module not found: Can't resolve '@base-ui/react/input'
+  [90m1 |[0m [36mimport[0m * [36mas[0m [33mReact[0m [36mfrom[0m [32m"react"[0m
+[31m[1m>[0m [90m2 |[0m [36mimport[0m { [33mInput[0m [36mas[0m [33mInputPrimitive[0m } [36mfrom[0m [32m"@base-ui/react/input"[0m
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m3 |[0m
+  [90m4 |[0m [36mimport[0m { cn } [36mfrom[0m [32m"@/lib/utils"[0m
+  [90m5 |[0m
+
+
+
+Import traces:
+  Server Component:
+    ./components/ui/input.tsx
+    ./app/listings/page.tsx
+
+  Client Component Browser:
+    ./components/ui/input.tsx [Client Component Browser]
+    ./app/new-listing/page.tsx [Client Component Browser]
+    ./app/new-listing/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/ui/input.tsx [Client Component SSR]
+    ./app/new-listing/page.tsx [Client Component SSR]
+    ./app/new-listing/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./app/lib/prisma.ts:2:1
+Error: Module not found: Can't resolve '@prisma/adapter-pg'
+  [90m1 |[0m [36mimport[0m { [33mPrismaClient[0m } [36mfrom[0m [32m'@prisma/client'[0m;
+[31m[1m>[0m [90m2 |[0m [36mimport[0m { [33mPrismaPg[0m } [36mfrom[0m [32m'@prisma/adapter-pg'[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m3 |[0m [36mimport[0m { [33mPool[0m } [36mfrom[0m [32m'pg'[0m;
+  [90m4 |[0m
+  [90m5 |[0m [36mconst[0m globalForPrisma = global [36mas[0m unknown [36mas[0m { prisma: [33mPrismaClient[0m };
+
+
+
+Import traces:
+  App Route:
+    ./app/lib/prisma.ts
+    ./app/api/listings/[id]/route.ts
+
+  Server Component:
+    ./app/lib/prisma.ts
+    ./app/listings/[id]/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./app/lib/prisma.ts:3:1
+Error: Module not found: Can't resolve 'pg'
+  [90m1 |[0m [36mimport[0m { [33mPrismaClient[0m } [36mfrom[0m [32m'@prisma/client'[0m;
+  [90m2 |[0m [36mimport[0m { [33mPrismaPg[0m } [36mfrom[0m [32m'@prisma/adapter-pg'[0m;
+[31m[1m>[0m [90m3 |[0m [36mimport[0m { [33mPool[0m } [36mfrom[0m [32m'pg'[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m4 |[0m
+  [90m5 |[0m [36mconst[0m globalForPrisma = global [36mas[0m unknown [36mas[0m { prisma: [33mPrismaClient[0m };
+  [90m6 |[0m
+
+
+
+Import traces:
+  App Route:
+    ./app/lib/prisma.ts
+    ./app/api/listings/[id]/route.ts
+
+  Server Component:
+    ./app/lib/prisma.ts
+    ./app/listings/[id]/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+    at require (turbopack:///[turbopack-node]/transforms/postcss.ts?config=[project]/postcss.config.mjs:49:25) [/home/shadow3/projects/sellbuy-v2/.next/build/chunks/[root-of-the-server]__1kki86f._.js:86:33])
+    at map (turbopack:///[turbopack-node]/transforms/postcss.ts?config=[project]/postcss.config.mjs:43:33) [/home/shadow3/projects/sellbuy-v2/.next/build/chunks/[root-of-the-server]__1kki86f._.js:81:35])
+    at init (turbopack:///[turbopack-node]/child_process/evaluate.ts:74:20) [/home/shadow3/projects/sellbuy-v2/.next/build/chunks/[root-of-the-server]__05i36w1._.js:59:26])
+    at <unknown> (./components/ui/button.tsx:1:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./components/ui/input.tsx:2:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./app/lib/prisma.ts:2:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./app/lib/prisma.ts:3:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+
+> sellbuy@0.1.0 build
+> rm -rf .next && prisma generate && next build
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+┌─────────────────────────────────────────────────────────┐
+│  Update available 7.10.0 -> 8.0.0-rc.13                 │
+│                                                         │
+│  This is a major update - please follow the guide at    │
+│  https://pris.ly/d/major-version-upgrade                │
+│                                                         │
+│  Run the following to update                            │
+│    npm i --save-dev prisma@latest                       │
+│    npm i @prisma/client@latest                          │
+└─────────────────────────────────────────────────────────┘
+
+✔ Generated Prisma Client (v7.10.0) to ./node_modules/@prisma/client in 1.22s
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+▲ Next.js 16.3.1 (Turbopack)
+- Environments: .env
+⚠ Warning: Next.js ignored package-lock.json in /home/shadow3/projects because it is outside the current Git repository (/home/shadow3/projects/sellbuy-v2).
+ To use this directory, set `turbopack.root` in your Next.js config.
+
+✓ Running next.config.ts took 330ms
+
+  Creating an optimized production build ...
+Error: Can't resolve 'tailwindcss' in '/home/shadow3/projects/sellbuy-v2/app'
+    [2m[at finishWithoutResolve (/home/shadow3/projects/sellbuy-v2/node_modules/enhanced-resolve/lib/Resolver.js:952:18)][0m
+    [2m[at /home/shadow3/projects/sellbuy-v2/node_modules/enhanced-resolve/lib/Resolver.js:1048:13][0m
+    [2m[at /home/shadow3/projects/sellbuy-v2/node_modules/enhanced-resolve/lib/Resolver.js:1132:5][0m
+    [2m[at eval (eval at create (/home/shadow3/projects/sellbuy-v2/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at /home/shadow3/projects/sellbuy-v2/node_modules/enhanced-resolve/lib/Resolver.js:1132:5][0m
+    [2m[at eval (eval at create (/home/shadow3/projects/sellbuy-v2/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:27:1)][0m
+    [2m[at /home/shadow3/projects/sellbuy-v2/node_modules/enhanced-resolve/lib/DescriptionFilePlugin.js:94:43][0m
+    [2m[at /home/shadow3/projects/sellbuy-v2/node_modules/enhanced-resolve/lib/Resolver.js:1132:5][0m
+    [2m[at eval (eval at create (/home/shadow3/projects/sellbuy-v2/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at /home/shadow3/projects/sellbuy-v2/node_modules/enhanced-resolve/lib/Resolver.js:1132:5][0m {
+  details: "resolve 'tailwindcss' in '/home/shadow3/projects/sellbuy-v2/app'\n" +
+    '  Parsed request is a module\n' +
+    '  using description file: /home/shadow3/projects/sellbuy-v2/package.json (relative path: ./app)\n' +
+    '    resolve as module\n' +
+    "      /home/shadow3/projects/sellbuy-v2/app/node_modules doesn't exist or is not a directory\n" +
+    '      looking for modules in /home/shadow3/projects/sellbuy-v2/node_modules\n' +
+    '        single file module\n' +
+    '          using description file: /home/shadow3/projects/sellbuy-v2/package.json (relative path: ./node_modules/tailwindcss)\n' +
+    '            no extension\n' +
+    '              /home/shadow3/projects/sellbuy-v2/node_modules/tailwindcss is not a file\n' +
+    '            .css\n' +
+    "              /home/shadow3/projects/sellbuy-v2/node_modules/tailwindcss.css doesn't exist\n" +
+    '        existing directory /home/shadow3/projects/sellbuy-v2/node_modules/tailwindcss\n' +
+    '          using description file: /home/shadow3/projects/sellbuy-v2/node_modules/tailwindcss/package.json (relative path: .)\n' +
+    '            using description file: /home/shadow3/projects/sellbuy-v2/package.json (relative path: ./node_modules/tailwindcss)\n' +
+    '              no extension\n' +
+    '                /home/shadow3/projects/sellbuy-v2/node_modules/tailwindcss is not a file\n' +
+    '              .css\n' +
+    "                /home/shadow3/projects/sellbuy-v2/node_modules/tailwindcss.css doesn't exist\n" +
+    '              as directory\n' +
+    '                existing directory /home/shadow3/projects/sellbuy-v2/node_modules/tailwindcss\n' +
+    '                  using description file: /home/shadow3/projects/sellbuy-v2/node_modules/tailwindcss/package.json (relative path: .)\n' +
+    '                    using path: /home/shadow3/projects/sellbuy-v2/node_modules/tailwindcss/index\n' +
+    '                      using description file: /home/shadow3/projects/sellbuy-v2/node_modules/tailwindcss/package.json (relative path: ./index)\n' +
+    '                        no extension\n' +
+    "                          /home/shadow3/projects/sellbuy-v2/node_modules/tailwindcss/index doesn't exist\n" +
+    '                        .css\n' +
+    "                          /home/shadow3/projects/sellbuy-v2/node_modules/tailwindcss/index.css doesn't exist\n" +
+    '      looking for modules in /home/shadow3/projects/node_modules\n' +
+    '        single file module\n' +
+    '          using description file: /home/shadow3/projects/package.json (relative path: ./node_modules/tailwindcss)\n' +
+    '            no extension\n' +
+    "              /home/shadow3/projects/node_modules/tailwindcss doesn't exist\n" +
+    '            .css\n' +
+    "              /home/shadow3/projects/node_modules/tailwindcss.css doesn't exist\n" +
+    "        /home/shadow3/projects/node_modules/tailwindcss doesn't exist\n" +
+    "      /home/shadow3/node_modules doesn't exist or is not a directory\n" +
+    "      /home/node_modules doesn't exist or is not a directory\n" +
+    "      /node_modules doesn't exist or is not a directory"
+}
+
+> Build error occurred
+Error: Turbopack build failed with 5 errors:
+./app/globals.css
+Error: Error evaluating Node.js code
+CssSyntaxError: tailwindcss: /home/shadow3/projects/sellbuy-v2/app/globals.css:1:1: Can't resolve 'tailwindcss' in '/home/shadow3/projects/sellbuy-v2/app'
+    at Input.error (node_modules/postcss/lib/input.js:135:16) [/home/shadow3/projects/sellbuy-v2/.next/build/chunks/node_modules_20v-8wl._.js:919:22]
+    at error (node_modules/postcss/lib/node.js:166:32) [/home/shadow3/projects/sellbuy-v2/.next/build/chunks/node_modules_20v-8wl._.js:2274:38]
+    [at Object.Once (/home/shadow3/projects/sellbuy-v2/node_modules/@tailwindcss/postcss/dist/index.js:10:7013)]
+    [at process.processTicksAndRejections (node:internal/process/task_queues:95:5)]
+    at async LazyResult.runAsync (node_modules/postcss/lib/lazy-result.js:299:11) [/home/shadow3/projects/sellbuy-v2/.next/build/chunks/node_modules_20v-8wl._.js:1323:21]
+    at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts?config=[project]/postcss.config.mjs:70:34) [/home/shadow3/projects/sellbuy-v2/.next/build/chunks/[root-of-the-server]__1kki86f._.js:98:36]
+    at async run (turbopack:///[turbopack-node]/child_process/evaluate.ts:89:23) [/home/shadow3/projects/sellbuy-v2/.next/build/chunks/[root-of-the-server]__05i36w1._.js:73:31]
+
+Import trace:
+  Client Component Browser:
+    ./app/globals.css [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+
+./components/ui/button.tsx:1:1
+Error: Module not found: Can't resolve '@base-ui/react/button'
+[31m[1m>[0m [90m1 |[0m [36mimport[0m { [33mButton[0m [36mas[0m [33mButtonPrimitive[0m } [36mfrom[0m [32m"@base-ui/react/button"[0m
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m2 |[0m [36mimport[0m { cva, [36mtype[0m [33mVariantProps[0m } [36mfrom[0m [32m"class-variance-authority"[0m
+  [90m3 |[0m
+  [90m4 |[0m [36mimport[0m { cn } [36mfrom[0m [32m"@/lib/utils"[0m
+
+
+
+Import traces:
+  Server Component:
+    ./components/ui/button.tsx
+    ./app/listings/[id]/page.tsx
+
+  Client Component Browser:
+    ./components/ui/button.tsx [Client Component Browser]
+    ./app/new-listing/page.tsx [Client Component Browser]
+    ./app/new-listing/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/ui/button.tsx [Client Component SSR]
+    ./app/new-listing/page.tsx [Client Component SSR]
+    ./app/new-listing/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./components/ui/input.tsx:2:1
+Error: Module not found: Can't resolve '@base-ui/react/input'
+  [90m1 |[0m [36mimport[0m * [36mas[0m [33mReact[0m [36mfrom[0m [32m"react"[0m
+[31m[1m>[0m [90m2 |[0m [36mimport[0m { [33mInput[0m [36mas[0m [33mInputPrimitive[0m } [36mfrom[0m [32m"@base-ui/react/input"[0m
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m3 |[0m
+  [90m4 |[0m [36mimport[0m { cn } [36mfrom[0m [32m"@/lib/utils"[0m
+  [90m5 |[0m
+
+
+
+Import traces:
+  Server Component:
+    ./components/ui/input.tsx
+    ./app/listings/page.tsx
+
+  Client Component Browser:
+    ./components/ui/input.tsx [Client Component Browser]
+    ./app/new-listing/page.tsx [Client Component Browser]
+    ./app/new-listing/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/ui/input.tsx [Client Component SSR]
+    ./app/new-listing/page.tsx [Client Component SSR]
+    ./app/new-listing/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./app/lib/prisma.ts:2:1
+Error: Module not found: Can't resolve '@prisma/adapter-pg'
+  [90m1 |[0m [36mimport[0m { [33mPrismaClient[0m } [36mfrom[0m [32m'@prisma/client'[0m;
+[31m[1m>[0m [90m2 |[0m [36mimport[0m { [33mPrismaPg[0m } [36mfrom[0m [32m'@prisma/adapter-pg'[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m3 |[0m [36mimport[0m { [33mPool[0m } [36mfrom[0m [32m'pg'[0m;
+  [90m4 |[0m
+  [90m5 |[0m [36mconst[0m globalForPrisma = global [36mas[0m unknown [36mas[0m { prisma: [33mPrismaClient[0m };
+
+
+
+Import traces:
+  App Route:
+    ./app/lib/prisma.ts
+    ./app/api/listings/[id]/route.ts
+
+  Server Component:
+    ./app/lib/prisma.ts
+    ./app/listings/[id]/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./app/lib/prisma.ts:3:1
+Error: Module not found: Can't resolve 'pg'
+  [90m1 |[0m [36mimport[0m { [33mPrismaClient[0m } [36mfrom[0m [32m'@prisma/client'[0m;
+  [90m2 |[0m [36mimport[0m { [33mPrismaPg[0m } [36mfrom[0m [32m'@prisma/adapter-pg'[0m;
+[31m[1m>[0m [90m3 |[0m [36mimport[0m { [33mPool[0m } [36mfrom[0m [32m'pg'[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m4 |[0m
+  [90m5 |[0m [36mconst[0m globalForPrisma = global [36mas[0m unknown [36mas[0m { prisma: [33mPrismaClient[0m };
+  [90m6 |[0m
+
+
+
+Import traces:
+  App Route:
+    ./app/lib/prisma.ts
+    ./app/api/listings/[id]/route.ts
+
+  Server Component:
+    ./app/lib/prisma.ts
+    ./app/listings/[id]/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+    at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts?config=[project]/postcss.config.mjs:70:34) [/home/shadow3/projects/sellbuy-v2/.next/build/chunks/[root-of-the-server]__1kki86f._.js:98:36])
+    at async run (turbopack:///[turbopack-node]/child_process/evaluate.ts:89:23) [/home/shadow3/projects/sellbuy-v2/.next/build/chunks/[root-of-the-server]__05i36w1._.js:73:31])
+    at <unknown> (./components/ui/button.tsx:1:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./components/ui/input.tsx:2:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./app/lib/prisma.ts:2:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./app/lib/prisma.ts:3:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+
+> sellbuy@0.1.0 build
+> rm -rf .next && prisma generate && next build
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+
+✔ Generated Prisma Client (v7.10.0) to ./node_modules/@prisma/client in 1.40s
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+▲ Next.js 16.3.1 (Turbopack)
+- Environments: .env
+⚠ Warning: Next.js ignored package-lock.json in /home/shadow3/projects because it is outside the current Git repository (/home/shadow3/projects/sellbuy-v2).
+ To use this directory, set `turbopack.root` in your Next.js config.
+
+✓ Running next.config.ts took 493ms
+
+  Creating an optimized production build ...
+Error: Can't resolve 'tailwindcss' in '/home/shadow3/projects/sellbuy-v2/app'
+    [2m[at finishWithoutResolve (/home/shadow3/projects/sellbuy-v2/node_modules/enhanced-resolve/lib/Resolver.js:952:18)][0m
+    [2m[at /home/shadow3/projects/sellbuy-v2/node_modules/enhanced-resolve/lib/Resolver.js:1048:13][0m
+    [2m[at /home/shadow3/projects/sellbuy-v2/node_modules/enhanced-resolve/lib/Resolver.js:1132:5][0m
+    [2m[at eval (eval at create (/home/shadow3/projects/sellbuy-v2/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at /home/shadow3/projects/sellbuy-v2/node_modules/enhanced-resolve/lib/Resolver.js:1132:5][0m
+    [2m[at eval (eval at create (/home/shadow3/projects/sellbuy-v2/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:27:1)][0m
+    [2m[at /home/shadow3/projects/sellbuy-v2/node_modules/enhanced-resolve/lib/DescriptionFilePlugin.js:94:43][0m
+    [2m[at /home/shadow3/projects/sellbuy-v2/node_modules/enhanced-resolve/lib/Resolver.js:1132:5][0m
+    [2m[at eval (eval at create (/home/shadow3/projects/sellbuy-v2/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at /home/shadow3/projects/sellbuy-v2/node_modules/enhanced-resolve/lib/Resolver.js:1132:5][0m {
+  details: "resolve 'tailwindcss' in '/home/shadow3/projects/sellbuy-v2/app'\n" +
+    '  Parsed request is a module\n' +
+    '  using description file: /home/shadow3/projects/sellbuy-v2/package.json (relative path: ./app)\n' +
+    '    resolve as module\n' +
+    "      /home/shadow3/projects/sellbuy-v2/app/node_modules doesn't exist or is not a directory\n" +
+    '      looking for modules in /home/shadow3/projects/sellbuy-v2/node_modules\n' +
+    '        single file module\n' +
+    '          using description file: /home/shadow3/projects/sellbuy-v2/package.json (relative path: ./node_modules/tailwindcss)\n' +
+    '            no extension\n' +
+    '              /home/shadow3/projects/sellbuy-v2/node_modules/tailwindcss is not a file\n' +
+    '            .css\n' +
+    "              /home/shadow3/projects/sellbuy-v2/node_modules/tailwindcss.css doesn't exist\n" +
+    '        existing directory /home/shadow3/projects/sellbuy-v2/node_modules/tailwindcss\n' +
+    '          using description file: /home/shadow3/projects/sellbuy-v2/node_modules/tailwindcss/package.json (relative path: .)\n' +
+    '            using description file: /home/shadow3/projects/sellbuy-v2/package.json (relative path: ./node_modules/tailwindcss)\n' +
+    '              no extension\n' +
+    '                /home/shadow3/projects/sellbuy-v2/node_modules/tailwindcss is not a file\n' +
+    '              .css\n' +
+    "                /home/shadow3/projects/sellbuy-v2/node_modules/tailwindcss.css doesn't exist\n" +
+    '              as directory\n' +
+    '                existing directory /home/shadow3/projects/sellbuy-v2/node_modules/tailwindcss\n' +
+    '                  using description file: /home/shadow3/projects/sellbuy-v2/node_modules/tailwindcss/package.json (relative path: .)\n' +
+    '                    using path: /home/shadow3/projects/sellbuy-v2/node_modules/tailwindcss/index\n' +
+    '                      using description file: /home/shadow3/projects/sellbuy-v2/node_modules/tailwindcss/package.json (relative path: ./index)\n' +
+    '                        no extension\n' +
+    "                          /home/shadow3/projects/sellbuy-v2/node_modules/tailwindcss/index doesn't exist\n" +
+    '                        .css\n' +
+    "                          /home/shadow3/projects/sellbuy-v2/node_modules/tailwindcss/index.css doesn't exist\n" +
+    '      looking for modules in /home/shadow3/projects/node_modules\n' +
+    '        single file module\n' +
+    '          using description file: /home/shadow3/projects/package.json (relative path: ./node_modules/tailwindcss)\n' +
+    '            no extension\n' +
+    "              /home/shadow3/projects/node_modules/tailwindcss doesn't exist\n" +
+    '            .css\n' +
+    "              /home/shadow3/projects/node_modules/tailwindcss.css doesn't exist\n" +
+    "        /home/shadow3/projects/node_modules/tailwindcss doesn't exist\n" +
+    "      /home/shadow3/node_modules doesn't exist or is not a directory\n" +
+    "      /home/node_modules doesn't exist or is not a directory\n" +
+    "      /node_modules doesn't exist or is not a directory"
+}
+
+> Build error occurred
+Error: Turbopack build failed with 5 errors:
+./app/globals.css
+Error: Error evaluating Node.js code
+CssSyntaxError: tailwindcss: /home/shadow3/projects/sellbuy-v2/app/globals.css:1:1: Can't resolve 'tailwindcss' in '/home/shadow3/projects/sellbuy-v2/app'
+    at Input.error (node_modules/postcss/lib/input.js:135:16) [/home/shadow3/projects/sellbuy-v2/.next/build/chunks/node_modules_20v-8wl._.js:919:22]
+    at error (node_modules/postcss/lib/node.js:166:32) [/home/shadow3/projects/sellbuy-v2/.next/build/chunks/node_modules_20v-8wl._.js:2274:38]
+    [at Object.Once (/home/shadow3/projects/sellbuy-v2/node_modules/@tailwindcss/postcss/dist/index.js:10:7013)]
+    [at process.processTicksAndRejections (node:internal/process/task_queues:95:5)]
+    at async LazyResult.runAsync (node_modules/postcss/lib/lazy-result.js:299:11) [/home/shadow3/projects/sellbuy-v2/.next/build/chunks/node_modules_20v-8wl._.js:1323:21]
+    at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts?config=[project]/postcss.config.mjs:70:34) [/home/shadow3/projects/sellbuy-v2/.next/build/chunks/[root-of-the-server]__1kki86f._.js:98:36]
+    at async run (turbopack:///[turbopack-node]/child_process/evaluate.ts:89:23) [/home/shadow3/projects/sellbuy-v2/.next/build/chunks/[root-of-the-server]__05i36w1._.js:73:31]
+
+Import trace:
+  Client Component Browser:
+    ./app/globals.css [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+
+./components/ui/button.tsx:1:1
+Error: Module not found: Can't resolve '@base-ui/react/button'
+[31m[1m>[0m [90m1 |[0m [36mimport[0m { [33mButton[0m [36mas[0m [33mButtonPrimitive[0m } [36mfrom[0m [32m"@base-ui/react/button"[0m
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m2 |[0m [36mimport[0m { cva, [36mtype[0m [33mVariantProps[0m } [36mfrom[0m [32m"class-variance-authority"[0m
+  [90m3 |[0m
+  [90m4 |[0m [36mimport[0m { cn } [36mfrom[0m [32m"@/lib/utils"[0m
+
+
+
+Import traces:
+  Server Component:
+    ./components/ui/button.tsx
+    ./app/listings/[id]/page.tsx
+
+  Client Component Browser:
+    ./components/ui/button.tsx [Client Component Browser]
+    ./app/new-listing/page.tsx [Client Component Browser]
+    ./app/new-listing/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/ui/button.tsx [Client Component SSR]
+    ./app/new-listing/page.tsx [Client Component SSR]
+    ./app/new-listing/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./components/ui/input.tsx:2:1
+Error: Module not found: Can't resolve '@base-ui/react/input'
+  [90m1 |[0m [36mimport[0m * [36mas[0m [33mReact[0m [36mfrom[0m [32m"react"[0m
+[31m[1m>[0m [90m2 |[0m [36mimport[0m { [33mInput[0m [36mas[0m [33mInputPrimitive[0m } [36mfrom[0m [32m"@base-ui/react/input"[0m
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m3 |[0m
+  [90m4 |[0m [36mimport[0m { cn } [36mfrom[0m [32m"@/lib/utils"[0m
+  [90m5 |[0m
+
+
+
+Import traces:
+  Server Component:
+    ./components/ui/input.tsx
+    ./app/listings/page.tsx
+
+  Client Component Browser:
+    ./components/ui/input.tsx [Client Component Browser]
+    ./app/new-listing/page.tsx [Client Component Browser]
+    ./app/new-listing/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/ui/input.tsx [Client Component SSR]
+    ./app/new-listing/page.tsx [Client Component SSR]
+    ./app/new-listing/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./app/lib/prisma.ts:2:1
+Error: Module not found: Can't resolve '@prisma/adapter-pg'
+  [90m1 |[0m [36mimport[0m { [33mPrismaClient[0m } [36mfrom[0m [32m'@prisma/client'[0m;
+[31m[1m>[0m [90m2 |[0m [36mimport[0m { [33mPrismaPg[0m } [36mfrom[0m [32m'@prisma/adapter-pg'[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m3 |[0m [36mimport[0m { [33mPool[0m } [36mfrom[0m [32m'pg'[0m;
+  [90m4 |[0m
+  [90m5 |[0m [36mconst[0m globalForPrisma = global [36mas[0m unknown [36mas[0m { prisma: [33mPrismaClient[0m };
+
+
+
+Import traces:
+  App Route:
+    ./app/lib/prisma.ts
+    ./app/api/listings/[id]/route.ts
+
+  Server Component:
+    ./app/lib/prisma.ts
+    ./app/listings/[id]/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./app/lib/prisma.ts:3:1
+Error: Module not found: Can't resolve 'pg'
+  [90m1 |[0m [36mimport[0m { [33mPrismaClient[0m } [36mfrom[0m [32m'@prisma/client'[0m;
+  [90m2 |[0m [36mimport[0m { [33mPrismaPg[0m } [36mfrom[0m [32m'@prisma/adapter-pg'[0m;
+[31m[1m>[0m [90m3 |[0m [36mimport[0m { [33mPool[0m } [36mfrom[0m [32m'pg'[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m4 |[0m
+  [90m5 |[0m [36mconst[0m globalForPrisma = global [36mas[0m unknown [36mas[0m { prisma: [33mPrismaClient[0m };
+  [90m6 |[0m
+
+
+
+Import traces:
+  App Route:
+    ./app/lib/prisma.ts
+    ./app/api/listings/[id]/route.ts
+
+  Server Component:
+    ./app/lib/prisma.ts
+    ./app/listings/[id]/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+    at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts?config=[project]/postcss.config.mjs:70:34) [/home/shadow3/projects/sellbuy-v2/.next/build/chunks/[root-of-the-server]__1kki86f._.js:98:36])
+    at async run (turbopack:///[turbopack-node]/child_process/evaluate.ts:89:23) [/home/shadow3/projects/sellbuy-v2/.next/build/chunks/[root-of-the-server]__05i36w1._.js:73:31])
+    at <unknown> (./components/ui/button.tsx:1:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./components/ui/input.tsx:2:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./app/lib/prisma.ts:2:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./app/lib/prisma.ts:3:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+
+> sellbuy@0.1.0 build
+> rm -rf .next && prisma generate && next build
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+
+✔ Generated Prisma Client (v7.10.0) to ./node_modules/@prisma/client in 1.56s
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+▲ Next.js 16.3.1 (Turbopack)
+- Environments: .env
+⚠ Warning: Next.js ignored package-lock.json in /home/shadow3/projects because it is outside the current Git repository (/home/shadow3/projects/sellbuy-v2).
+ To use this directory, set `turbopack.root` in your Next.js config.
+
+✓ Running next.config.ts took 338ms
+
+  Creating an optimized production build ...
+
+> Build error occurred
+Error: Turbopack build failed with 4 errors:
+./components/ui/button.tsx:1:1
+Error: Module not found: Can't resolve '@base-ui/react/button'
+[31m[1m>[0m [90m1 |[0m [36mimport[0m { [33mButton[0m [36mas[0m [33mButtonPrimitive[0m } [36mfrom[0m [32m"@base-ui/react/button"[0m
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m2 |[0m [36mimport[0m { cva, [36mtype[0m [33mVariantProps[0m } [36mfrom[0m [32m"class-variance-authority"[0m
+  [90m3 |[0m
+  [90m4 |[0m [36mimport[0m { cn } [36mfrom[0m [32m"@/lib/utils"[0m
+
+
+
+Import traces:
+  Server Component:
+    ./components/ui/button.tsx
+    ./app/listings/[id]/page.tsx
+
+  Client Component Browser:
+    ./components/ui/button.tsx [Client Component Browser]
+    ./app/new-listing/page.tsx [Client Component Browser]
+    ./app/new-listing/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/ui/button.tsx [Client Component SSR]
+    ./app/new-listing/page.tsx [Client Component SSR]
+    ./app/new-listing/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./components/ui/input.tsx:2:1
+Error: Module not found: Can't resolve '@base-ui/react/input'
+  [90m1 |[0m [36mimport[0m * [36mas[0m [33mReact[0m [36mfrom[0m [32m"react"[0m
+[31m[1m>[0m [90m2 |[0m [36mimport[0m { [33mInput[0m [36mas[0m [33mInputPrimitive[0m } [36mfrom[0m [32m"@base-ui/react/input"[0m
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m3 |[0m
+  [90m4 |[0m [36mimport[0m { cn } [36mfrom[0m [32m"@/lib/utils"[0m
+  [90m5 |[0m
+
+
+
+Import traces:
+  Server Component:
+    ./components/ui/input.tsx
+    ./app/listings/page.tsx
+
+  Client Component Browser:
+    ./components/ui/input.tsx [Client Component Browser]
+    ./app/new-listing/page.tsx [Client Component Browser]
+    ./app/new-listing/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/ui/input.tsx [Client Component SSR]
+    ./app/new-listing/page.tsx [Client Component SSR]
+    ./app/new-listing/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./app/lib/prisma.ts:2:1
+Error: Module not found: Can't resolve '@prisma/adapter-pg'
+  [90m1 |[0m [36mimport[0m { [33mPrismaClient[0m } [36mfrom[0m [32m'@prisma/client'[0m;
+[31m[1m>[0m [90m2 |[0m [36mimport[0m { [33mPrismaPg[0m } [36mfrom[0m [32m'@prisma/adapter-pg'[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m3 |[0m [36mimport[0m { [33mPool[0m } [36mfrom[0m [32m'pg'[0m;
+  [90m4 |[0m
+  [90m5 |[0m [36mconst[0m globalForPrisma = global [36mas[0m unknown [36mas[0m { prisma: [33mPrismaClient[0m };
+
+
+
+Import traces:
+  App Route:
+    ./app/lib/prisma.ts
+    ./app/api/listings/[id]/route.ts
+
+  Server Component:
+    ./app/lib/prisma.ts
+    ./app/listings/[id]/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./app/lib/prisma.ts:3:1
+Error: Module not found: Can't resolve 'pg'
+  [90m1 |[0m [36mimport[0m { [33mPrismaClient[0m } [36mfrom[0m [32m'@prisma/client'[0m;
+  [90m2 |[0m [36mimport[0m { [33mPrismaPg[0m } [36mfrom[0m [32m'@prisma/adapter-pg'[0m;
+[31m[1m>[0m [90m3 |[0m [36mimport[0m { [33mPool[0m } [36mfrom[0m [32m'pg'[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m4 |[0m
+  [90m5 |[0m [36mconst[0m globalForPrisma = global [36mas[0m unknown [36mas[0m { prisma: [33mPrismaClient[0m };
+  [90m6 |[0m
+
+
+
+Import traces:
+  App Route:
+    ./app/lib/prisma.ts
+    ./app/api/listings/[id]/route.ts
+
+  Server Component:
+    ./app/lib/prisma.ts
+    ./app/listings/[id]/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+    at <unknown> (./components/ui/button.tsx:1:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./components/ui/input.tsx:2:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./app/lib/prisma.ts:2:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./app/lib/prisma.ts:3:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+
+> sellbuy@0.1.0 build
+> rm -rf .next && prisma generate && next build
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+
+✔ Generated Prisma Client (v7.10.0) to ./node_modules/@prisma/client in 1.59s
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+▲ Next.js 16.3.1 (Turbopack)
+- Environments: .env
+⚠ Warning: Next.js ignored package-lock.json in /home/shadow3/projects because it is outside the current Git repository (/home/shadow3/projects/sellbuy-v2).
+ To use this directory, set `turbopack.root` in your Next.js config.
+
+✓ Running next.config.ts took 553ms
+
+  Creating an optimized production build ...
+
+> Build error occurred
+Error: Turbopack build failed with 2 errors:
+./app/lib/prisma.ts:2:1
+Error: Module not found: Can't resolve '@prisma/adapter-pg'
+  [90m1 |[0m [36mimport[0m { [33mPrismaClient[0m } [36mfrom[0m [32m'@prisma/client'[0m;
+[31m[1m>[0m [90m2 |[0m [36mimport[0m { [33mPrismaPg[0m } [36mfrom[0m [32m'@prisma/adapter-pg'[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m3 |[0m [36mimport[0m { [33mPool[0m } [36mfrom[0m [32m'pg'[0m;
+  [90m4 |[0m
+  [90m5 |[0m [36mconst[0m globalForPrisma = global [36mas[0m unknown [36mas[0m { prisma: [33mPrismaClient[0m };
+
+
+
+Import traces:
+  App Route:
+    ./app/lib/prisma.ts
+    ./app/api/listings/[id]/route.ts
+
+  Server Component:
+    ./app/lib/prisma.ts
+    ./app/listings/[id]/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+./app/lib/prisma.ts:3:1
+Error: Module not found: Can't resolve 'pg'
+  [90m1 |[0m [36mimport[0m { [33mPrismaClient[0m } [36mfrom[0m [32m'@prisma/client'[0m;
+  [90m2 |[0m [36mimport[0m { [33mPrismaPg[0m } [36mfrom[0m [32m'@prisma/adapter-pg'[0m;
+[31m[1m>[0m [90m3 |[0m [36mimport[0m { [33mPool[0m } [36mfrom[0m [32m'pg'[0m;
+  [90m  |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m4 |[0m
+  [90m5 |[0m [36mconst[0m globalForPrisma = global [36mas[0m unknown [36mas[0m { prisma: [33mPrismaClient[0m };
+  [90m6 |[0m
+
+
+
+Import traces:
+  App Route:
+    ./app/lib/prisma.ts
+    ./app/api/listings/[id]/route.ts
+
+  Server Component:
+    ./app/lib/prisma.ts
+    ./app/listings/[id]/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+    at <unknown> (./app/lib/prisma.ts:2:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at <unknown> (./app/lib/prisma.ts:3:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+
+> sellbuy@0.1.0 build
+> rm -rf .next && prisma generate && next build
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+
+✔ Generated Prisma Client (v7.10.0) to ./node_modules/@prisma/client in 1.16s
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+▲ Next.js 16.3.1 (Turbopack)
+- Environments: .env
+⚠ Warning: Next.js ignored package-lock.json in /home/shadow3/projects because it is outside the current Git repository (/home/shadow3/projects/sellbuy-v2).
+ To use this directory, set `turbopack.root` in your Next.js config.
+
+✓ Running next.config.ts took 516ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 61s
+  Running TypeScript ...
+__tests__/__diag__/mock-diag.test.ts(3,1): error TS2582: Cannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/__diag__/mock-diag.test.ts(4,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/__diag__/mock-diag.test.ts(11,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-id.test.ts(28,36): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-categories-id.test.ts(56,1): error TS2582: Cannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-categories-id.test.ts(57,3): error TS2304: Cannot find name 'beforeEach'.
+__tests__/api-categories-id.test.ts(58,5): error TS2304: Cannot find name 'jest'.
+__tests__/api-categories-id.test.ts(61,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-categories-id.test.ts(66,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-id.test.ts(67,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-id.test.ts(74,50): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-categories-id.test.ts(75,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-id.test.ts(76,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-id.test.ts(79,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-categories-id.test.ts(84,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-id.test.ts(85,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-id.test.ts(87,50): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-categories-id.test.ts(88,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-id.test.ts(91,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-categories-id.test.ts(96,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-id.test.ts(97,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-id.test.ts(98,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-id.test.ts(102,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-id.test.ts(105,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-categories-id.test.ts(110,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-id.test.ts(111,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-id.test.ts(114,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-categories-id.test.ts(117,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-tree.test.ts(9,1): error TS2304: Cannot find name 'jest'.
+__tests__/api-categories-tree.test.ts(10,20): error TS2304: Cannot find name 'jest'.
+__tests__/api-categories-tree.test.ts(39,1): error TS2582: Cannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-categories-tree.test.ts(40,3): error TS2304: Cannot find name 'beforeEach'.
+__tests__/api-categories-tree.test.ts(41,5): error TS2304: Cannot find name 'jest'.
+__tests__/api-categories-tree.test.ts(44,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-categories-tree.test.ts(45,26): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-categories-tree.test.ts(51,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-tree.test.ts(52,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-tree.test.ts(53,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-tree.test.ts(56,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-tree.test.ts(60,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-tree.test.ts(61,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-tree.test.ts(68,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-categories-tree.test.ts(81,26): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-categories-tree.test.ts(86,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-tree.test.ts(89,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-categories-tree.test.ts(94,26): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-categories-tree.test.ts(99,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-tree.test.ts(102,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-categories-tree.test.ts(103,17): error TS2304: Cannot find name 'jest'.
+__tests__/api-categories-tree.test.ts(104,26): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-categories-tree.test.ts(107,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-tree.test.ts(108,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories.test.ts(42,1): error TS2582: Cannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-categories.test.ts(43,3): error TS2304: Cannot find name 'beforeEach'.
+__tests__/api-categories.test.ts(44,5): error TS2304: Cannot find name 'jest'.
+__tests__/api-categories.test.ts(47,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-categories.test.ts(50,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories.test.ts(51,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories.test.ts(54,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-categories.test.ts(55,26): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-categories.test.ts(59,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories.test.ts(60,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories.test.ts(61,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories.test.ts(62,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories.test.ts(69,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-categories.test.ts(71,26): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-categories.test.ts(75,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories.test.ts(76,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories.test.ts(77,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories.test.ts(79,45): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-categories.test.ts(80,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories.test.ts(83,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-categories.test.ts(84,26): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-categories.test.ts(90,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories.test.ts(91,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories.test.ts(92,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories.test.ts(95,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-categories.test.ts(96,26): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-categories.test.ts(100,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories.test.ts(102,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories.test.ts(106,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings-id.test.ts(21,1): error TS2582: Cannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-listings-id.test.ts(22,3): error TS2304: Cannot find name 'beforeEach'.
+__tests__/api-listings-id.test.ts(23,5): error TS2304: Cannot find name 'jest'.
+__tests__/api-listings-id.test.ts(26,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-listings-id.test.ts(28,35): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-listings-id.test.ts(34,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings-id.test.ts(35,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings-id.test.ts(41,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings-id.test.ts(50,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-listings-id.test.ts(51,35): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-listings-id.test.ts(57,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings-id.test.ts(58,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings-id.test.ts(62,1): error TS2582: Cannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-listings-id.test.ts(63,3): error TS2304: Cannot find name 'beforeEach'.
+__tests__/api-listings-id.test.ts(64,5): error TS2304: Cannot find name 'jest'.
+__tests__/api-listings-id.test.ts(67,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-listings-id.test.ts(68,35): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-listings-id.test.ts(71,31): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-listings-id.test.ts(81,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings-id.test.ts(82,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings-id.test.ts(83,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings-id.test.ts(88,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-listings-id.test.ts(89,35): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-listings-id.test.ts(97,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings-id.test.ts(98,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings-id.test.ts(99,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(22,31): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-listings.test.ts(25,28): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-listings.test.ts(33,1): error TS2304: Cannot find name 'beforeEach'.
+__tests__/api-listings.test.ts(34,3): error TS2304: Cannot find name 'jest'.
+__tests__/api-listings.test.ts(38,1): error TS2582: Cannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-listings.test.ts(39,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-listings.test.ts(43,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(44,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(45,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(48,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-listings.test.ts(50,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(51,7): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(55,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(56,7): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(60,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(61,7): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(65,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(66,7): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(70,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-listings.test.ts(71,26): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-listings.test.ts(76,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(77,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(77,33): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-listings.test.ts(79,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(80,7): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(81,16): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(88,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-listings.test.ts(89,26): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-listings.test.ts(93,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(94,7): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(95,16): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(100,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-listings.test.ts(103,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(104,7): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(109,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(112,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-listings.test.ts(113,33): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-listings.test.ts(114,30): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-listings.test.ts(119,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(120,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(123,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-listings.test.ts(124,17): error TS2304: Cannot find name 'jest'.
+__tests__/api-listings.test.ts(125,33): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-listings.test.ts(128,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(129,5): error TS2304: Cannot find name 'expect'.
+__tests__/category-card.test.tsx(7,32): error TS2307: Cannot find module '@testing-library/react' or its corresponding type declarations.
+__tests__/category-card.test.tsx(11,1): error TS2304: Cannot find name 'jest'.
+__tests__/category-card.test.tsx(21,1): error TS2304: Cannot find name 'jest'.
+__tests__/category-card.test.tsx(42,1): error TS2582: Cannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/category-card.test.tsx(43,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/category-card.test.tsx(45,5): error TS2304: Cannot find name 'expect'.
+__tests__/category-card.test.tsx(48,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/category-card.test.tsx(50,5): error TS2304: Cannot find name 'expect'.
+__tests__/category-card.test.tsx(53,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/category-card.test.tsx(56,5): error TS2304: Cannot find name 'expect'.
+__tests__/category-card.test.tsx(59,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/category-card.test.tsx(73,5): error TS2304: Cannot find name 'expect'.
+__tests__/category-card.test.tsx(74,5): error TS2304: Cannot find name 'expect'.
+__tests__/category-card.test.tsx(77,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/category-card.test.tsx(80,5): error TS2304: Cannot find name 'expect'.
+__tests__/diag.test.ts(6,1): error TS2582: Cannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/diag.test.ts(7,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/diag.test.ts(18,5): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(11,1): error TS2304: Cannot find name 'jest'.
+__tests__/listings-page.test.tsx(13,15): error TS2304: Cannot find name 'jest'.
+__tests__/listings-page.test.tsx(14,17): error TS2304: Cannot find name 'jest'.
+__tests__/listings-page.test.tsx(15,16): error TS2304: Cannot find name 'jest'.
+__tests__/listings-page.test.tsx(16,12): error TS2304: Cannot find name 'jest'.
+__tests__/listings-page.test.tsx(17,13): error TS2304: Cannot find name 'jest'.
+__tests__/listings-page.test.tsx(18,13): error TS2304: Cannot find name 'jest'.
+__tests__/listings-page.test.tsx(19,13): error TS2304: Cannot find name 'jest'.
+__tests__/listings-page.test.tsx(24,29): error TS2304: Cannot find name 'jest'.
+__tests__/listings-page.test.tsx(24,52): error TS2304: Cannot find name 'jest'.
+__tests__/listings-page.test.tsx(25,18): error TS2304: Cannot find name 'jest'.
+__tests__/listings-page.test.tsx(26,21): error TS2304: Cannot find name 'jest'.
+__tests__/listings-page.test.tsx(47,31): error TS2503: Cannot find namespace 'jest'.
+__tests__/listings-page.test.tsx(50,28): error TS2503: Cannot find namespace 'jest'.
+__tests__/listings-page.test.tsx(51,32): error TS2503: Cannot find namespace 'jest'.
+__tests__/listings-page.test.tsx(54,24): error TS2503: Cannot find namespace 'jest'.
+__tests__/listings-page.test.tsx(61,1): error TS2304: Cannot find name 'beforeEach'.
+__tests__/listings-page.test.tsx(62,3): error TS2304: Cannot find name 'jest'.
+__tests__/listings-page.test.tsx(66,1): error TS2582: Cannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/listings-page.test.tsx(67,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/listings-page.test.tsx(70,5): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(71,7): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(80,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/listings-page.test.tsx(83,45): error TS2503: Cannot find namespace 'jest'.
+__tests__/listings-page.test.tsx(84,5): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(90,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/listings-page.test.tsx(93,5): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(94,7): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(100,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/listings-page.test.tsx(102,5): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(103,7): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(107,5): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(108,7): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(112,5): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(113,7): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(117,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/listings-page.test.tsx(120,5): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(121,7): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(125,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/listings-page.test.tsx(128,5): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(129,5): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(130,7): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(136,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/listings-page.test.tsx(137,26): error TS2503: Cannot find namespace 'jest'.
+__tests__/listings-page.test.tsx(141,5): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(142,7): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(149,1): error TS2582: Cannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/listings-page.test.tsx(150,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/listings-page.test.tsx(154,5): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(155,5): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(158,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/listings-page.test.tsx(159,33): error TS2503: Cannot find namespace 'jest'.
+__tests__/listings-page.test.tsx(160,30): error TS2503: Cannot find namespace 'jest'.
+__tests__/listings-page.test.tsx(165,5): error TS2304: Cannot find name 'expect'.
+__tests__/mocks/prisma.ts(9,14): error TS2304: Cannot find name 'jest'.
+__tests__/mocks/prisma.ts(10,16): error TS2304: Cannot find name 'jest'.
+__tests__/mocks/prisma.ts(11,17): error TS2304: Cannot find name 'jest'.
+__tests__/mocks/prisma.ts(17,15): error TS2304: Cannot find name 'jest'.
+__tests__/mocks/prisma.ts(18,17): error TS2304: Cannot find name 'jest'.
+__tests__/mocks/prisma.ts(21,15): error TS2304: Cannot find name 'jest'.
+__tests__/mocks/prisma.ts(22,17): error TS2304: Cannot find name 'jest'.
+__tests__/mocks/prisma.ts(23,12): error TS2304: Cannot find name 'jest'.
+__tests__/mocks/prisma.ts(24,13): error TS2304: Cannot find name 'jest'.
+__tests__/mocks/prisma.ts(25,13): error TS2304: Cannot find name 'jest'.
+__tests__/mocks/prisma.ts(26,13): error TS2304: Cannot find name 'jest'.
+__tests__/mocks/prisma.ts(29,17): error TS2304: Cannot find name 'jest'.
+__tests__/probe.test.ts(4,1): error TS2304: Cannot find name 'jest'.
+__tests__/probe.test.ts(5,19): error TS2304: Cannot find name 'jest'.
+__tests__/probe.test.ts(10,1): error TS2582: Cannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/probe.test.ts(11,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/probe.test.ts(14,5): error TS2304: Cannot find name 'expect'.
+components/faceted-filter-sidebar.tsx(71,80): error TS2339: Property 'join' does not exist on type 'number | readonly number[]'.
+  Property 'join' does not exist on type 'number'.
+jest.setup.ts(11,14): error TS2304: Cannot find name 'jest'.
+jest.setup.ts(12,16): error TS2304: Cannot find name 'jest'.
+jest.setup.ts(13,17): error TS2304: Cannot find name 'jest'.
+jest.setup.ts(19,15): error TS2304: Cannot find name 'jest'.
+jest.setup.ts(20,17): error TS2304: Cannot find name 'jest'.
+jest.setup.ts(23,15): error TS2304: Cannot find name 'jest'.
+jest.setup.ts(24,17): error TS2304: Cannot find name 'jest'.
+jest.setup.ts(25,12): error TS2304: Cannot find name 'jest'.
+jest.setup.ts(26,13): error TS2304: Cannot find name 'jest'.
+jest.setup.ts(27,13): error TS2304: Cannot find name 'jest'.
+jest.setup.ts(28,13): error TS2304: Cannot find name 'jest'.
+jest.setup.ts(31,17): error TS2304: Cannot find name 'jest'.
+jest.setup.ts(34,1): error TS2304: Cannot find name 'jest'.
+jest.setup.ts(54,12): error TS2304: Cannot find name 'jest'.
+jest.setup.ts(54,42): error TS7006: Parameter 'query' implicitly has an 'any' type.
+jest.setup.ts(58,20): error TS2304: Cannot find name 'jest'.
+jest.setup.ts(59,23): error TS2304: Cannot find name 'jest'.
+jest.setup.ts(60,25): error TS2304: Cannot find name 'jest'.
+jest.setup.ts(61,28): error TS2304: Cannot find name 'jest'.
+jest.setup.ts(62,22): error TS2304: Cannot find name 'jest'.
+Failed to type check.
+
+
+> sellbuy@0.1.0 build
+> rm -rf .next && prisma generate && next build
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+
+✔ Generated Prisma Client (v7.10.0) to ./node_modules/@prisma/client in 1.23s
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+▲ Next.js 16.3.1 (Turbopack)
+- Environments: .env
+⚠ Warning: Next.js ignored package-lock.json in /home/shadow3/projects because it is outside the current Git repository (/home/shadow3/projects/sellbuy-v2).
+ To use this directory, set `turbopack.root` in your Next.js config.
+
+✓ Running next.config.ts took 488ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 56s
+  Running TypeScript ...
+__tests__/category-card.test.tsx(7,32): error TS2307: Cannot find module '@testing-library/react' or its corresponding type declarations.
+__tests__/category-card.test.tsx(45,45): error TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<any>'.
+__tests__/category-card.test.tsx(50,36): error TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<any>'.
+__tests__/category-card.test.tsx(56,35): error TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<any>'.
+__tests__/category-card.test.tsx(73,36): error TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<any>'.
+__tests__/category-card.test.tsx(74,86): error TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<any>'.
+__tests__/category-card.test.tsx(80,18): error TS2339: Property 'toHaveAttribute' does not exist on type 'JestMatchers<any>'.
+components/faceted-filter-sidebar.tsx(71,80): error TS2339: Property 'join' does not exist on type 'number | readonly number[]'.
+  Property 'join' does not exist on type 'number'.
+Failed to type check.
+
+
+> sellbuy@0.1.0 build
+> rm -rf .next && prisma generate && next build
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+
+✔ Generated Prisma Client (v7.10.0) to ./node_modules/@prisma/client in 1.64s
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+▲ Next.js 16.3.1 (Turbopack)
+- Environments: .env
+⚠ Warning: Next.js ignored package-lock.json in /home/shadow3/projects because it is outside the current Git repository (/home/shadow3/projects/sellbuy-v2).
+ To use this directory, set `turbopack.root` in your Next.js config.
+
+✓ Running next.config.ts took 569ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 63s
+  Running TypeScript ...
+  Finished TypeScript in 52s ...
+  Collecting page data using 3 workers ...
+  Generating static pages using 3 workers (0/6) ...
+  Generating static pages using 3 workers (1/6) 
+  Generating static pages using 3 workers (2/6) 
+  Generating static pages using 3 workers (4/6) 
+✓ Generating static pages using 3 workers (6/6) in 3.4s
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /about
+├ ƒ /api/categories
+├ ƒ /api/categories/[id]
+├ ƒ /api/categories/schema
+├ ƒ /api/categories/tree
+├ ƒ /api/listings
+├ ƒ /api/listings/[id]
+├ ƒ /categories
+├ ƒ /listings
+├ ƒ /listings/[id]
+└ ○ /new-listing
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+=== Sat  5 Sep 08:15:28 +03 2026 Starting agency crew cycle ===
+From https://github.com/vladnidz/sellbuy-lv
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+
+> sellbuy@0.1.0 build
+> rm -rf .next && prisma generate && next build
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+
+✔ Generated Prisma Client (v7.10.0) to ./node_modules/@prisma/client in 1.37s
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+▲ Next.js 16.3.1 (Turbopack)
+- Environments: .env
+⚠ Warning: Next.js ignored package-lock.json in /home/shadow3/projects because it is outside the current Git repository (/home/shadow3/projects/sellbuy-v2).
+ To use this directory, set `turbopack.root` in your Next.js config.
+
+✓ Running next.config.ts took 649ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 56s
+  Running TypeScript ...
+  Finished TypeScript in 48s ...
+  Collecting page data using 3 workers ...
+  Generating static pages using 3 workers (0/6) ...
+  Generating static pages using 3 workers (1/6) 
+  Generating static pages using 3 workers (2/6) 
+  Generating static pages using 3 workers (4/6) 
+✓ Generating static pages using 3 workers (6/6) in 2.9s
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /about
+├ ƒ /api/categories
+├ ƒ /api/categories/[id]
+├ ƒ /api/categories/schema
+├ ƒ /api/categories/tree
+├ ƒ /api/listings
+├ ƒ /api/listings/[id]
+├ ƒ /categories
+├ ƒ /listings
+├ ƒ /listings/[id]
+└ ○ /new-listing
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+=== BUILD SUCCESS ===
+--- Dispatching core crew (2 agents in parallel) ---
+--- Core crew finished ---
+--- Strategy slot: product-trend-researcher ---
+Warning: Unknown toolsets: agency_agents
+Query: Use agency-agents-router: agency_agents_load 'product-trend-researcher', 
+then act as that specialist. TASK: Re-rank FEATURE_BACKLOG.md by user impact vs 
+effort. Project dir: /home/shadow3/projects/sellbuy-v2
+Initializing agent...
+────────────────────────────────────────
+
+[33m⚠ Deprecated .env settings detected:[0m
+  [33m⚠[0m TERMINAL_CWD=/home/shadow3 found in .env — this is deprecated.
+  [2mMove to config.yaml instead:  terminal:\n    cwd: /your/project/path[0m
+  [2mThen remove the old entries from ~/.hermes/.env[0m
+
+  ┊ ⚡ preparing tool_search…
+  ┊ ⚡ tool_sear agency_agents_load  16.4s
+  ┊ ⚡ preparing tool_call…
+  ┊ 📖 preparing read_file…
+  ┊ ⚡ agency_ag   0.0s [agent or slug is required]
+  ┊ 📖 read      FEATURE_BACKLOG.md  0.4s
+  ┊ 📖 preparing read_file…
+  ┊ 📖 read      FEATURE_BACKLOG.md  0.0s
+  ┊ ⚡ preparing tool_call…
+  ┊ ⚡ agency_ag   0.0s [agent or slug is required]
+  ┊ ⚡ preparing tool_describe…
+  ┊ ⚡ tool_desc agency_agents_load  0.0s
+  ┊ ⚡ preparing tool_call…
+  ┊ ⚡ agency_ag   0.0s [error]
+  ┊ ⚡ preparing tool_call…
+  ┊ ⚡ preparing tool_call…
+  ┊ ⚡ preparing tool_call…
+  ┊ ⚡ preparing tool_call…
+  ┊ ⚡ preparing tool_call…
+  ┊ 📖 preparing read_file…
+Traceback (most recent call last):
+  File "/usr/local/lib/hermes-agent/venv/bin/hermes", line 10, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/hermes-agent/hermes_cli/main.py", line 11742, in main
+    if _try_fast_chat_launch():
+       ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/hermes-agent/hermes_cli/main.py", line 11353, in _try_fast_chat_launch
+    cmd_chat(args)
+  File "/usr/local/lib/hermes-agent/hermes_cli/main.py", line 2886, in cmd_chat
+    cli_main(**kwargs)
+  File "/usr/local/lib/hermes-agent/cli.py", line 20056, in main
+    cli.chat(query, images=single_query_images or None)
+  File "/usr/local/lib/hermes-agent/cli.py", line 15530, in chat
+    interrupt_msg = self._interrupt_queue.get(timeout=0.1)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/share/uv/python/cpython-3.11.16-linux-aarch64-gnu/lib/python3.11/queue.py", line 180, in get
+    self.not_empty.wait(remaining)
+  File "/usr/local/share/uv/python/cpython-3.11.16-linux-aarch64-gnu/lib/python3.11/threading.py", line 331, in wait
+    gotit = waiter.acquire(True, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/hermes-agent/cli.py", line 19823, in _signal_handler_q
+    raise KeyboardInterrupt()
+KeyboardInterrupt
