@@ -1,105 +1,84 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Slider } from '@/components/ui/slider';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
 
-interface FilterProps {
-  categories: { id: string; name: string }[];
-  currentParams: Record<string, string | undefined>;
+interface SchemaField {
+  name: string;
+  type: 'string' | 'number' | 'enum' | 'boolean';
+  label: Record<string, string>;
+  options?: string[];
+  required: boolean;
 }
 
-export function ListingsFilters({ categories, currentParams }: FilterProps) {
+export function ListingsFilters() {
+  const [schema, setSchema] = useState<SchemaField[]>([]);
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const updateFilters = (newParams: Record<string, string | undefined>) => {
+  useEffect(() => {
+    fetch('/api/categories/schema')
+      .then((res) => res.json())
+      .then((data) => setSchema(data))
+      .catch(console.error);
+  }, []);
+
+  const updateFilters = (key: string, value: string | undefined) => {
     const params = new URLSearchParams(searchParams.toString());
-    Object.entries(newParams).forEach(([key, value]) => {
-      if (value) {
-        params.set(key, value);
-      } else {
-        params.delete(key);
-      }
-    });
-    // Reset page on filter change
+    if (value) {
+      params.set(key, value);
+    } else {
+      params.delete(key);
+    }
     params.set('page', '1');
     router.push(`/listings?${params.toString()}`);
   };
 
   return (
-    <div className="flex flex-col md:flex-row gap-4 mb-8 p-4 bg-slate-900/30 border border-slate-800 rounded-xl">
-      <div className="flex-1">
-        <label className="block text-sm font-medium text-slate-300 mb-2">
-          Kategorija
-        </label>
-        <Select
-          value={currentParams.category || ''}
-          onValueChange={(value) => updateFilters({ category: value })}
-        >
-          <SelectTrigger className="bg-slate-900 border-slate-700">
-            <SelectValue placeholder="Visas kategorijas" />
-          </SelectTrigger>
-          <SelectContent className="bg-slate-900 border-slate-700">
-            <SelectItem value="">Visas kategorijas</SelectItem>
-            {categories.map((cat) => (
-              <SelectItem key={cat.id} value={cat.id}>
-                {cat.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+    <motion.div
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      className="w-full md:w-64 p-6 bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl space-y-6"
+    >
+      <h2 className="text-xl font-bold text-white mb-4">Filtri</h2>
+      
+      {schema.map((field) => (
+        <div key={field.name} className="space-y-2">
+          <Label className="text-slate-300">{field.label.lv || field.name}</Label>
+          
+          {field.type === 'enum' && field.options && (
+            <div className="space-y-1">
+              {field.options.map((option) => (
+                <div key={option} className="flex items-center space-x-2">
+                  <Checkbox 
+                    id={`${field.name}-${option}`}
+                    checked={searchParams.get(field.name) === option}
+                    onCheckedChange={(checked) => 
+                      updateFilters(field.name, checked ? option : undefined)
+                    }
+                  />
+                  <Label htmlFor={`${field.name}-${option}`} className="text-slate-400">{option}</Label>
+                </div>
+              ))}
+            </div>
+          )}
 
-      <div className="flex-1">
-        <label className="block text-sm font-medium text-slate-300 mb-2">
-          Cenas diapazons
-        </label>
-        <Select
-          value={currentParams.priceRange || ''}
-          onValueChange={(value) => {
-             const [min, max] = value.split('-');
-             updateFilters({ minPrice: min, maxPrice: max, priceRange: value });
-          }}
-        >
-          <SelectTrigger className="bg-slate-900 border-slate-700">
-            <SelectValue placeholder="Jebkura cena" />
-          </SelectTrigger>
-          <SelectContent className="bg-slate-900 border-slate-700">
-            <SelectItem value="">Jebkura cena</SelectItem>
-            <SelectItem value="0-50">0 - 50 EUR</SelectItem>
-            <SelectItem value="50-100">50 - 100 EUR</SelectItem>
-            <SelectItem value="100-500">100 - 500 EUR</SelectItem>
-            <SelectItem value="500-1000">500 - 1000 EUR</SelectItem>
-            <SelectItem value="1000-">1000+ EUR</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      <div className="flex-1">
-        <label className="block text-sm font-medium text-slate-300 mb-2">
-          Kārtot
-        </label>
-        <Select
-          value={currentParams.sort || 'newest'}
-          onValueChange={(value) => updateFilters({ sort: value })}
-        >
-          <SelectTrigger className="bg-slate-900 border-slate-700">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent className="bg-slate-900 border-slate-700">
-            <SelectItem value="newest">Jaunākie</SelectItem>
-            <SelectItem value="oldest">Vecākie</SelectItem>
-            <SelectItem value="price_asc">Cena: no zēmākās</SelectItem>
-            <SelectItem value="price_desc">Cena: no augstākās</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-    </div>
+          {field.type === 'number' && (
+            <div className="pt-2">
+              <Slider 
+                defaultValue={[0]} 
+                max={1000} 
+                step={1}
+                onValueCommit={(value) => updateFilters(field.name, value[0].toString())}
+              />
+            </div>
+          )}
+        </div>
+      ))}
+    </motion.div>
   );
 }
