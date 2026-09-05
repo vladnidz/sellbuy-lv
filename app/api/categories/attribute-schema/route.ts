@@ -1,10 +1,13 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const categoryParam = searchParams.get('category');
+  
   const filePath = path.join(process.cwd(), 'SellBuy-lv-Category-Taxonomy.md');
   const fileContent = fs.readFileSync(filePath, 'utf-8');
   
@@ -16,7 +19,7 @@ export async function GET() {
     if (line.startsWith('## ')) {
       currentCategory = line.replace('## ', '').trim();
       categories[currentCategory] = [];
-    } else if (line.startsWith('- ')) {
+    } else if (line.startsWith('- ') && currentCategory) {
       const parts = line.replace('- ', '').split(':');
       if (parts.length === 2) {
         const name = parts[0].trim();
@@ -46,6 +49,14 @@ export async function GET() {
       }
     }
   });
+
+  if (categoryParam) {
+    const category = Object.keys(categories).find(c => c.toLowerCase() === categoryParam.toLowerCase());
+    if (category) {
+      return NextResponse.json(categories[category]);
+    }
+    return NextResponse.json({ error: 'Category not found' }, { status: 404 });
+  }
 
   return NextResponse.json(categories);
 }
