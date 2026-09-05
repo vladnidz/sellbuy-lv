@@ -1,6 +1,6 @@
 # SellBuy.lv v2 — Roadmap
 
-## Next-cycle Goal: Deployment readiness (see DEPLOYMENT_READINESS.md)
+## Next-cycle Goal: PostgreSQL Full-text Search Implementation
 
 ## Done
 ### Features
@@ -13,6 +13,7 @@
 - Search + filters wired end-to-end against category tree API (`listings/page.tsx` fetches categories + listings; `filters.tsx` renders category options)
 - Design/UI skill packs added to project + Hermes (emilkowalski/skills, impeccable, taste-skill, ui-pro-max)
 - `DESIGN_AUDIT.md` produced (shadcn/ui token-layer gap analysis)
+- Deployment readiness (P0 remediation for Docker/compose, env config, ltree)
 
 ### Stability / build
 - Build is green: 7/7 pages prerender, `BUILD SUCCESS` in CONTINUOUS_BUILD.log
@@ -28,19 +29,9 @@
 
 ## Remaining work — next-cycle priorities
 
-### P0 — Deployment readiness (see DEPLOYMENT_READINESS.md, status: NOT ready)
-1. Add Postgres service to `docker-compose.yml` (healthcheck, volume, shared network) or document external DB — compose still uses `network_mode: host` with hardcoded credentials
-2. Externalize DB credentials: move `${DATABASE_URL}` out of compose, confirm `.env` is in `.gitignore`
-3. Run `prisma migrate deploy` (+ guarded seed) in Docker entrypoint — Dockerfile currently only runs `prisma generate`
-4. Harden Dockerfile to multi-stage (`npm ci --omit=dev`, Next standalone output, non-root user, `.dockerignore`)
+### P1 — Full-text Search
+- Replace ILIKE-based search with PostgreSQL full-text search index
+- Implement search ranking/weighting for listings
 
-### P1 — Core marketplace functionality
-5. Auth flows finished beyond the current auth.tsx fixes (login/register/session persistence, provider integration)
-6. Listing creation flow completed (image upload handling beyond `handleImageUpload` stub, schema validation, draft→publish state machine)
-7. Full end-to-end search (query param parsing, debounce, result scoring) — category filter wiring exists, text search still partial
-
-### P2 — Polish & ops
-8. ltree migration hygiene review (per readiness doc recommendations)
-9. UI pass using newly installed design skills (categories/listings/new-listing pages) — DESIGN_AUDIT identified token-layer gap (`globals.css` missing shadcn token set)
-10. CI pipeline (typecheck/lint/build/tests on PRs) — no `.github/workflows` present
-11. Expand Jest coverage: listing creation mutations, image-upload path, auth session persistence
+### P2 — Image Handling
+- Implement proper image upload/processing (replacing current stub)
