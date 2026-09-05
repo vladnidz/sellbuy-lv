@@ -24455,3 +24455,165 @@ Traceback (most recent call last):
   File "/usr/local/lib/hermes-agent/cli.py", line 19823, in _signal_handler_q
     raise KeyboardInterrupt()
 KeyboardInterrupt
+[main 3e563fd] feat(agency): crew cycle 2026-09-05_17:27
+ 7 files changed, 2175 insertions(+), 49 deletions(-)
+ create mode 100644 docs/architecture/data-schema.md
+ create mode 100644 docs/functional/categories.md
+ create mode 100644 docs/functional/chat.md
+error: cannot pull with rebase: You have unstaged changes.
+error: Please commit or stash them.
+To https://github.com/vladnidz/sellbuy-lv.git
+   9f182e8..3e563fd  main -> main
+=== Sat  5 Sep 17:27:18 +03 2026 Crew cycle complete ===
+
+> sellbuy@0.1.0 build
+> rm -rf .next && prisma generate && next build --webpack
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+
+✔ Generated Prisma Client (v7.10.0) to ./node_modules/@prisma/client in 2.27s
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+▲ Next.js 16.3.1 (webpack)
+- Environments: .env
+⚠ Invalid next.config.ts options detected: 
+⚠     Unrecognized key(s) in object: 'turbo' at "experimental"
+⚠ See more info here: https://nextjs.org/docs/messages/invalid-next-config
+⚠ Warning: Next.js ignored package-lock.json in /home/shadow3/projects because it is outside the current Git repository (/home/shadow3/projects/sellbuy-v2).
+ To use this directory, set `outputFileTracingRoot` in your Next.js config.
+
+✓ Running next.config.ts took 210ms
+- Experiments (use with caution):
+  ? turbo (invalid experimental key)
+
+  Creating an optimized production build ...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 2/3...
+
+
+Retrying 2/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+✓ Compiled successfully in 94s
+  Running TypeScript ...
+components/ui/label.tsx(4,20): error TS2307: Cannot find module 'cn' or its corresponding type declarations.
+components/ui/slider.tsx(2,20): error TS2307: Cannot find module 'cn' or its corresponding type declarations.
+next.config.ts(12,5): error TS2353: Object literal may only specify known properties, and 'turbo' does not exist in type 'ExperimentalConfig'.
+Failed to type check.
+
+=== Sat  5 Sep 18:15:04 +03 2026 Starting agency crew cycle ===
+From https://github.com/vladnidz/sellbuy-lv
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+
+> sellbuy@0.1.0 build
+> rm -rf .next && prisma generate && next build --webpack
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+
+✔ Generated Prisma Client (v7.10.0) to ./node_modules/@prisma/client in 1.45s
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+▲ Next.js 16.3.1 (webpack)
+- Environments: .env
+⚠ Invalid next.config.ts options detected: 
+⚠     Unrecognized key(s) in object: 'turbo' at "experimental"
+⚠ See more info here: https://nextjs.org/docs/messages/invalid-next-config
+⚠ Warning: Next.js ignored package-lock.json in /home/shadow3/projects because it is outside the current Git repository (/home/shadow3/projects/sellbuy-v2).
+ To use this directory, set `outputFileTracingRoot` in your Next.js config.
+
+✓ Running next.config.ts took 400ms
+- Experiments (use with caution):
+  ? turbo (invalid experimental key)
+
+  Creating an optimized production build ...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+✓ Compiled successfully in 87s
+  Running TypeScript ...
+next.config.ts(12,5): error TS2353: Object literal may only specify known properties, and 'turbo' does not exist in type 'ExperimentalConfig'.
+Failed to type check.
+
+=== BUILD FAILED — dispatching reality-checker ===
+Warning: Unknown toolsets: agency_agents
+Query: Use agency-agents-router: agency_agents_load 'testing-reality-checker', 
+then act as that specialist. TASK: Build failed. Read tail of 
+CONTINUOUS_BUILD.log, diagnose root cause, apply minimal fix, commit. Project 
+dir: /home/shadow3/projects/sellbuy-v2
+Initializing agent...
+────────────────────────────────────────
+
+  ┊ 📚 preparing skill_view…
+  ┊ 🐍 preparing execute_code…
+  ┊ 📚 skill     agency-agents-router  0.6s [Skill 'agency-agents-router' not found.]
+  ┊ 🐍 exec      from hermes_tools import read_file, terminal  5.1s
+  ┊ 💻 preparing terminal…
+  ┊ 💻 $         ls -F /home/shadow3/projects/sellbuy-v2  0.2s
+  ┊ 💻 preparing terminal…
+  ┊ 💻 $         tail -n 50 /home/shadow3/projects/sellbuy-v2/CONTINUOUS_BUILD.log  0.3s
+⚡ Interrupted during API call.
+Traceback (most recent call last):
+  File "/usr/local/lib/hermes-agent/venv/bin/hermes", line 10, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/hermes-agent/hermes_cli/main.py", line 11742, in main
+    if _try_fast_chat_launch():
+       ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/hermes-agent/hermes_cli/main.py", line 11353, in _try_fast_chat_launch
+    cmd_chat(args)
+  File "/usr/local/lib/hermes-agent/hermes_cli/main.py", line 2886, in cmd_chat
+    cli_main(**kwargs)
+  File "/usr/local/lib/hermes-agent/cli.py", line 20056, in main
+    cli.chat(query, images=single_query_images or None)
+  File "/usr/local/lib/hermes-agent/cli.py", line 15530, in chat
+    interrupt_msg = self._interrupt_queue.get(timeout=0.1)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/share/uv/python/cpython-3.11.16-linux-aarch64-gnu/lib/python3.11/queue.py", line 180, in get
+    self.not_empty.wait(remaining)
+  File "/usr/local/share/uv/python/cpython-3.11.16-linux-aarch64-gnu/lib/python3.11/threading.py", line 331, in wait
+    gotit = waiter.acquire(True, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/hermes-agent/cli.py", line 19823, in _signal_handler_q
+    raise KeyboardInterrupt()
+KeyboardInterrupt
