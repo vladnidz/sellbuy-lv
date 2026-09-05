@@ -1,9 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Emit a self-contained server bundle (.next/standalone) for the
-  // multi-stage Docker runner image.
-  output: "standalone",
+  // Use static export - reliable on Vercel, no serverless function issues
+  output: "export",
+  // Required for static export with images
+  images: {
+    unoptimized: true,
+  },
 };
 
 export default nextConfig;
