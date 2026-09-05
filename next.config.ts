@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
+  // Force webpack for production builds to avoid Turbopack CSS issues with Tailwind v3
+  experimental: {
+    turbo: false,
+  },
 };
 
 export default nextConfig;
