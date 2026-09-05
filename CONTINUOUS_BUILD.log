@@ -23685,3 +23685,773 @@ Traceback (most recent call last):
   File "/usr/local/lib/hermes-agent/cli.py", line 19823, in _signal_handler_q
     raise KeyboardInterrupt()
 KeyboardInterrupt
+[main 9f182e8] feat(agency): crew cycle 2026-09-05_16:29
+ 8 files changed, 608 insertions(+), 128 deletions(-)
+ create mode 100644 .hermes/agent-docs/BUILD_GARDRAILS.md
+ create mode 100644 .hermes/agent-docs/PROJECT_CONTEXT.md
+ create mode 100644 .hermes/agent-state.json
+error: cannot pull with rebase: You have unstaged changes.
+error: Please commit or stash them.
+To https://github.com/vladnidz/sellbuy-lv.git
+   8c09591..9f182e8  main -> main
+=== Sat  5 Sep 16:29:21 +03 2026 Crew cycle complete ===
+
+> sellbuy@0.1.0 build
+> rm -rf .next && prisma generate && next build --webpack
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+
+✔ Generated Prisma Client (v7.10.0) to ./node_modules/@prisma/client in 1.34s
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+▲ Next.js 16.3.1 (webpack)
+- Environments: .env
+⚠ Invalid next.config.ts options detected: 
+⚠     Unrecognized key(s) in object: 'turbo' at "experimental"
+⚠ See more info here: https://nextjs.org/docs/messages/invalid-next-config
+⚠ Warning: Next.js ignored package-lock.json in /home/shadow3/projects because it is outside the current Git repository (/home/shadow3/projects/sellbuy-v2).
+ To use this directory, set `outputFileTracingRoot` in your Next.js config.
+
+✓ Running next.config.ts took 345ms
+- Experiments (use with caution):
+  ? turbo (invalid experimental key)
+
+  Creating an optimized production build ...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 2/3...
+
+
+Retrying 2/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+✓ Compiled successfully in 88s
+  Running TypeScript ...
+__tests__/__diag__/mock-diag.test.ts(3,1): error TS2582: Cannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/__diag__/mock-diag.test.ts(4,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/__diag__/mock-diag.test.ts(11,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-id.test.ts(28,36): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-categories-id.test.ts(56,1): error TS2582: Cannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-categories-id.test.ts(57,3): error TS2304: Cannot find name 'beforeEach'.
+__tests__/api-categories-id.test.ts(58,5): error TS2304: Cannot find name 'jest'.
+__tests__/api-categories-id.test.ts(61,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-categories-id.test.ts(66,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-id.test.ts(67,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-id.test.ts(74,50): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-categories-id.test.ts(75,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-id.test.ts(76,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-id.test.ts(79,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-categories-id.test.ts(84,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-id.test.ts(85,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-id.test.ts(87,50): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-categories-id.test.ts(88,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-id.test.ts(91,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-categories-id.test.ts(96,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-id.test.ts(97,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-id.test.ts(98,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-id.test.ts(102,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-id.test.ts(105,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-categories-id.test.ts(110,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-id.test.ts(111,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-id.test.ts(114,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-categories-id.test.ts(117,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-tree.test.ts(9,1): error TS2304: Cannot find name 'jest'.
+__tests__/api-categories-tree.test.ts(10,20): error TS2304: Cannot find name 'jest'.
+__tests__/api-categories-tree.test.ts(39,1): error TS2582: Cannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-categories-tree.test.ts(40,3): error TS2304: Cannot find name 'beforeEach'.
+__tests__/api-categories-tree.test.ts(41,5): error TS2304: Cannot find name 'jest'.
+__tests__/api-categories-tree.test.ts(44,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-categories-tree.test.ts(45,26): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-categories-tree.test.ts(51,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-tree.test.ts(52,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-tree.test.ts(53,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-tree.test.ts(56,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-tree.test.ts(60,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-tree.test.ts(61,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-tree.test.ts(68,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-categories-tree.test.ts(81,26): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-categories-tree.test.ts(86,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-tree.test.ts(89,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-categories-tree.test.ts(94,26): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-categories-tree.test.ts(99,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-tree.test.ts(102,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-categories-tree.test.ts(103,17): error TS2304: Cannot find name 'jest'.
+__tests__/api-categories-tree.test.ts(104,26): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-categories-tree.test.ts(107,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories-tree.test.ts(108,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories.test.ts(42,1): error TS2582: Cannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-categories.test.ts(43,3): error TS2304: Cannot find name 'beforeEach'.
+__tests__/api-categories.test.ts(44,5): error TS2304: Cannot find name 'jest'.
+__tests__/api-categories.test.ts(47,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-categories.test.ts(50,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories.test.ts(51,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories.test.ts(54,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-categories.test.ts(55,26): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-categories.test.ts(59,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories.test.ts(60,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories.test.ts(61,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories.test.ts(62,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories.test.ts(69,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-categories.test.ts(71,26): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-categories.test.ts(75,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories.test.ts(76,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories.test.ts(77,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories.test.ts(79,45): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-categories.test.ts(80,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories.test.ts(83,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-categories.test.ts(84,26): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-categories.test.ts(90,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories.test.ts(91,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories.test.ts(92,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories.test.ts(95,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-categories.test.ts(96,26): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-categories.test.ts(100,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories.test.ts(102,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-categories.test.ts(106,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings-id.test.ts(21,1): error TS2582: Cannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-listings-id.test.ts(22,3): error TS2304: Cannot find name 'beforeEach'.
+__tests__/api-listings-id.test.ts(23,5): error TS2304: Cannot find name 'jest'.
+__tests__/api-listings-id.test.ts(26,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-listings-id.test.ts(28,35): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-listings-id.test.ts(34,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings-id.test.ts(35,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings-id.test.ts(41,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings-id.test.ts(50,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-listings-id.test.ts(51,35): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-listings-id.test.ts(57,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings-id.test.ts(58,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings-id.test.ts(62,1): error TS2582: Cannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-listings-id.test.ts(63,3): error TS2304: Cannot find name 'beforeEach'.
+__tests__/api-listings-id.test.ts(64,5): error TS2304: Cannot find name 'jest'.
+__tests__/api-listings-id.test.ts(67,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-listings-id.test.ts(68,35): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-listings-id.test.ts(71,31): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-listings-id.test.ts(81,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings-id.test.ts(82,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings-id.test.ts(83,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings-id.test.ts(88,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-listings-id.test.ts(89,35): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-listings-id.test.ts(97,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings-id.test.ts(98,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings-id.test.ts(99,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(22,31): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-listings.test.ts(25,28): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-listings.test.ts(33,1): error TS2304: Cannot find name 'beforeEach'.
+__tests__/api-listings.test.ts(34,3): error TS2304: Cannot find name 'jest'.
+__tests__/api-listings.test.ts(38,1): error TS2582: Cannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-listings.test.ts(39,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-listings.test.ts(43,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(44,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(45,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(48,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-listings.test.ts(50,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(51,7): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(55,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(56,7): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(60,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(61,7): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(65,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(66,7): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(70,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-listings.test.ts(71,26): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-listings.test.ts(76,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(77,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(77,33): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-listings.test.ts(79,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(80,7): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(81,16): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(88,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-listings.test.ts(89,26): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-listings.test.ts(93,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(94,7): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(95,16): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(100,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-listings.test.ts(103,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(104,7): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(109,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(112,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-listings.test.ts(113,33): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-listings.test.ts(114,30): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-listings.test.ts(119,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(120,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(123,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/api-listings.test.ts(124,17): error TS2304: Cannot find name 'jest'.
+__tests__/api-listings.test.ts(125,33): error TS2503: Cannot find namespace 'jest'.
+__tests__/api-listings.test.ts(128,5): error TS2304: Cannot find name 'expect'.
+__tests__/api-listings.test.ts(129,5): error TS2304: Cannot find name 'expect'.
+__tests__/category-card.test.tsx(7,32): error TS2307: Cannot find module '@testing-library/react' or its corresponding type declarations.
+__tests__/category-card.test.tsx(11,1): error TS2304: Cannot find name 'jest'.
+__tests__/category-card.test.tsx(21,1): error TS2304: Cannot find name 'jest'.
+__tests__/category-card.test.tsx(42,1): error TS2582: Cannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/category-card.test.tsx(43,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/category-card.test.tsx(45,5): error TS2304: Cannot find name 'expect'.
+__tests__/category-card.test.tsx(48,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/category-card.test.tsx(50,5): error TS2304: Cannot find name 'expect'.
+__tests__/category-card.test.tsx(53,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/category-card.test.tsx(56,5): error TS2304: Cannot find name 'expect'.
+__tests__/category-card.test.tsx(59,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/category-card.test.tsx(73,5): error TS2304: Cannot find name 'expect'.
+__tests__/category-card.test.tsx(74,5): error TS2304: Cannot find name 'expect'.
+__tests__/category-card.test.tsx(77,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/category-card.test.tsx(80,5): error TS2304: Cannot find name 'expect'.
+__tests__/diag.test.ts(6,1): error TS2582: Cannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/diag.test.ts(7,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/diag.test.ts(18,5): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(11,1): error TS2304: Cannot find name 'jest'.
+__tests__/listings-page.test.tsx(13,15): error TS2304: Cannot find name 'jest'.
+__tests__/listings-page.test.tsx(14,17): error TS2304: Cannot find name 'jest'.
+__tests__/listings-page.test.tsx(15,16): error TS2304: Cannot find name 'jest'.
+__tests__/listings-page.test.tsx(16,12): error TS2304: Cannot find name 'jest'.
+__tests__/listings-page.test.tsx(17,13): error TS2304: Cannot find name 'jest'.
+__tests__/listings-page.test.tsx(18,13): error TS2304: Cannot find name 'jest'.
+__tests__/listings-page.test.tsx(19,13): error TS2304: Cannot find name 'jest'.
+__tests__/listings-page.test.tsx(24,29): error TS2304: Cannot find name 'jest'.
+__tests__/listings-page.test.tsx(24,52): error TS2304: Cannot find name 'jest'.
+__tests__/listings-page.test.tsx(25,18): error TS2304: Cannot find name 'jest'.
+__tests__/listings-page.test.tsx(26,21): error TS2304: Cannot find name 'jest'.
+__tests__/listings-page.test.tsx(47,31): error TS2503: Cannot find namespace 'jest'.
+__tests__/listings-page.test.tsx(50,28): error TS2503: Cannot find namespace 'jest'.
+__tests__/listings-page.test.tsx(51,32): error TS2503: Cannot find namespace 'jest'.
+__tests__/listings-page.test.tsx(54,24): error TS2503: Cannot find namespace 'jest'.
+__tests__/listings-page.test.tsx(61,1): error TS2304: Cannot find name 'beforeEach'.
+__tests__/listings-page.test.tsx(62,3): error TS2304: Cannot find name 'jest'.
+__tests__/listings-page.test.tsx(66,1): error TS2582: Cannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/listings-page.test.tsx(67,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/listings-page.test.tsx(70,5): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(71,7): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(80,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/listings-page.test.tsx(83,45): error TS2503: Cannot find namespace 'jest'.
+__tests__/listings-page.test.tsx(84,5): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(90,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/listings-page.test.tsx(93,5): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(94,7): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(100,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/listings-page.test.tsx(102,5): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(103,7): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(107,5): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(108,7): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(112,5): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(113,7): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(117,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/listings-page.test.tsx(120,5): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(121,7): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(125,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/listings-page.test.tsx(128,5): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(129,5): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(130,7): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(136,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/listings-page.test.tsx(137,26): error TS2503: Cannot find namespace 'jest'.
+__tests__/listings-page.test.tsx(141,5): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(142,7): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(149,1): error TS2582: Cannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/listings-page.test.tsx(150,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/listings-page.test.tsx(154,5): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(155,5): error TS2304: Cannot find name 'expect'.
+__tests__/listings-page.test.tsx(158,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/listings-page.test.tsx(159,33): error TS2503: Cannot find namespace 'jest'.
+__tests__/listings-page.test.tsx(160,30): error TS2503: Cannot find namespace 'jest'.
+__tests__/listings-page.test.tsx(165,5): error TS2304: Cannot find name 'expect'.
+__tests__/mocks/prisma.ts(9,14): error TS2304: Cannot find name 'jest'.
+__tests__/mocks/prisma.ts(10,16): error TS2304: Cannot find name 'jest'.
+__tests__/mocks/prisma.ts(11,17): error TS2304: Cannot find name 'jest'.
+__tests__/mocks/prisma.ts(17,15): error TS2304: Cannot find name 'jest'.
+__tests__/mocks/prisma.ts(18,17): error TS2304: Cannot find name 'jest'.
+__tests__/mocks/prisma.ts(21,15): error TS2304: Cannot find name 'jest'.
+__tests__/mocks/prisma.ts(22,17): error TS2304: Cannot find name 'jest'.
+__tests__/mocks/prisma.ts(23,12): error TS2304: Cannot find name 'jest'.
+__tests__/mocks/prisma.ts(24,13): error TS2304: Cannot find name 'jest'.
+__tests__/mocks/prisma.ts(25,13): error TS2304: Cannot find name 'jest'.
+__tests__/mocks/prisma.ts(26,13): error TS2304: Cannot find name 'jest'.
+__tests__/mocks/prisma.ts(29,17): error TS2304: Cannot find name 'jest'.
+__tests__/probe.test.ts(4,1): error TS2304: Cannot find name 'jest'.
+__tests__/probe.test.ts(5,19): error TS2304: Cannot find name 'jest'.
+__tests__/probe.test.ts(10,1): error TS2582: Cannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/probe.test.ts(11,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+__tests__/probe.test.ts(14,5): error TS2304: Cannot find name 'expect'.
+components/faceted-filter-sidebar.tsx(58,43): error TS7006: Parameter 'checked' implicitly has an 'any' type.
+components/faceted-filter-sidebar.tsx(71,42): error TS7006: Parameter 'val' implicitly has an 'any' type.
+components/faceted-filter-sidebar.tsx(80,43): error TS7006: Parameter 'checked' implicitly has an 'any' type.
+components/ui/checkbox.tsx(3,47): error TS2307: Cannot find module '@base-ui/react/checkbox' or its corresponding type declarations.
+components/ui/checkbox.tsx(4,20): error TS2307: Cannot find module 'cn' or its corresponding type declarations.
+components/ui/dropdown-menu.tsx(4,39): error TS2307: Cannot find module '@base-ui/react/menu' or its corresponding type declarations.
+components/ui/label.tsx(4,20): error TS2307: Cannot find module 'cn' or its corresponding type declarations.
+components/ui/slider.tsx(1,43): error TS2307: Cannot find module '@base-ui/react/slider' or its corresponding type declarations.
+components/ui/slider.tsx(2,20): error TS2307: Cannot find module 'cn' or its corresponding type declarations.
+jest.setup.ts(11,14): error TS2304: Cannot find name 'jest'.
+jest.setup.ts(12,16): error TS2304: Cannot find name 'jest'.
+jest.setup.ts(13,17): error TS2304: Cannot find name 'jest'.
+jest.setup.ts(19,15): error TS2304: Cannot find name 'jest'.
+jest.setup.ts(20,17): error TS2304: Cannot find name 'jest'.
+jest.setup.ts(23,15): error TS2304: Cannot find name 'jest'.
+jest.setup.ts(24,17): error TS2304: Cannot find name 'jest'.
+jest.setup.ts(25,12): error TS2304: Cannot find name 'jest'.
+jest.setup.ts(26,13): error TS2304: Cannot find name 'jest'.
+jest.setup.ts(27,13): error TS2304: Cannot find name 'jest'.
+jest.setup.ts(28,13): error TS2304: Cannot find name 'jest'.
+jest.setup.ts(31,17): error TS2304: Cannot find name 'jest'.
+jest.setup.ts(34,1): error TS2304: Cannot find name 'jest'.
+jest.setup.ts(54,12): error TS2304: Cannot find name 'jest'.
+jest.setup.ts(54,42): error TS7006: Parameter 'query' implicitly has an 'any' type.
+jest.setup.ts(58,20): error TS2304: Cannot find name 'jest'.
+jest.setup.ts(59,23): error TS2304: Cannot find name 'jest'.
+jest.setup.ts(60,25): error TS2304: Cannot find name 'jest'.
+jest.setup.ts(61,28): error TS2304: Cannot find name 'jest'.
+jest.setup.ts(62,22): error TS2304: Cannot find name 'jest'.
+next.config.ts(12,5): error TS2353: Object literal may only specify known properties, and 'turbo' does not exist in type 'ExperimentalConfig'.
+Failed to type check.
+
+
+> sellbuy@0.1.0 build
+> rm -rf .next && prisma generate && next build --webpack
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+
+✔ Generated Prisma Client (v7.10.0) to ./node_modules/@prisma/client in 1.31s
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+▲ Next.js 16.3.1 (webpack)
+- Environments: .env
+⚠ Invalid next.config.ts options detected: 
+⚠     Unrecognized key(s) in object: 'turbo' at "experimental"
+⚠ See more info here: https://nextjs.org/docs/messages/invalid-next-config
+⚠ Warning: Next.js ignored package-lock.json in /home/shadow3/projects because it is outside the current Git repository (/home/shadow3/projects/sellbuy-v2).
+ To use this directory, set `outputFileTracingRoot` in your Next.js config.
+
+✓ Running next.config.ts took 298ms
+- Experiments (use with caution):
+  ? turbo (invalid experimental key)
+
+  Creating an optimized production build ...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 2/3...
+
+
+Retrying 2/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 2/3...
+
+
+Retrying 3/3...
+✓ Compiled successfully in 87s
+  Running TypeScript ...
+__tests__/category-card.test.tsx(7,32): error TS2307: Cannot find module '@testing-library/react' or its corresponding type declarations.
+__tests__/category-card.test.tsx(45,45): error TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<any>'.
+__tests__/category-card.test.tsx(50,36): error TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<any>'.
+__tests__/category-card.test.tsx(56,35): error TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<any>'.
+__tests__/category-card.test.tsx(73,36): error TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<any>'.
+__tests__/category-card.test.tsx(74,86): error TS2339: Property 'toBeInTheDocument' does not exist on type 'JestMatchers<any>'.
+__tests__/category-card.test.tsx(80,18): error TS2339: Property 'toHaveAttribute' does not exist on type 'JestMatchers<any>'.
+components/faceted-filter-sidebar.tsx(58,43): error TS7006: Parameter 'checked' implicitly has an 'any' type.
+components/faceted-filter-sidebar.tsx(71,42): error TS7006: Parameter 'val' implicitly has an 'any' type.
+components/faceted-filter-sidebar.tsx(80,43): error TS7006: Parameter 'checked' implicitly has an 'any' type.
+components/ui/checkbox.tsx(3,47): error TS2307: Cannot find module '@base-ui/react/checkbox' or its corresponding type declarations.
+components/ui/checkbox.tsx(4,20): error TS2307: Cannot find module 'cn' or its corresponding type declarations.
+components/ui/dropdown-menu.tsx(4,39): error TS2307: Cannot find module '@base-ui/react/menu' or its corresponding type declarations.
+components/ui/label.tsx(4,20): error TS2307: Cannot find module 'cn' or its corresponding type declarations.
+components/ui/slider.tsx(1,43): error TS2307: Cannot find module '@base-ui/react/slider' or its corresponding type declarations.
+components/ui/slider.tsx(2,20): error TS2307: Cannot find module 'cn' or its corresponding type declarations.
+next.config.ts(12,5): error TS2353: Object literal may only specify known properties, and 'turbo' does not exist in type 'ExperimentalConfig'.
+Failed to type check.
+
+
+> sellbuy@0.1.0 build
+> rm -rf .next && prisma generate && next build --webpack
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+
+✔ Generated Prisma Client (v7.10.0) to ./node_modules/@prisma/client in 1.46s
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+▲ Next.js 16.3.1 (webpack)
+- Environments: .env
+⚠ Invalid next.config.ts options detected: 
+⚠     Unrecognized key(s) in object: 'turbo' at "experimental"
+⚠ See more info here: https://nextjs.org/docs/messages/invalid-next-config
+⚠ Warning: Next.js ignored package-lock.json in /home/shadow3/projects because it is outside the current Git repository (/home/shadow3/projects/sellbuy-v2).
+ To use this directory, set `outputFileTracingRoot` in your Next.js config.
+
+✓ Running next.config.ts took 421ms
+- Experiments (use with caution):
+  ? turbo (invalid experimental key)
+
+  Creating an optimized production build ...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 2/3...
+
+
+Retrying 2/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+✓ Compiled successfully in 90s
+  Running TypeScript ...
+components/faceted-filter-sidebar.tsx(58,43): error TS7006: Parameter 'checked' implicitly has an 'any' type.
+components/faceted-filter-sidebar.tsx(71,42): error TS7006: Parameter 'val' implicitly has an 'any' type.
+components/faceted-filter-sidebar.tsx(80,43): error TS7006: Parameter 'checked' implicitly has an 'any' type.
+components/ui/checkbox.tsx(3,47): error TS2307: Cannot find module '@base-ui/react/checkbox' or its corresponding type declarations.
+components/ui/checkbox.tsx(4,20): error TS2307: Cannot find module 'cn' or its corresponding type declarations.
+components/ui/dropdown-menu.tsx(4,39): error TS2307: Cannot find module '@base-ui/react/menu' or its corresponding type declarations.
+components/ui/label.tsx(4,20): error TS2307: Cannot find module 'cn' or its corresponding type declarations.
+components/ui/slider.tsx(1,43): error TS2307: Cannot find module '@base-ui/react/slider' or its corresponding type declarations.
+components/ui/slider.tsx(2,20): error TS2307: Cannot find module 'cn' or its corresponding type declarations.
+next.config.ts(12,5): error TS2353: Object literal may only specify known properties, and 'turbo' does not exist in type 'ExperimentalConfig'.
+Failed to type check.
+
+=== Sat  5 Sep 17:15:02 +03 2026 Starting agency crew cycle ===
+From https://github.com/vladnidz/sellbuy-lv
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+
+> sellbuy@0.1.0 build
+> rm -rf .next && prisma generate && next build --webpack
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+
+✔ Generated Prisma Client (v7.10.0) to ./node_modules/@prisma/client in 1.03s
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+▲ Next.js 16.3.1 (webpack)
+- Environments: .env
+⚠ Invalid next.config.ts options detected: 
+⚠     Unrecognized key(s) in object: 'turbo' at "experimental"
+⚠ See more info here: https://nextjs.org/docs/messages/invalid-next-config
+⚠ Warning: Next.js ignored package-lock.json in /home/shadow3/projects because it is outside the current Git repository (/home/shadow3/projects/sellbuy-v2).
+ To use this directory, set `outputFileTracingRoot` in your Next.js config.
+
+✓ Running next.config.ts took 601ms
+- Experiments (use with caution):
+  ? turbo (invalid experimental key)
+
+  Creating an optimized production build ...
+
+
+Retrying 1/3...
+
+
+Retrying 1/3...
+
+
+Retrying 2/3...
+
+
+Retrying 2/3...
+
+
+Retrying 3/3...
+
+
+Retrying 3/3...
+AggregateError: 
+    at ignore-listed frames {
+  code: 'ETIMEDOUT',
+  [errors]: [
+    Error: connect ETIMEDOUT 142.250.137.95:443
+        at <unknown> (Error: connect ETIMEDOUT 142.250.137.95:443) {
+      errno: -110,
+      code: 'ETIMEDOUT',
+      syscall: 'connect',
+      address: '142.250.137.95',
+      port: 443
+    },
+    Error: connect ENETUNREACH 2607:f8b0:4023:1803::5f:443 - Local (:::0)
+        at ignore-listed frames {
+      errno: -101,
+      code: 'ENETUNREACH',
+      syscall: 'connect',
+      address: '2607:f8b0:4023:1803::5f',
+      port: 443
+    }
+  ]
+}
+AggregateError: 
+    at ignore-listed frames {
+  code: 'ETIMEDOUT',
+  [errors]: [
+    Error: connect ETIMEDOUT 142.250.137.95:443
+        at <unknown> (Error: connect ETIMEDOUT 142.250.137.95:443) {
+      errno: -110,
+      code: 'ETIMEDOUT',
+      syscall: 'connect',
+      address: '142.250.137.95',
+      port: 443
+    },
+    Error: connect ENETUNREACH 2607:f8b0:4023:1803::5f:443 - Local (:::0)
+        at ignore-listed frames {
+      errno: -101,
+      code: 'ENETUNREACH',
+      syscall: 'connect',
+      address: '2607:f8b0:4023:1803::5f',
+      port: 443
+    }
+  ]
+}
+Failed to compile.
+
+app/layout.tsx
+`next/font` error:
+Failed to fetch `Geist` from Google Fonts.
+
+app/layout.tsx
+`next/font` error:
+Failed to fetch `Geist Mono` from Google Fonts.
+
+app/layout.tsx
+An error occurred in `next/font`.
+
+NextFontError: Failed to fetch `Geist` from Google Fonts.
+    at nextFontError (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/@next/font/dist/next-font-error.js:8:17)
+    at nextFontGoogleFontLoader (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/@next/font/dist/google/loader.js:97:49)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at runNextTicks (node:internal/process/task_queues:64:3)
+    at listOnTimeout (node:internal/timers:545:9)
+    at process.processTimers (node:internal/timers:519:7)
+    at async Span.traceAsyncFn (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/trace/trace.js:164:20)
+    at async /home/shadow3/projects/sellbuy-v2/node_modules/next/dist/build/webpack/loaders/next-font-loader/index.js:90:87
+    at async Span.traceAsyncFn (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/trace/trace.js:164:20)
+    at tryRunOrWebpackError (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/webpack/bundle5.js:29:316153)
+    at __webpack_require_module__ (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/webpack/bundle5.js:29:131548)
+    at __nested_webpack_require_161494__ (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/webpack/bundle5.js:29:130983)
+    at /home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/webpack/bundle5.js:29:131840
+    at symbolIterator (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/neo-async/async.js:1:14444)
+    at done (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/neo-async/async.js:1:14824)
+    at Hook.eval [as callAsync] (eval at create (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/webpack/bundle5.js:14:9222), <anonymous>:15:1)
+    at Hook.CALL_ASYNC_DELEGATE [as _callAsync] (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/webpack/bundle5.js:14:6376)
+    at /home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/webpack/bundle5.js:29:130703
+    at symbolIterator (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/neo-async/async.js:1:14402)
+-- inner error --
+NextFontError: Failed to fetch `Geist` from Google Fonts.
+    at nextFontError (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/@next/font/dist/next-font-error.js:8:17)
+    at nextFontGoogleFontLoader (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/@next/font/dist/google/loader.js:97:49)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at runNextTicks (node:internal/process/task_queues:64:3)
+    at listOnTimeout (node:internal/timers:545:9)
+    at process.processTimers (node:internal/timers:519:7)
+    at async Span.traceAsyncFn (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/trace/trace.js:164:20)
+    at async /home/shadow3/projects/sellbuy-v2/node_modules/next/dist/build/webpack/loaders/next-font-loader/index.js:90:87
+    at async Span.traceAsyncFn (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/trace/trace.js:164:20)
+    at Object.<anonymous> (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[15].oneOf[2].use[1]!/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/build/webpack/loaders/next-font-loader/index.js??ruleSet[1].rules[15].oneOf[2].use[2]!/home/shadow3/projects/sellbuy-v2/node_modules/next/font/google/target.css?{"path":"app/layout.tsx","import":"Geist","arguments":[{"variable":"--font-geist-sans","subsets":["latin"]}],"variableName":"geistSans"}:1:7)
+    at /home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/webpack/bundle5.js:29:962868
+    at Hook.eval [as call] (eval at create (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/webpack/bundle5.js:14:9000), <anonymous>:7:1)
+    at Hook.CALL_DELEGATE [as _call] (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/webpack/bundle5.js:14:6270)
+    at /home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/webpack/bundle5.js:29:131581
+    at tryRunOrWebpackError (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/webpack/bundle5.js:29:316107)
+    at __webpack_require_module__ (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/webpack/bundle5.js:29:131548)
+    at __nested_webpack_require_161494__ (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/webpack/bundle5.js:29:130983)
+    at /home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/webpack/bundle5.js:29:131840
+    at symbolIterator (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/neo-async/async.js:1:14444)
+
+Generated code for /home/shadow3/projects/sellbuy-v2/node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[15].oneOf[2].use[1]!/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/build/webpack/loaders/next-font-loader/index.js??ruleSet[1].rules[15].oneOf[2].use[2]!/home/shadow3/projects/sellbuy-v2/node_modules/next/font/google/target.css?{"path":"app/layout.tsx","import":"Geist","arguments":[{"variable":"--font-geist-sans","subsets":["latin"]}],"variableName":"geistSans"}
+1 | throw new Error("Module build failed (from ./node_modules/next/dist/build/webpack/loaders/next-font-loader/index.js):\nNextFontError: Failed to fetch `Geist` from Google Fonts.\n    at nextFontError (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/@next/font/dist/next-font-error.js:8:17)\n    at nextFontGoogleFontLoader (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/@next/font/dist/google/loader.js:97:49)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at runNextTicks (node:internal/process/task_queues:64:3)\n    at listOnTimeout (node:internal/timers:545:9)\n    at process.processTimers (node:internal/timers:519:7)\n    at async Span.traceAsyncFn (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/trace/trace.js:164:20)\n    at async /home/shadow3/projects/sellbuy-v2/node_modules/next/dist/build/webpack/loaders/next-font-loader/index.js:90:87\n    at async Span.traceAsyncFn (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/trace/trace.js:164:20)");
+
+app/layout.tsx
+An error occurred in `next/font`.
+
+NextFontError: Failed to fetch `Geist Mono` from Google Fonts.
+    at nextFontError (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/@next/font/dist/next-font-error.js:8:17)
+    at nextFontGoogleFontLoader (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/@next/font/dist/google/loader.js:97:49)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at runNextTicks (node:internal/process/task_queues:64:3)
+    at process.processTimers (node:internal/timers:516:9)
+    at async Span.traceAsyncFn (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/trace/trace.js:164:20)
+    at async /home/shadow3/projects/sellbuy-v2/node_modules/next/dist/build/webpack/loaders/next-font-loader/index.js:90:87
+    at async Span.traceAsyncFn (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/trace/trace.js:164:20)
+    at tryRunOrWebpackError (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/webpack/bundle5.js:29:316153)
+    at __webpack_require_module__ (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/webpack/bundle5.js:29:131548)
+    at __nested_webpack_require_161494__ (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/webpack/bundle5.js:29:130983)
+    at /home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/webpack/bundle5.js:29:131840
+    at symbolIterator (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/neo-async/async.js:1:14444)
+    at done (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/neo-async/async.js:1:14824)
+    at Hook.eval [as callAsync] (eval at create (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/webpack/bundle5.js:14:9222), <anonymous>:15:1)
+    at /home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/webpack/bundle5.js:29:130703
+    at symbolIterator (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/neo-async/async.js:1:14402)
+    at timesSync (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/neo-async/async.js:1:5027)
+-- inner error --
+NextFontError: Failed to fetch `Geist Mono` from Google Fonts.
+    at nextFontError (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/@next/font/dist/next-font-error.js:8:17)
+    at nextFontGoogleFontLoader (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/@next/font/dist/google/loader.js:97:49)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at runNextTicks (node:internal/process/task_queues:64:3)
+    at process.processTimers (node:internal/timers:516:9)
+    at async Span.traceAsyncFn (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/trace/trace.js:164:20)
+    at async /home/shadow3/projects/sellbuy-v2/node_modules/next/dist/build/webpack/loaders/next-font-loader/index.js:90:87
+    at async Span.traceAsyncFn (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/trace/trace.js:164:20)
+    at Object.<anonymous> (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[15].oneOf[2].use[1]!/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/build/webpack/loaders/next-font-loader/index.js??ruleSet[1].rules[15].oneOf[2].use[2]!/home/shadow3/projects/sellbuy-v2/node_modules/next/font/google/target.css?{"path":"app/layout.tsx","import":"Geist_Mono","arguments":[{"variable":"--font-geist-mono","subsets":["latin"]}],"variableName":"geistMono"}:1:7)
+    at /home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/webpack/bundle5.js:29:962868
+    at Hook.eval [as call] (eval at create (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/webpack/bundle5.js:14:9000), <anonymous>:7:1)
+    at /home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/webpack/bundle5.js:29:131581
+    at tryRunOrWebpackError (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/webpack/bundle5.js:29:316107)
+    at __webpack_require_module__ (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/webpack/bundle5.js:29:131548)
+    at __nested_webpack_require_161494__ (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/webpack/bundle5.js:29:130983)
+    at /home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/webpack/bundle5.js:29:131840
+    at symbolIterator (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/neo-async/async.js:1:14444)
+    at done (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/neo-async/async.js:1:14824)
+
+Generated code for /home/shadow3/projects/sellbuy-v2/node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[15].oneOf[2].use[1]!/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/build/webpack/loaders/next-font-loader/index.js??ruleSet[1].rules[15].oneOf[2].use[2]!/home/shadow3/projects/sellbuy-v2/node_modules/next/font/google/target.css?{"path":"app/layout.tsx","import":"Geist_Mono","arguments":[{"variable":"--font-geist-mono","subsets":["latin"]}],"variableName":"geistMono"}
+1 | throw new Error("Module build failed (from ./node_modules/next/dist/build/webpack/loaders/next-font-loader/index.js):\nNextFontError: Failed to fetch `Geist Mono` from Google Fonts.\n    at nextFontError (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/@next/font/dist/next-font-error.js:8:17)\n    at nextFontGoogleFontLoader (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/compiled/@next/font/dist/google/loader.js:97:49)\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at runNextTicks (node:internal/process/task_queues:64:3)\n    at process.processTimers (node:internal/timers:516:9)\n    at async Span.traceAsyncFn (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/trace/trace.js:164:20)\n    at async /home/shadow3/projects/sellbuy-v2/node_modules/next/dist/build/webpack/loaders/next-font-loader/index.js:90:87\n    at async Span.traceAsyncFn (/home/shadow3/projects/sellbuy-v2/node_modules/next/dist/trace/trace.js:164:20)");
+
+
+> Build failed because of webpack errors
+=== BUILD FAILED — dispatching reality-checker ===
+Warning: Unknown toolsets: agency_agents
+Query: Use agency-agents-router: agency_agents_load 'testing-reality-checker', 
+then act as that specialist. TASK: Build failed. Read tail of 
+CONTINUOUS_BUILD.log, diagnose root cause, apply minimal fix, commit. Project 
+dir: /home/shadow3/projects/sellbuy-v2
+Initializing agent...
+────────────────────────────────────────
+
+⚠ Auxiliary title generation failed: Request timed out.
+
+╭─ ⚕ Hermes ───────────────────────────────────────────────────────────────────╮
+⚠️  Response truncated — stream ended before completion
+⚠️  Response truncated — stream ended before completion
+⚡ Interrupted during API call.
+Traceback (most recent call last):
+  File "/usr/local/lib/hermes-agent/venv/bin/hermes", line 10, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/hermes-agent/hermes_cli/main.py", line 11742, in main
+    if _try_fast_chat_launch():
+       ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/hermes-agent/hermes_cli/main.py", line 11353, in _try_fast_chat_launch
+    cmd_chat(args)
+  File "/usr/local/lib/hermes-agent/hermes_cli/main.py", line 2886, in cmd_chat
+    cli_main(**kwargs)
+  File "/usr/local/lib/hermes-agent/cli.py", line 20056, in main
+    cli.chat(query, images=single_query_images or None)
+  File "/usr/local/lib/hermes-agent/cli.py", line 15530, in chat
+    interrupt_msg = self._interrupt_queue.get(timeout=0.1)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/share/uv/python/cpython-3.11.16-linux-aarch64-gnu/lib/python3.11/queue.py", line 180, in get
+    self.not_empty.wait(remaining)
+  File "/usr/local/share/uv/python/cpython-3.11.16-linux-aarch64-gnu/lib/python3.11/threading.py", line 331, in wait
+    gotit = waiter.acquire(True, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/hermes-agent/cli.py", line 19823, in _signal_handler_q
+    raise KeyboardInterrupt()
+KeyboardInterrupt
