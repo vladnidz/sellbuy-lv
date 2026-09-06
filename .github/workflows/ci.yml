@@ -25,8 +25,8 @@ jobs:
           --health-retries 10
 
     env:
-      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/sellbuy_test?schema=public
-      SHADOW_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/sellbuy_test?schema=shadow
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/sellbuy_test
+      SHADOW_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/sellbuy_shadow
 
     steps:
       - uses: actions/checkout@v4
@@ -44,8 +44,8 @@ jobs:
 
       - name: Create shadow database schema
         run: |
-          psql postgresql://postgres:postgres@localhost:5432/sellbuy_test -c "CREATE SCHEMA IF NOT EXISTS shadow;"
-          psql postgresql://postgres:postgres@localhost:5432/sellbuy_test -c "CREATE EXTENSION IF NOT EXISTS ltree;"
+          psql postgresql://postgres:postgres@localhost:5432/postgres -c "CREATE DATABASE sellbuy_shadow;"
+          psql postgresql://postgres:postgres@localhost:5432/sellbuy_shadow -c "CREATE EXTENSION IF NOT EXISTS ltree;"
 
       - name: Check migrations are in sync with schema
         run: |
