@@ -35,9 +35,9 @@ model Category {
 model Listing {
   id          String   @id @default(uuid())
   title       String
-  description String
+  description String @default("")
   price       Decimal
-  images      String[]
+  images      String[] @default([])
   city        String?
   attributes  Json?
   category    Category @relation(fields: [categoryId], references: [id])
