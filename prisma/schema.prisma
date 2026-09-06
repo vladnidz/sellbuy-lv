@@ -4,8 +4,9 @@ generator client {
 }
 
 datasource db {
-  provider   = "postgresql"
-  extensions = [ltree()]
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+  extensions        = [ltree()]
 }
 
 model User {
