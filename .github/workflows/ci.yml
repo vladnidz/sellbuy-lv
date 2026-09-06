@@ -26,6 +26,7 @@ jobs:
 
     env:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/sellbuy_test?schema=public
+      SHADOW_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/sellbuy_test?schema=shadow
 
     steps:
       - uses: actions/checkout@v4
