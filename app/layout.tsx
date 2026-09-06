@@ -1,12 +1,11 @@
-import { Geist } from "next/font/google";
+import type { Metadata } from "next";
 import "./globals.css";
 import { AuthProvider } from "@/app/lib/auth";
 import { BRAND, SITE_URL, buildAlternates } from "@/app/lib/seo";
 
-const geistSans = Geist({
+const geistSans = {
   variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -41,7 +40,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="lv"

@@ -69,11 +69,11 @@ export function ListingsFilters() {
 
           {field.type === 'number' && (
             <div className="pt-2">
-              <Slider 
-                defaultValue={[0]} 
-                max={1000} 
+              <Slider
+                defaultValue={[0]}
+                max={1000}
                 step={1}
-                onValueCommit={(value) => updateFilters(field.name, value[0].toString())}
+                onValueCommitted={(value: number | readonly number[]) => updateFilters(field.name, (Array.isArray(value) ? value[0] : value).toString())}
               />
             </div>
           )}
