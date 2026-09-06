@@ -45,7 +45,7 @@ jobs:
       - name: Create shadow database schema
         run: |
           psql postgresql://postgres:postgres@localhost:5432/sellbuy_test -c "CREATE SCHEMA IF NOT EXISTS shadow;"
-          psql postgresql://postgres:postgres@localhost:5432/sellbuy_test -c "CREATE EXTENSION IF NOT EXISTS ltree;"
+          psql postgresql://postgres:postgres@localhost:5432/sellbuy_test -c "CREATE EXTENSION IF NOT EXISTS ltree WITH SCHEMA public;"
 
       - name: Check migrations are in sync with schema
         run: |
