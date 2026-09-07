@@ -1,23 +1,9 @@
 
-/home/shadow3/projects/sellbuy-v2/__tests__/__diag__/mock-diag.test.ts
-  5:25  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
-
 /home/shadow3/projects/sellbuy-v2/__tests__/category-card.test.tsx
   16:35  warning  '_t' is defined but never used                @typescript-eslint/no-unused-vars
   16:39  warning  'key' is defined but never used               @typescript-eslint/no-unused-vars
   22:10  error    Component definition is missing display name  react/display-name
   54:13  warning  '_count' is assigned a value but never used   @typescript-eslint/no-unused-vars
-
-/home/shadow3/projects/sellbuy-v2/__tests__/mocks/prisma.ts
-   8:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
-  11:55  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
-
-/home/shadow3/projects/sellbuy-v2/__tests__/probe.test.ts
-  12:5  error  Unused eslint-disable directive (no problems were reported from 'no-console')
-
-/home/shadow3/projects/sellbuy-v2/app/api/categories/[id]/attribute-schema/route.ts
-  20:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
-  23:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
 
 /home/shadow3/projects/sellbuy-v2/app/api/listings/route.ts
   77:15  warning  'params' is assigned a value but never used  @typescript-eslint/no-unused-vars
@@ -61,18 +47,11 @@
 /home/shadow3/projects/sellbuy-v2/docker-entrypoint.js
   10:30  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
 
-/home/shadow3/projects/sellbuy-v2/jest.setup.ts
-  10:19  error  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
-  13:55  error  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
-  42:3   error  Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free  @typescript-eslint/ban-ts-comment
-  46:3   error  Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free  @typescript-eslint/ban-ts-comment
-
 /home/shadow3/projects/sellbuy-v2/prisma/seed.ts
   2:10  warning  'Prisma' is defined but never used  @typescript-eslint/no-unused-vars
 
 /home/shadow3/projects/sellbuy-v2/tailwind.config.ts
   78:13  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
 
-✖ 40 problems (18 errors, 22 warnings)
-  1 error and 0 warnings potentially fixable with the `--fix` option.
+✖ 30 problems (8 errors, 22 warnings)
 
