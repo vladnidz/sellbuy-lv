@@ -7,7 +7,7 @@
 // inherited; SIGTERM/SIGINT received by this process are forwarded to it so
 // container stops shut down the Next server gracefully.
 
-const { spawnSync, spawn } = require('child_process');
+import { spawnSync, spawn } from 'child_process';
 
 function run(cmd, args) {
   console.log(`[entrypoint] ${cmd} ${args.join(' ')}`);
