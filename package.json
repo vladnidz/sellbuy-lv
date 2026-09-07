@@ -6,7 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "rm -rf .next && prisma generate && next build --webpack",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --report-unused-disable-directives"
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",
