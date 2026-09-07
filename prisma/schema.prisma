@@ -9,11 +9,26 @@ datasource db {
 }
 
 model User {
-  id       String    @id @default(uuid())
-  email    String    @unique
-  name     String?
-  listings Listing[]
-  chats    Chat[]
+  id            String   @id @default(uuid())
+  email         String   @unique
+  name          String?
+  listings      Listing[]
+  chats         Chat[]
+  buyerRatings  Rating[] @relation("BuyerRatings")
+  sellerRatings Rating[] @relation("SellerRatings")
+}
+
+model Rating {
+  id        String   @id @default(uuid())
+  score     Int
+  comment   String?
+  listingId String
+  listing   Listing  @relation(fields: [listingId], references: [id])
+  buyerId   String
+  buyer     User     @relation("BuyerRatings", fields: [buyerId], references: [id])
+  sellerId  String
+  seller    User     @relation("SellerRatings", fields: [sellerId], references: [id])
+  createdAt DateTime @default(now())
 }
 
 model Category {
