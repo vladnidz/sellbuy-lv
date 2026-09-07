@@ -58,10 +58,10 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Root categories are those whose ltree path contains a single label,
-    // i.e. no dot — expressed with the ltree match `!~ '*.{'2,}'`.
+    // Root categories are those whose ltree path has level 1 (no ancestors).
+    // Using nlevel() is the idiomatic ltree way — avoids text casting.
     const whereSql = rootOnly
-      ? Prisma.sql`WHERE c.path !~ '*.{2,}'`
+      ? Prisma.sql`WHERE nlevel(c.path) = 1`
       : Prisma.empty;
 
     const selectCols = Prisma.sql`
