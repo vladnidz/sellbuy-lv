@@ -21,9 +21,9 @@ export async function GET(request: NextRequest) {
       categories[currentCategory] = [];
     } else if (line.startsWith('- ') && currentCategory) {
       const parts = line.replace('- ', '').split(':');
-      if (parts.length === 2) {
+      if (parts.length >= 2) {
         const name = parts[0].trim();
-        const typeInfo = parts[1].trim();
+        const typeInfo = parts.slice(1).join(':').trim();
         
         let type = 'string';
         let options = undefined;
@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
           type = 'enum';
           const match = typeInfo.match(/\(([^)]+)\)/);
           if (match) {
-            options = match[1].split(',').map(o => o.trim());
+            options = match[1].replace('options:', '').split(',').map(o => o.trim());
           }
         } else if (typeInfo.includes('number')) {
           type = 'number';
