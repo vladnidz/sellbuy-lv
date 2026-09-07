@@ -20,7 +20,6 @@ import { ArrowLeft, Search, ChevronLeft, ChevronRight, Truck, Shield } from 'luc
 import { Metadata } from 'next';
 import { Prisma } from '@prisma/client';
 import { FacetedFilterSidebar } from '@/components/listings/FacetedFilterSidebar';
-import { prisma } from '@/app/lib/prisma';
 
 interface AttributeField {
   type?: unknown;
