@@ -4,7 +4,6 @@ import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
 
-// Don't log the full connection string (contains credentials); just confirm it was found.
 console.log('DATABASE_URL:', process.env.DATABASE_URL ? '<set>' : '<not set>');
 
 const connectionString = process.env.DATABASE_URL;
@@ -13,18 +12,15 @@ const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
 /**
- * SellBuy.lv category tree seed.
+ * SellBuy.lv category tree seed matching SellBuy-lv-Category-Taxonomy.md
  *
- * Every node carries trilingual names (lv / ru / en) and an optional JSONB
- * `attributes` schema describing the extra fields listings in that category
- * expose to sellers:
- *
- *   field: {
- *     type: 'string' | 'number' | 'enum' | 'boolean',
- *     label: { lv, ru, en },
- *     options?: string[],   // for enums
- *     required?: boolean,
- *   }
+ * Categories:
+ * 1. Cars - Brand (enum), Year (number), Mileage (number)
+ * 2. Real Estate - Type (enum), Rooms (number), Area (number)
+ * 3. Phones - Brand (enum), Storage (number)
+ * 4. Fashion - Gender (enum), Size (string)
+ * 5. Animals - Species (enum), Age (number)
+ * 6. Jobs - Category (enum), Salary (number)
  */
 type SeedLabel = Record<'lv' | 'ru' | 'en', string>;
 
@@ -43,115 +39,122 @@ type SeedNode = {
   children?: SeedNode[];
 };
 
-const priceField: AttributeField = {
-  type: 'number',
-  label: { lv: 'Cena', ru: 'Цена', en: 'Price' },
-  required: true,
-};
-
 const tree: SeedNode[] = [
   {
-    lv: 'Transports',
-    ru: 'Транспорт',
-    en: 'Transport',
+    lv: 'Automobiļi',
+    ru: 'Автомобили',
+    en: 'Cars',
     attributes: {
-      make: { type: 'string', label: { lv: 'Marka', ru: 'Марка', en: 'Make' } },
+      brand: {
+        type: 'enum',
+        label: { lv: 'Marka', ru: 'Марка', en: 'Brand' },
+        options: ['Audi', 'BMW', 'VW'],
+        required: true,
+      },
+      year: {
+        type: 'number',
+        label: { lv: 'Izlaiduma gads', ru: 'Год выпуска', en: 'Year' },
+        required: true,
+      },
+      mileage: {
+        type: 'number',
+        label: { lv: 'Nobraukums, km', ru: 'Пробег, км', en: 'Mileage' },
+      },
     },
-    children: [
-      {
-        lv: 'Automobīli',
-        ru: 'Легковые автомобили',
-        en: 'Cars',
-        attributes: {
-          year: { type: 'number', label: { lv: 'Izlaiduma gads', ru: 'Год выпуска', en: 'Year of manufacture' }, required: true },
-          mileageKm: { type: 'number', label: { lv: 'Nobraukums, km', ru: 'Пробег, км', en: 'Mileage, km' } },
-          fuel: {
-            type: 'enum',
-            label: { lv: 'Degviela', ru: 'Топливо', en: 'Fuel' },
-            options: ['petrol', 'diesel', 'gas', 'hybrid', 'electric'],
-          },
-          transmission: {
-            type: 'enum',
-            label: { lv: 'Ātrumkārba', ru: 'КПП', en: 'Transmission' },
-            options: ['manual', 'automatic'],
-          },
-        },
-        children: [
-          { lv: 'Sedani', ru: 'Седаны', en: 'Sedans' },
-          { lv: 'Apvidus auto', ru: 'Внедорожники', en: 'SUVs' },
-          { lv: 'Furgoni', ru: 'Фургоны', en: 'Vans' },
-        ],
-      },
-      {
-        lv: 'Motocikli',
-        ru: 'Мотоциклы',
-        en: 'Motorcycles',
-        attributes: {
-          engineCc: { type: 'number', label: { lv: 'Motora tilpums, cm³', ru: 'Объём двигателя, см³', en: 'Engine size, cc' } },
-        },
-      },
-      { lv: 'Piekabes', ru: 'Прицепы', en: 'Trailers' },
-      { lv: 'Velosipēdi', ru: 'Велосипеды', en: 'Bicycles' },
-    ],
   },
   {
     lv: 'Nekustamie īpašumi',
     ru: 'Недвижимость',
-    en: 'Real estate',
+    en: 'Real Estate',
     attributes: {
-      areaM2: { type: 'number', label: { lv: 'Platība, m²', ru: 'Площадь, м²', en: 'Area, m²' }, required: true },
-      rooms: { type: 'number', label: { lv: 'Istaban skaits', ru: 'Количество комнат', en: 'Number of rooms' } },
+      type: {
+        type: 'enum',
+        label: { lv: 'Tips', ru: 'Тип', en: 'Type' },
+        options: ['apartment', 'house', 'land'],
+        required: true,
+      },
+      rooms: {
+        type: 'number',
+        label: { lv: 'Istabu skaits', ru: 'Количество комнат', en: 'Rooms' },
+      },
+      area: {
+        type: 'number',
+        label: { lv: 'Platība, m²', ru: 'Площадь, м²', en: 'Area' },
+        required: true,
+      },
     },
-    children: [
-      {
-        lv: 'Pārdod',
-        ru: 'Продажа',
-        en: 'For sale',
-        children: [
-          { lv: 'Dzīvokļi', ru: 'Квартиры', en: 'Apartments' },
-          { lv: 'Mājas', ru: 'Дома', en: 'Houses' },
-          { lv: 'Zeme', ru: 'Земля', en: 'Land' },
-        ],
-      },
-      {
-        lv: 'Izīrē',
-        ru: 'Аренда',
-        en: 'For rent',
-        children: [
-          { lv: 'Dzīvokļi', ru: 'Квартиры', en: 'Apartments' },
-          { lv: 'Biroji', ru: 'Офисы', en: 'Offices' },
-        ],
-      },
-    ],
   },
   {
-    lv: 'Elektronika un sadzīves tehnika',
-    ru: 'Электроника и бытовая техника',
-    en: 'Electronics & Home Appliances',
-    children: [
-      {
-        lv: 'Viedtālruņi',
-        ru: 'Смартфоны',
-        en: 'Smartphones',
-        attributes: {
-          brand: { type: 'string', label: { lv: 'Ražotājs', ru: 'Производитель', en: 'Brand' }, required: true },
-          storageGb: { type: 'number', label: { lv: 'Atmiņa, GB', ru: 'Память, ГБ', en: 'Storage, GB' } },
-        },
+    lv: 'Telefoni',
+    ru: 'Телефоны',
+    en: 'Phones',
+    attributes: {
+      brand: {
+        type: 'enum',
+        label: { lv: 'Ražotājs', ru: 'Производитель', en: 'Brand' },
+        options: ['Apple', 'Samsung', 'Xiaomi'],
+        required: true,
       },
-      { lv: 'Datoris', ru: 'Компьютеры', en: 'Computers' },
-      { lv: 'Televizori', ru: 'Телевизоры', en: 'TVs' },
-      { lv: 'Sadzīves tehnika', ru: 'Бытовая техника', en: 'Home appliances' },
-    ],
+      storage: {
+        type: 'number',
+        label: { lv: 'Atmiņa, GB', ru: 'Память, ГБ', en: 'Storage' },
+      },
+    },
   },
-  { lv: 'Celtniecība un materiāli', ru: 'Стройматериалы', en: 'Construction & Materials' },
-  { lv: 'Mājai un dārzam', ru: 'Для дома и сада', en: 'Home & Garden' },
-  { lv: 'Apģērbs un stils', ru: 'Одежда и стиль', en: 'Clothing & Style' },
-  { lv: 'Bērnu pasaule', ru: 'Детский мир', en: "Children's World" },
-  { lv: 'Sports un atpūta', ru: 'Спорт и отдых', en: 'Sports & Leisure' },
+  {
+    lv: 'Mode un stils',
+    ru: 'Мода и стиль',
+    en: 'Fashion',
+    attributes: {
+      gender: {
+        type: 'enum',
+        label: { lv: 'Dzimums', ru: 'Пол', en: 'Gender' },
+        options: ['men', 'women', 'unisex'],
+        required: true,
+      },
+      size: {
+        type: 'string',
+        label: { lv: 'Izmērs', ru: 'Размер', en: 'Size' },
+      },
+    },
+  },
+  {
+    lv: 'Dzīvnieki',
+    ru: 'Животные',
+    en: 'Animals',
+    attributes: {
+      species: {
+        type: 'enum',
+        label: { lv: 'Suga', ru: 'Вид', en: 'Species' },
+        options: ['dog', 'cat', 'other'],
+        required: true,
+      },
+      age: {
+        type: 'number',
+        label: { lv: 'Vecums, gadi', ru: 'Возраст, годы', en: 'Age' },
+      },
+    },
+  },
+  {
+    lv: 'Darbs',
+    ru: 'Работа',
+    en: 'Jobs',
+    attributes: {
+      category: {
+        type: 'enum',
+        label: { lv: 'Kategorija', ru: 'Категория', en: 'Category' },
+        options: ['IT', 'construction', 'service'],
+        required: true,
+      },
+      salary: {
+        type: 'number',
+        label: { lv: 'Alga', ru: 'Зарплата', en: 'Salary' },
+      },
+    },
+  },
 ];
 
-/** Sanitize a name into a valid ltree label (a-z0-9_, no leading digit issues
- *  handled by prefixing when needed). */
+/** Sanitize a name into a valid ltree label (a-z0-9_, no leading digit issues handled by prefixing when needed). */
 function ltreeLabel(name: string): string {
   let label = name
     .toLowerCase()
@@ -194,37 +197,28 @@ async function insertNode(
     rows[0]?.id ??
     (
       await prisma.$queryRaw<{ id: string }[]>`
-        SELECT "id" FROM "Category" WHERE "path" = ${path}::ltree LIMIT 1
+        SELECT "id" FROM "Category" WHERE "path" = ${path}::ltree
       `
     )[0].id;
 
-  for (const child of node.children ?? []) {
-    await insertNode(child, id, path);
+  if (node.children) {
+    for (const child of node.children) {
+      await insertNode(child, id, path);
+    }
   }
-}
-
-async function resetTables(): Promise<void> {
-  // Destructive reset is opt-in via SEED_RESET=true so production/repeated
-  // runs are idempotent-safe by default. The statement is a constant (no
-  // interpolation) so we use the tagged $executeRaw form — never $executeRawUnsafe.
-  if (process.env.SEED_RESET !== 'true') {
-    console.log('[seed] SEED_RESET != true; skipping TRUNCATE (idempotent upserts only).');
-    return;
-  }
-  await prisma.$executeRaw`TRUNCATE TABLE "Listing", "Category" RESTART IDENTITY CASCADE`;
 }
 
 async function main() {
-  await resetTables();
-
+  console.log('Seeding category taxonomy from SellBuy-lv-Category-Taxonomy.md...');
   for (const node of tree) {
     await insertNode(node, null, null);
   }
 
-  const [{ count }] = await prisma.$queryRaw<{ count: number }[]>`
-    SELECT COUNT(*)::int AS count FROM "Category"
+  // Verify
+  const count = await prisma.$queryRaw<{ count: bigint }[]>`
+    SELECT COUNT(*)::bigint AS count FROM "Category"
   `;
-  console.log(`Seeded ${count} categories (trilingual names + attribute schemas).`);
+  console.log(`Seeded ${count[0].count} categories (trilingual names + attribute schemas).`);
 }
 
 main()
