@@ -7,6 +7,14 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import Link from 'next/link';
+import { Metadata } from 'next';
+import { buildTrilingualMetadata, BRAND } from '@/app/lib/seo';
+
+export const metadata: Metadata = buildTrilingualMetadata('/', {
+  lv: { title: `Sākumlapa | ${BRAND}`, description: 'SellBuy.lv - labākais sludinājumu portāls Latvijā.' },
+  ru: { title: `Главная | ${BRAND}`, description: 'SellBuy.lv - лучший портал объявлений в Латвии.' },
+  en: { title: `Home | ${BRAND}`, description: 'SellBuy.lv - the best classifieds portal in Latvia.' },
+});
 
 const categories = [
   { name: 'Transports', icon: '🚗', path: '/categories/transports' },

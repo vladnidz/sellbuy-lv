@@ -1,4 +1,6 @@
 export const dynamic = "force-dynamic";
+import { Metadata } from 'next';
+import { buildTrilingualMetadata, BRAND } from '@/app/lib/seo';
 import { prisma } from '@/app/lib/prisma';
 import { Button } from '@/components/ui/button';
 import {
@@ -12,6 +14,23 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowLeft, Shield, Truck, MessageCircle, MapPin } from 'lucide-react';
 import { notFound } from 'next/navigation';
+
+export async function generateMetadata(
+  props: { params: Promise<{ id: string }> }
+): Promise<Metadata> {
+  const { id } = await props.params;
+  const listing = await prisma.listing.findUnique({
+    where: { id },
+  });
+
+  if (!listing) return {};
+
+  return buildTrilingualMetadata(`/listings/${id}`, {
+    lv: { title: `${listing.title} | ${BRAND}`, description: listing.description || '' },
+    ru: { title: `${listing.title} | ${BRAND}`, description: listing.description || '' },
+    en: { title: `${listing.title} | ${BRAND}`, description: listing.description || '' },
+  });
+}
 
 interface CategoryWithPath {
   id: string;
