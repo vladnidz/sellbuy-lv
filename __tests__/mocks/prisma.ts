@@ -5,10 +5,10 @@
  * and lib helpers so each is a jest.Mock in tests.
  */
 
-export const prisma: any = {
+export const prisma = {
   $queryRaw: jest.fn(),
   $executeRaw: jest.fn(),
-  $transaction: jest.fn(async (ops: unknown): Promise<any> => {
+  $transaction: jest.fn(async (ops: unknown): Promise<unknown> => {
     if (Array.isArray(ops)) return Promise.all(ops);
     if (typeof ops === 'function') return ops(prisma);
     return undefined;
