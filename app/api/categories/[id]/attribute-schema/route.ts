@@ -17,11 +17,11 @@ export async function GET(
     let categoryName: string | null = null;
     
     if (isUuid) {
-      const rows: any[] = await prisma.$queryRaw`SELECT name FROM "Category" WHERE id = ${id}::uuid LIMIT 1`;
-      if (rows.length > 0) categoryName = rows[0].name;
+      const rows: unknown[] = await prisma.$queryRaw`SELECT name FROM "Category" WHERE id = ${id}::uuid LIMIT 1`;
+      if (rows.length > 0) categoryName = (rows[0] as { name: string }).name;
     } else {
-      const rows: any[] = await prisma.$queryRaw`SELECT name FROM "Category" WHERE path = ${id}::ltree LIMIT 1`;
-      if (rows.length > 0) categoryName = rows[0].name;
+      const rows: unknown[] = await prisma.$queryRaw`SELECT name FROM "Category" WHERE path = ${id}::ltree LIMIT 1`;
+      if (rows.length > 0) categoryName = (rows[0] as { name: string }).name;
     }
 
     if (!categoryName) return NextResponse.json({ error: 'Not found' }, { status: 404 });
