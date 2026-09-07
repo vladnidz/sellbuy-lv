@@ -19,7 +19,7 @@ interface SchemaField {
 
 interface FacetedFilterSidebarProps {
   fields: SchemaField[];
-  onFilterChange: (filters: Record<string, any>) => void;
+  onFilterChange: (filters: Record<string, unknown>) => void;
 }
 
 export function FacetedFilterSidebar({ fields, onFilterChange }: FacetedFilterSidebarProps) {
