@@ -14,6 +14,7 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // Vendored skill code should not be linted:
     ".agents/**",
+    ".claude/**",
   ]),
 ]);
 
