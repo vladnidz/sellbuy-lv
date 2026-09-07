@@ -54,7 +54,7 @@ export function FacetedFilterSidebar({ fields, onFilterChange }: FacetedFilterSi
                 </div>
               )}
               {field.type === 'string' && (
-                 <Input className="bg-white/5 border-white/10 text-white" placeholder={`Search ${field.label.en}...`} />
+                 <Input className="bg-white/5 border-white/10 text-white" placeholder={`Search ${typeof field.label === 'string' ? field.label : field.label.en}...`} />
               )}
             </div>
           ))}
