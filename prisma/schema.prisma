@@ -57,6 +57,7 @@ model Listing {
   attributes  Json?
   category    Category @relation(fields: [categoryId], references: [id])
   categoryId  String
+  ratings     Rating[]
   author      User     @relation(fields: [authorId], references: [id])
   authorId    String
   createdAt   DateTime @default(now())
