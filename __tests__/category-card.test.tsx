@@ -40,6 +40,7 @@ function makeCategory(
 }
 
 describe('<CategoryCard />', () => {
+  describe('CategoryCard', () => {
   it('renders the category name', () => {
     render(<CategoryCard category={makeCategory()} index={0} />);
     expect(screen.getByText('Elektronika')).toBeInTheDocument();

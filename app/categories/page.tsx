@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 import { prisma } from "@/app/lib/prisma";
 import { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, Grid, List, Filter, ChevronDown, ChevronRight, Search } from "lucide-react";
+import { ArrowLeft, Grid, List, ChevronDown, ChevronRight, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
