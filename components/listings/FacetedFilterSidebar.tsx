@@ -12,7 +12,7 @@ import { Slider } from '@/components/ui/slider';
 interface SchemaField {
   name: string;
   type: 'string' | 'number' | 'enum' | 'boolean';
-  label: Record<string, string>;
+  label: Record<string, string> | string;
   options?: string[];
   required: boolean;
 }
@@ -35,7 +35,9 @@ export function FacetedFilterSidebar({ fields, onFilterChange }: FacetedFilterSi
           
           {fields.map((field) => (
             <div key={field.name} className="space-y-2">
-              <Label className="text-sm font-medium text-white/80">{field.label.en}</Label>
+              <Label className="text-sm font-medium text-white/80">
+                {typeof field.label === 'string' ? field.label : (field.label.en || field.label.lv || field.name)}
+              </Label>
               {field.type === 'enum' && field.options && (
                 <div className="space-y-1">
                   {field.options.map((option) => (
