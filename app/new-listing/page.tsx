@@ -276,7 +276,7 @@ export default function NewListingPage() {
                   onValueChange={(value) => setFormData({ ...formData, category: value })}
                   disabled={isSubmitting || isLoadingCategories}
                 >
-                  <SelectTrigger className="bg-slate-900 border-slate-700">
+                  <SelectTrigger className="bg-slate-900 border-slate-700" aria-label="Kategorija">
                     <SelectValue
                       placeholder={
                         isLoadingCategories ? "Ielādē kategorijas…" : "Izvēlēties kategoriju"
