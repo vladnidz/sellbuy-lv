@@ -39,11 +39,9 @@ jest.mock('@/app/lib/prisma', () => ({
 
 // jsdom polyfills
 if (typeof global.TextEncoder === 'undefined') {
-  // @ts-expect-error - global polyfill is mutable at runtime
   global.TextEncoder = TextEncoder;
 }
 if (typeof global.TextDecoder === 'undefined') {
-  // @ts-expect-error - global polyfill is mutable at runtime
   global.TextDecoder = TextDecoder;
 }
 

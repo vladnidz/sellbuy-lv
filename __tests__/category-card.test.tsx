@@ -81,3 +81,4 @@ describe('<CategoryCard />', () => {
     expect(link).toHaveAttribute('href', '/listings?category=cat-9');
   });
 });
+});
