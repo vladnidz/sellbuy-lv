@@ -51,6 +51,6 @@ export function getTaxonomy() {
       }
     }
   });
-  
+
   return categories;
 }

@@ -29,8 +29,8 @@ Status = ✅ shipped on disk (verified via file inspection + git log through `0a
 
 | Priority | Feature | Impact | Effort | Status | Agent context | Deliverable file(s) | Notes |
 |---|---|---|---|---|---|---|---|
-| 1 | Runtime auth: real server-side sessions | Critical | Medium-High | ⏳ | frontend-fullstack | `app/lib/auth.tsx`, `app/auth.tsx`, `prisma/schema.prisma` | Prerequisite for trust and secure authorship. |
-| 2 | Listing creation flow: full image/state support | High | Medium-High | ⏳ | frontend-fullstack | `app/new-listing/page.tsx` | Essential for monetization and supply. |
-| 3 | Full-text search (Postgres FTS) | High | Medium | ⏳ | frontend-fullstack | `app/listings/page.tsx` | Essential for discoverability. |
-| 4 | UI pass: token layer (shadcn vars) | Medium-High | Low-Medium | ◻️ | frontend-fullstack | `app/**/*`, `app/globals.css` | Differentiation vs competition. |
-| 5 | Postgres service (docker-compose) | Medium-Low | Low | ◻️ | devops | `docker-compose.yml` | Infrastructure hardening. |
+|| 1 | Runtime auth: real server-side sessions | Critical | Medium-High | ⏳ | frontend-fullstack | `app/lib/auth.tsx`, `app/auth.tsx`, `prisma/schema.prisma` | Prerequisite for trust and secure authorship. |
+|| 2 | Full-text search (Postgres FTS) | High | Medium | ⏳ | frontend-fullstack | `app/listings/page.tsx` | Essential for discoverability. |
+|| 3 | Listing creation flow: full image/state support | High | Medium-High | ⏳ | frontend-fullstack | `app/new-listing/page.tsx` | Essential for monetization and supply. |
+|| 4 | UI pass: token layer (shadcn vars) | Medium-High | Low-Medium | ◻️ | frontend-fullstack | `app/**/*`, `app/globals.css` | Differentiation vs competition. |
+|| 5 | Postgres service (docker-compose) | Medium-Low | Low | ◻️ | devops | `docker-compose.yml` | Infrastructure hardening. |
