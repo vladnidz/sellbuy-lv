@@ -2,6 +2,7 @@
 
 ## Cars
 - Brand: enum (options: Audi, BMW, VW)
+- Fuel: enum (options: petrol, diesel, electric, hybrid)
 - Year: number
 - Mileage: number
 
