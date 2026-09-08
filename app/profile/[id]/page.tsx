@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { RatingStars } from '@/components/rating-stars';
 import { RatingCard } from '@/components/rating-card';
-import { ArrowLeft, MapPin, Calendar } from 'lucide-react';
+import { ArrowLeft, MapPin } from 'lucide-react';
 
 interface UserProfile {
   id: string;
@@ -117,7 +117,7 @@ export default function ProfilePage() {
                     {profile.listings.length} sludinājumi
                   </Badge>
                   <Badge variant="secondary" className="bg-white/10 text-white/70">
-                    Kopš {new Date(profile.listings[0]?.createdAt || Date.now()).toLocaleDateString('lv-LV', { year: 'numeric', month: 'long' })}
+                    Kopš {new Date(profile.listings[0]?.createdAt || '2026-01-01').toLocaleDateString('lv-LV', { year: 'numeric', month: 'long' })}
                   </Badge>
                 </div>
               </div>
