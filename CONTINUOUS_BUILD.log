@@ -44667,3 +44667,229 @@ Traceback (most recent call last):
   File "/usr/local/lib/hermes-agent/cli.py", line 19823, in _signal_handler_q
     raise KeyboardInterrupt()
 KeyboardInterrupt
+[main 9c818c7] feat(agency): crew cycle 2026-09-08_14:09
+ 4 files changed, 153 insertions(+), 7 deletions(-)
+error: cannot pull with rebase: You have unstaged changes.
+error: Please commit or stash them.
+To https://github.com/vladnidz/sellbuy-lv.git
+   13c312b..9c818c7  main -> main
+=== Tue  8 Sep 14:09:05 +03 2026 Crew cycle complete ===
+=== Tue  8 Sep 14:15:40 +03 2026 Starting agency crew cycle ===
+From https://github.com/vladnidz/sellbuy-lv
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+
+> sellbuy@0.1.0 build
+> rm -rf .next && prisma generate && next build --webpack
+
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma/schema.prisma.
+
+✔ Generated Prisma Client (v7.10.0) to ./node_modules/@prisma/client in 1.08s
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+▲ Next.js 16.3.1 (webpack)
+- Environments: .env
+⚠ Warning: Next.js ignored package-lock.json in /home/shadow3/projects because it is outside the current Git repository (/home/shadow3/projects/sellbuy-v2).
+ To use this directory, set `outputFileTracingRoot` in your Next.js config.
+
+✓ Running next.config.ts took 165ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 58s
+  Running TypeScript ...
+  Finished TypeScript in 30.8s ...
+  Collecting page data using 3 workers ...
+  Generating static pages using 3 workers (0/6) ...
+  Generating static pages using 3 workers (1/6) 
+  Generating static pages using 3 workers (2/6) 
+  Generating static pages using 3 workers (4/6) 
+✓ Generating static pages using 3 workers (6/6) in 2.8s
+  Finalizing page optimization ...
+  Collecting build traces ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /about
+├ ƒ /api/categories
+├ ƒ /api/categories/[id]
+├ ƒ /api/categories/[id]/attribute-schema
+├ ƒ /api/categories/attribute-schema
+├ ƒ /api/categories/schema
+├ ƒ /api/categories/tree
+├ ƒ /api/listings
+├ ƒ /api/listings/[id]
+├ ƒ /categories
+├ ƒ /listings
+├ ƒ /listings/[id]
+└ ○ /new-listing
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+=== BUILD SUCCESS ===
+--- Dispatching core crew (2 agents in parallel) ---
+--- Core crew finished ---
+--- Strategy slot: marketing-growth-hacker ---
+Warning: Unknown toolsets: agency_agents
+Query: Use agency-agents-router: agency_agents_load 'marketing-growth-hacker', 
+then act as that specialist. TASK: Add hreflang tags + trilingual meta 
+descriptions (LV/RU/EN) to categories and listings pages. Commit. Project dir: 
+/home/shadow3/projects/sellbuy-v2
+Initializing agent...
+────────────────────────────────────────
+
+  ┊ ⚡ preparing tool_call…
+  ┊ ⚡ agency_ag   0.0s [agent or slug is required]
+  ┊ ⚡ preparing tool_call…
+  ┊ ⚡ agency_ag   0.0s [agent or slug is required]
+  ┊ ⚡ preparing tool_describe…
+  ┊ ⚡ tool_desc agency_agents_load  0.0s
+  ┊ ⚡ preparing tool_call…
+  ┊ ⚡ agency_ag   0.0s [error]
+  ┊ ⚡ preparing tool_call…
+  ┊ ⚡ preparing tool_call…
+  ┊ ⚡ preparing tool_call…
+  ┊ ⚡ preparing tool_call…
+  ┊ ⚡ preparing tool_call…
+  ┊ 🔎 preparing search_files…
+  ┊ 🔎 grep      metadata  0.2s
+  ┊ 📖 preparing read_file…
+  ┊ 📖 read      page.tsx  0.2s
+  ┊ 📖 preparing read_file…
+  ┊ 📖 read      seo.ts  0.2s
+  ┊ 📖 preparing read_file…
+  ┊ 📖 read      seo.ts L55  0.1s
+  ┊ 📖 preparing read_file…
+  ┊ 📖 read      page.tsx  0.1s
+  ┊ 📖 preparing read_file…
+  ┊ 📖 read      page.tsx L290  0.2s
+  ┊ ✍️ preparing write_file…
+  ┊ ✍️  write     app/listings/page.tsx  11.3s
+  ┊ review diff
+a/app/listings/page.tsx → b/app/listings/page.tsx
+@@ -20,6 +20,22 @@
+ import { Metadata } from 'next';
+ import { Prisma } from '@prisma/client';
+ import { FacetedFilterSidebar } from '@/components/listings/FacetedFilterSidebar';
++import { buildTrilingualMetadata, BRAND } from '@/app/lib/seo';
++
++export const metadata: Metadata = buildTrilingualMetadata('/listings', {
++  lv: {
++    title: 'Visi sludinājumi | SellBuy.lv',
++    description: 'Meklē un atrod labākos sludinājumus Latvijā. Transports, nekustamie īpašumi, elektronika, celtniecība, darbs, māja, apģērbi, bērniem un daudz kas cits.',
++  },
++  ru: {
++    title: `Все объявления | ${BRAND}`,
++    description: 'Ищите и находите лучшие объявления в Латвии. Транспорт, недвижимость, электроника, строительство, работа, дом, одежда, дети и многое другое.',
++  },
++  en: {
++    title: `All listings | ${BRAND}`,
++    description: 'Browse and find the best listings in Latvia. Vehicles, real estate, electronics, construction, jobs, home & garden, clothing, kids and more.',
++  },
++});
+ 
+ interface AttributeField {
+   type?: unknown;
+@@ -27,759 +43,3 @@
+   options?: unknown;
+   required?: unknown;
+ }
+-
+-interface NormalizedAttrField {
+-  name: string;
+-  type: 'string' | 'number' | 'enum' | 'boolean';
+-  label: string;
+-  options: string[];
+-}
+-
+-/** Latvian city/district options for the location filter. */
+-const CITIES = [
+-  'Rīga', 'Daugavpils', 'Jelgava', 'Jūrmala', 'Liepāja', 'Rēzekne',
+-  'Valmiera', 'Ventspils', 'Ogre', 'Jēkabpils', 'Tukums', 'Salaspils',
+-];
+-
+-interface CategoryWithPath {
+-  id: string;
+-  name: string;
+-  path?: string | null;
+-  parentId: string | null;
+-  attributes?: Prisma.JsonValue | null;
+-}
+-
+-interface ListingWithRelations {
+-  id: string;
+-  title: string;
+-  description: string;
+-  price: number;
+-  images: string[];
+-  createdAt: Date;
+-  city?: string | null;
+-  category: CategoryWithPath | null;
+-  author: {
+-    id: string;
+-    name: string | null;
+-    email: string;
+-  } | null;
+-}
+-
+-interface ListingsPageProps {
+-  searchParams: Promise<{
+-    q?: string;
+-    category?: string;
+-    minPrice?: string;
+-    maxPrice?: string;
+-    sort?: string;
+-    page?: string;
+-    priceRange?: string;
+-    city?: string;
+-    [key: `attr_${string}`]: string | undefined;
+-    [key: `attrmin_${string}`]: string | undefined;
+-    [key: `attrmax_${string}`]: string | undefined;
+-  }>;
+… omitted 704 diff line(s) across 1 additional file(s)/section(s)
+  ┊ 💻 preparing terminal…
+  ┊ 💻 $         git checkout app/listings/page.tsx  0.3s
+  ┊ 📖 preparing read_file…
+  ┊ 📖 read      page.tsx  0.2s
+  ┊ 📖 preparing read_file…
+  ┊ 📖 read      page.tsx L280-299  0.1s
+⚠️  API call failed (attempt 1/3): InternalServerError [HTTP 503]
+   🔌 Provider: custom  Model: auto/best-free
+   🌐 Endpoint: http://172.17.0.2:20128/v1
+   📝 Error: HTTP 503: Structurally heavy chat request capacity is busy; retry shortly.
+   ⏱️  Elapsed: 2.00s  Context: 40 msgs, ~36,075 tokens
+⏳ Retrying in 2.4s (attempt 1/3)...
+⚠️  API call failed (attempt 2/3): InternalServerError [HTTP 503]
+   🔌 Provider: custom  Model: auto/best-free
+   🌐 Endpoint: http://172.17.0.2:20128/v1
+   📝 Error: HTTP 503: Structurally heavy chat request capacity is busy; retry shortly.
+   ⏱️  Elapsed: 5.95s  Context: 40 msgs, ~36,075 tokens
+⏳ Retrying in 5.5s (attempt 2/3)...
+⚠️  API call failed (attempt 3/3): InternalServerError [HTTP 503]
+   🔌 Provider: custom  Model: auto/best-free
+   🌐 Endpoint: http://172.17.0.2:20128/v1
+   📝 Error: HTTP 503: Structurally heavy chat request capacity is busy; retry shortly.
+   ⏱️  Elapsed: 11.75s  Context: 40 msgs, ~36,075 tokens
+❌ API failed after 3 retries — HTTP 503: Structurally heavy chat request capacity is busy; retry shortly.
+   💀 Final error: HTTP 503: Structurally heavy chat request capacity is busy; retry shortly.
+ ─  ⚕ Hermes  ───────────────────────────────────────────────────────────────── 
+                                                                                
+ API call failed after 3 retries: HTTP 503: Structurally heavy chat request     
+ capacity is busy; retry shortly.                                               
+                                                                                
+ ────────────────────────────────────────────────────────────────────────────── 
+
+Resume this session with:
+  hermes --resume 20260908_143023_17c5da
+  hermes -c "Add hreflang tags and trilingual meta descriptions #11"
+
+Session:        20260908_143023_17c5da
+Title:          Add hreflang tags and trilingual meta descriptions #11
+Duration:       5m 6s
+Messages:       39 (1 user, 38 tool calls)
