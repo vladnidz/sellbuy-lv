@@ -33,7 +33,11 @@ export async function GET(
     
     const schema = taxonomyCategoryName ? taxonomy[taxonomyCategoryName] : [];
 
-    return NextResponse.json(schema);
+    // Return as a structured JSONB filter schema
+    return NextResponse.json({
+        category: taxonomyCategoryName || categoryName,
+        schema: schema
+    });
   } catch (error) {
     console.error('Error fetching attribute schema:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
