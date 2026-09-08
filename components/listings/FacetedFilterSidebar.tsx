@@ -22,7 +22,7 @@ interface FacetedFilterSidebarProps {
   onFilterChange: (filters: Record<string, unknown>) => void;
 }
 
-export function FacetedFilterSidebar({ fields, onFilterChange }: FacetedFilterSidebarProps) {
+export function FacetedFilterSidebar({ fields }: Omit<FacetedFilterSidebarProps, 'onFilterChange'>) {
   return (
     <motion.aside
       initial={{ opacity: 0, x: -20 }}
