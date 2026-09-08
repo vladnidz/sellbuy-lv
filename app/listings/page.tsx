@@ -19,7 +19,6 @@ import Image from 'next/image';
 import { ArrowLeft, Search, ChevronLeft, ChevronRight, Truck, Shield } from 'lucide-react';
 import { Metadata } from 'next';
 import { Prisma } from '@prisma/client';
-import { FacetedFilterSidebar } from '@/components/listings/FacetedFilterSidebar';
 
 interface AttributeField {
   type?: unknown;

@@ -57,12 +57,15 @@ async function getCategoriesWithCounts(): Promise<CategoryWithCounts[]> {
   });
 
   // Also get listing counts for parent categories that include children's listings
-  const categoriesWithCounts = categories.map((cat: any) => ({
-    ...(cat as any),
-    path: (cat as any).path ?? null,
-    children: (cat.children ?? []).map((child: any) => ({
-      ...(child as any),
-      path: (child as any).path ?? null,
+  type CategoryRow = (typeof categories)[number] & { path: string | null };
+    type CategoryChildRow = CategoryRow["children"][number] & { path: string | null };
+
+    const categoriesWithCounts = categories.map((cat) => ({
+      ...(cat as CategoryRow),
+      path: (cat as CategoryRow).path ?? null,
+      children: (cat.children ?? []).map((child) => ({
+        ...(child as CategoryChildRow),
+        path: (child as CategoryChildRow).path ?? null,
       _count: { listings: child._count?.listings ?? 0 },
     })),
     _count: { listings: cat._count?.listings ?? 0 },

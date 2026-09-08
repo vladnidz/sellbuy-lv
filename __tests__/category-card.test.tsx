@@ -19,11 +19,13 @@ jest.mock('framer-motion', () => {
 });
 
 jest.mock('next/link', () => {
-  return ({ href, children, ...props }: React.PropsWithChildren<{ href: string }>) => (
+  const MockLink = ({ href, children, ...props }: React.PropsWithChildren<{ href: string }>) => (
     <a href={href} {...props}>
       {children}
     </a>
   );
+  MockLink.displayName = 'MockNextLink';
+  return MockLink;
 });
 
 function makeCategory(
