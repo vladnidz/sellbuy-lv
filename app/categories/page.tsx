@@ -60,7 +60,7 @@ async function getCategoriesWithCounts(): Promise<CategoryWithCounts[]> {
   const categoriesWithCounts = categories.map((cat: any) => ({
     ...(cat as any),
     path: (cat as any).path ?? null,
-    children: (cat.children ?? []).map((child) => ({
+    children: (cat.children ?? []).map((child: any) => ({
       ...(child as any),
       path: (child as any).path ?? null,
       _count: { listings: child._count?.listings ?? 0 },
