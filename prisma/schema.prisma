@@ -12,8 +12,11 @@ model User {
   id            String   @id @default(uuid())
   email         String   @unique
   name          String?
+  password      String   @default("")
   listings      Listing[]
-  chats         Chat[]
+  buyerChats    Chat[]   @relation("BuyerChats")
+  sellerChats   Chat[]   @relation("SellerChats")
+  messages      Message[]
   buyerRatings  Rating[] @relation("BuyerRatings")
   sellerRatings Rating[] @relation("SellerRatings")
 }
@@ -58,6 +61,7 @@ model Listing {
   category    Category @relation(fields: [categoryId], references: [id])
   categoryId  String
   ratings     Rating[]
+  chats       Chat[]
   author      User     @relation(fields: [authorId], references: [id])
   authorId    String
   createdAt   DateTime @default(now())
@@ -65,14 +69,22 @@ model Listing {
 
 model Chat {
   id           String    @id @default(uuid())
-  participants User[]
+  createdAt    DateTime  @default(now())
+  listing      Listing   @relation(fields: [listingId], references: [id])
+  listingId    String
+  buyer        User      @relation("BuyerChats", fields: [buyerId], references: [id])
+  buyerId      String
+  seller       User      @relation("SellerChats", fields: [sellerId], references: [id])
+  sellerId     String
   messages     Message[]
 }
 
 model Message {
-  id       String @id @default(uuid())
-  chat     Chat   @relation(fields: [chatId], references: [id])
-  chatId   String
-  senderId String
-  content  String
+  id        String   @id @default(uuid())
+  content   String
+  createdAt DateTime @default(now())
+  chat      Chat     @relation(fields: [chatId], references: [id])
+  chatId    String
+  sender    User     @relation(fields: [senderId], references: [id])
+  senderId  String
 }
