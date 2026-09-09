@@ -4,77 +4,69 @@
 
 @layer base {
   :root {
-    --background: 222 47% 7%;
-    --foreground: 210 40% 98%;
-    --card: 222 47% 9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222 47% 9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 263 70% 58%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 217 33% 17%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217 33% 17%;
-    --muted-foreground: 215 20% 55%;
-    --accent: 217 33% 17%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217 33% 18%;
-    --input: 217 33% 18%;
+    /* SellBuy.lv design system — NOT shadcn defaults */
+    --background: 240 10% 4%;       /* #0a0a0f */
+    --foreground: 240 20% 96%;      /* #f0f0f5 */
+    --card: 240 10% 8%;            /* #12121a */
+    --card-foreground: 240 20% 96%;
+    --popover: 240 10% 10%;
+    --popover-foreground: 240 20% 96%;
+    --primary: 263 70% 58%;        /* #7c3aed */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 10% 12%;
+    --secondary-foreground: 240 20% 96%;
+    --muted: 240 10% 12%;
+    --muted-foreground: 240 10% 50%; /* #8888a0 */
+    --accent: 240 10% 12%;
+    --accent-foreground: 240 20% 96%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 240 10% 12%;         /* #1f1f2e */
+    --input: 240 10% 12%;
     --ring: 263 70% 58%;
     --radius: 0.75rem;
-
-    /* Pro Max accent palette */
-    --accent-violet: 263 70% 58%;
-    --accent-indigo: 239 84% 67%;
-    --surface-subtle: 222 47% 8%;
-    --surface-hover: 217 33% 12%;
-    --text-primary: 210 40% 98%;
-    --text-secondary: 215 20% 55%;
-    --text-tertiary: 215 16% 40%;
   }
 
-  .glass-morphism {
-    @apply bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] shadow-[0_0_0_1px_rgba(255,255,255,0.02)];
-  }
-
-  .glass-morphism-strong {
-    @apply bg-white/[0.06] backdrop-blur-xl border border-white/[0.1];
-  }
-}
-
-@layer base {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground antialiased;
     font-feature-settings: "rlig" 1, "calt" 1, "ss01" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Improve text rendering */
   h1, h2, h3, h4, h5, h6 {
     @apply tracking-tight;
   }
 }
 
-@layer components {
-  /* Subtle card hover — no glass-morphism vomit */
-  .card-subtle {
-    @apply rounded-xl border border-white/[0.06] bg-white/[0.02] transition-colors duration-200;
-  }
-  .card-subtle:hover {
-    @apply border-white/[0.1] bg-white/[0.04];
-  }
+/* Scrollbar styling — subtle, not distracting */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
 
-  /* Section spacing */
-  .section-padding {
-    @apply py-16 sm:py-20 lg:py-24;
-  }
+/* Focus styles — accessible, not ugly */
+:focus-visible {
+  outline: 2px solid #7c3aed;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
 
-  /* Container */
-  .container-app {
-    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
-  }
+/* Selection — violet accent */
+::selection {
+  background: rgba(124, 58, 237, 0.3);
+  color: #f0f0f5;
 }

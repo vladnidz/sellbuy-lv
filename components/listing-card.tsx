@@ -1,8 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { MapPin } from 'lucide-react';
 
 interface ListingCardProps {
@@ -23,44 +21,43 @@ export function ListingCard({
   categoryName,
 }: ListingCardProps) {
   return (
-    <Link href={`/listings/${id}`}>
-      <Card className="glass-morphism border-white/10 bg-white/5 hover:bg-white/10 transition-all duration-200 cursor-pointer group h-full">
-        <CardContent className="p-0">
-          {/* Image */}
-          <div className="aspect-[4/3] rounded-t-xl overflow-hidden bg-gradient-to-br from-violet-500/20 to-indigo-600/20 relative">
-            {images.length > 0 && images[0] ? (
-              <img
-                src={images[0]}
-                alt={title}
-                className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-            ) : (
-              <div className="h-full w-full flex items-center justify-center">
-                <span className="text-4xl opacity-50">📷</span>
-              </div>
-            )}
-            <Badge className="absolute top-2 right-2 bg-black/60 text-white/90 text-xs">
-              {categoryName}
-            </Badge>
-          </div>
+    <Link href={`/listings/${id}`} className="group block">
+      <article className="rounded-2xl border border-[#1f1f2e] bg-[#12121a] overflow-hidden transition-all duration-200 hover:border-[#2a2a3a] hover:bg-[#15151f]">
+        {/* Image */}
+        <div className="aspect-[4/3] overflow-hidden bg-[#0a0a0f] relative">
+          {images.length > 0 && images[0] ? (
+            <img
+              src={images[0]}
+              alt={title}
+              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+              loading="lazy"
+            />
+          ) : (
+            <div className="h-full w-full flex items-center justify-center bg-gradient-to-br from-[#12121a] to-[#0a0a0f]">
+              <span className="text-[#55556a] text-sm font-medium">{title.charAt(0)}</span>
+            </div>
+          )}
+          <span className="absolute top-3 right-3 bg-[#0a0a0f]/80 backdrop-blur-sm text-[#a78bfa] text-xs font-medium rounded-lg px-2.5 py-1">
+            {categoryName}
+          </span>
+        </div>
 
-          {/* Content */}
-          <div className="p-4">
-            <h3 className="text-sm font-medium text-white truncate group-hover:text-violet-300 transition-colors">
-              {title}
-            </h3>
-            <p className="text-xl font-bold text-violet-400 mt-2">
-              €{price.toFixed(2)}
+        {/* Content */}
+        <div className="p-4">
+          <h3 className="text-sm font-medium text-[#f0f0f5] truncate group-hover:text-[#a78bfa] transition-colors duration-150">
+            {title}
+          </h3>
+          <p className="text-lg font-semibold text-[#f0f0f5] mt-2">
+            €{price.toFixed(2)}
+          </p>
+          {city && (
+            <p className="text-xs text-[#55556a] mt-2 flex items-center gap-1">
+              <MapPin className="h-3 w-3" />
+              {city}
             </p>
-            {city && (
-              <p className="text-xs text-white/40 mt-2 flex items-center">
-                <MapPin className="h-3 w-3 mr-1" />
-                {city}
-              </p>
-            )}
-          </div>
-        </CardContent>
-      </Card>
+          )}
+        </div>
+      </article>
     </Link>
   );
 }

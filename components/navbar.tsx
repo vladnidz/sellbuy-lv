@@ -2,9 +2,8 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Search, Plus, MessageSquare, User, Menu, X } from 'lucide-react';
+import { Search, Plus, MessageSquare, Menu, X } from 'lucide-react';
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
 
 const navLinks = [
   { href: '/', label: 'Sākums' },
@@ -18,16 +17,16 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-white/10 bg-black/40 backdrop-blur-xl">
+    <nav className="sticky top-0 z-50 border-b border-[#1f1f2e] bg-[#0a0a0f]/95 backdrop-blur-sm">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 text-sm font-bold text-white">
+          <Link href="/" className="flex items-center gap-2.5">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#7c3aed] text-sm font-bold text-white">
               S
             </div>
-            <span className="text-lg font-bold text-white">
-              Sell<span className="text-violet-400">Buy</span>.lv
+            <span className="text-lg font-semibold text-[#f0f0f5] tracking-tight">
+              Sell<span className="text-[#a78bfa]">Buy</span>.lv
             </span>
           </Link>
 
@@ -37,10 +36,10 @@ export function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-150 ${
                   pathname === link.href
-                    ? 'bg-white/10 text-white'
-                    : 'text-white/60 hover:bg-white/5 hover:text-white'
+                    ? 'text-[#f0f0f5] bg-[#1a1a25]'
+                    : 'text-[#8888a0] hover:text-[#f0f0f5] hover:bg-[#12121a]'
                 }`}
               >
                 {link.label}
@@ -50,67 +49,74 @@ export function Navbar() {
 
           {/* Desktop actions */}
           <div className="hidden md:flex items-center gap-2">
-            <Link href="/listings">
-              <Button variant="ghost" size="icon" className="text-white/60 hover:text-white">
-                <Search className="h-5 w-5" />
-              </Button>
+            <Link
+              href="/listings"
+              className="p-2 rounded-lg text-[#8888a0] hover:text-[#f0f0f5] hover:bg-[#12121a] transition-colors"
+            >
+              <Search className="h-5 w-5" />
             </Link>
-            <Link href="/new-listing">
-              <Button variant="ghost" size="icon" className="text-white/60 hover:text-white">
-                <Plus className="h-5 w-5" />
-              </Button>
+            <Link
+              href="/new-listing"
+              className="p-2 rounded-lg text-[#8888a0] hover:text-[#f0f0f5] hover:bg-[#12121a] transition-colors"
+            >
+              <Plus className="h-5 w-5" />
             </Link>
-            <Link href="/messages">
-              <Button variant="ghost" size="icon" className="text-white/60 hover:text-white">
-                <MessageSquare className="h-5 w-5" />
-              </Button>
+            <Link
+              href="/messages"
+              className="p-2 rounded-lg text-[#8888a0] hover:text-[#f0f0f5] hover:bg-[#12121a] transition-colors"
+            >
+              <MessageSquare className="h-5 w-5" />
             </Link>
-            <Link href="/login">
-              <Button className="bg-violet-600 hover:bg-violet-700 text-white">
-                Ieiet
-              </Button>
+            <Link
+              href="/login"
+              className="ml-2 bg-[#7c3aed] hover:bg-[#6d28d9] text-white text-sm font-medium rounded-lg px-4 py-2 transition-colors duration-150"
+            >
+              Ieiet
             </Link>
           </div>
 
           {/* Mobile menu button */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="md:hidden text-white/60 hover:text-white"
+          <button
+            type="button"
+            className="md:hidden p-2 rounded-lg text-[#8888a0] hover:text-[#f0f0f5] hover:bg-[#12121a] transition-colors"
             onClick={() => setMobileOpen(!mobileOpen)}
           >
             {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </Button>
+          </button>
         </div>
 
         {/* Mobile nav */}
         {mobileOpen && (
-          <div className="md:hidden border-t border-white/10 py-4 space-y-1">
+          <div className="md:hidden border-t border-[#1f1f2e] py-4 space-y-1">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className={`block rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                className={`block rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                   pathname === link.href
-                    ? 'bg-white/10 text-white'
-                    : 'text-white/60 hover:bg-white/5 hover:text-white'
+                    ? 'text-[#f0f0f5] bg-[#1a1a25]'
+                    : 'text-[#8888a0] hover:text-[#f0f0f5] hover:bg-[#12121a]'
                 }`}
               >
                 {link.label}
               </Link>
             ))}
-            <div className="flex gap-2 pt-2 border-t border-white/10 mt-2 px-3">
-              <Link href="/new-listing" onClick={() => setMobileOpen(false)}>
-                <Button size="sm" className="bg-violet-600 hover:bg-violet-700 text-white">
-                  <Plus className="h-4 w-4 mr-1" />
-                  Pievienot
-                </Button>
+            <div className="flex gap-2 pt-3 border-t border-[#1f1f2e] mt-3 px-3">
+              <Link
+                href="/new-listing"
+                onClick={() => setMobileOpen(false)}
+                className="bg-[#7c3aed] hover:bg-[#6d28d9] text-white text-sm font-medium rounded-lg px-4 py-2 transition-colors"
+              >
+                <Plus className="h-4 w-4 inline mr-1" />
+                Pievienot
               </Link>
-              <Link href="/login" onClick={() => setMobileOpen(false)}>
-                <Button size="sm" variant="outline" className="border-white/20 text-white">
-                  Ieiet
-                </Button>
+              <Link
+                href="/login"
+                onClick={() => setMobileOpen(false)}
+                className="border border-[#2a2a3a] text-[#f0f0f5] text-sm font-medium rounded-lg px-4 py-2 hover:bg-[#12121a] transition-colors"
+              >
+                Ieiet
               </Link>
             </div>
           </div>

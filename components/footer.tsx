@@ -1,65 +1,94 @@
 import Link from 'next/link';
+import { Shield, Truck, BadgeCheck } from 'lucide-react';
 
 export function Footer() {
   return (
-    <footer className="mt-auto border-t border-white/10 bg-black/40 backdrop-blur-xl">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer className="border-t border-[#1f1f2e] bg-[#0a0a0f]">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* Brand */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 text-sm font-bold text-white">
+            <div className="flex items-center gap-2.5">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#7c3aed] text-sm font-bold text-white">
                 S
               </div>
-              <span className="text-lg font-bold text-white">
-                Sell<span className="text-violet-400">Buy</span>.lv
+              <span className="text-lg font-semibold text-[#f0f0f5] tracking-tight">
+                Sell<span className="text-[#a78bfa]">Buy</span>.lv
               </span>
             </div>
-            <p className="text-sm text-white/50">
-              Droši darījumi Latvijā. Smart-ID verifikācija, Escrow aizsardzība, Omniva/DPD piegāde.
+            <p className="text-sm text-[#55556a] leading-relaxed">
+              Uzticams sludinājumu portāls Latvijā. Droši darījumi ar Escrow aizsardzību.
             </p>
           </div>
 
           {/* Navigation */}
           <div>
-            <h3 className="text-sm font-semibold text-white mb-4">Navigācija</h3>
-            <ul className="space-y-2">
-              <li><Link href="/listings" className="text-sm text-white/50 hover:text-white transition-colors">Sludinājumi</Link></li>
-              <li><Link href="/categories" className="text-sm text-white/50 hover:text-white transition-colors">Kategorijas</Link></li>
-              <li><Link href="/new-listing" className="text-sm text-white/50 hover:text-white transition-colors">Pievienot sludinājumu</Link></li>
-              <li><Link href="/about" className="text-sm text-white/50 hover:text-white transition-colors">Par mums</Link></li>
+            <h3 className="text-xs font-medium uppercase tracking-wider text-[#55556a] mb-4">Navigācija</h3>
+            <ul className="space-y-3">
+              {[
+                { href: '/listings', label: 'Sludinājumi' },
+                { href: '/categories', label: 'Kategorijas' },
+                { href: '/new-listing', label: 'Pievienot sludinājumu' },
+                { href: '/about', label: 'Par mums' },
+              ].map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className="text-sm text-[#8888a0] hover:text-[#f0f0f5] transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Account */}
           <div>
-            <h3 className="text-sm font-semibold text-white mb-4">Konts</h3>
-            <ul className="space-y-2">
-              <li><Link href="/login" className="text-sm text-white/50 hover:text-white transition-colors">Ieiet</Link></li>
-              <li><Link href="/register" className="text-sm text-white/50 hover:text-white transition-colors">Reģistrēties</Link></li>
-              <li><Link href="/messages" className="text-sm text-white/50 hover:text-white transition-colors">Ziņas</Link></li>
+            <h3 className="text-xs font-medium uppercase tracking-wider text-[#55556a] mb-4">Konts</h3>
+            <ul className="space-y-3">
+              {[
+                { href: '/login', label: 'Ieiet' },
+                { href: '/register', label: 'Reģistrēties' },
+                { href: '/messages', label: 'Ziņas' },
+              ].map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className="text-sm text-[#8888a0] hover:text-[#f0f0f5] transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Trust */}
           <div>
-            <h3 className="text-sm font-semibold text-white mb-4">Uzticamība</h3>
-            <ul className="space-y-2">
-              <li className="text-sm text-white/50">🔒 Smart-ID verifikācija</li>
-              <li className="text-sm text-white/50">🛡️ Escrow aizsardzība</li>
-              <li className="text-sm text-white/50">📦 Omniva/DPD piegāde</li>
-              <li className="text-sm text-white/50">⭐ Pārdevēju vērtējumi</li>
+            <h3 className="text-xs font-medium uppercase tracking-wider text-[#55556a] mb-4">Uzticamība</h3>
+            <ul className="space-y-3">
+              <li className="flex items-center gap-2 text-sm text-[#8888a0]">
+                <BadgeCheck className="h-4 w-4 text-[#7c3aed]" />
+                Smart-ID verifikācija
+              </li>
+              <li className="flex items-center gap-2 text-sm text-[#8888a0]">
+                <Shield className="h-4 w-4 text-[#7c3aed]" />
+                Escrow aizsardzība
+              </li>
+              <li className="flex items-center gap-2 text-sm text-[#8888a0]">
+                <Truck className="h-4 w-4 text-[#7c3aed]" />
+                Omniva/DPD piegāde
+              </li>
             </ul>
           </div>
         </div>
 
-        <div className="mt-8 pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-white/30">
+        <div className="mt-12 pt-8 border-t border-[#1f1f2e] flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p className="text-xs text-[#55556a]">
             © 2026 SellBuy.lv. Visas tiesības aizsargātas.
           </p>
-          <div className="flex gap-4">
-            <Link href="/about" className="text-sm text-white/30 hover:text-white/60 transition-colors">Privātuma politika</Link>
-            <Link href="/about" className="text-sm text-white/30 hover:text-white/60 transition-colors">Lietošanas noteikumi</Link>
+          <div className="flex gap-6">
+            <Link href="/about" className="text-xs text-[#55556a] hover:text-[#8888a0] transition-colors">
+              Privātuma politika
+            </Link>
+            <Link href="/about" className="text-xs text-[#55556a] hover:text-[#8888a0] transition-colors">
+              Lietošanas noteikumi
+            </Link>
           </div>
         </div>
       </div>
