@@ -6,31 +6,29 @@ import Link from 'next/link';
 import { useAuth } from '@/app/lib/auth';
 
 export default function RegisterPage() {
-  const router = useRouter();
-  const { login } = useAuth();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const { login } = useAuth();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError('');
 
     if (password.length < 6) {
-      setError('Parolei jābūt vismaz 6 rakstzīmēm garai.');
+      setError('Parolei jābūt vismaz 6 simbolus garai');
       return;
     }
-
     if (password !== confirmPassword) {
-      setError('Paroles nesakrīt.');
+      setError('Paroles nesakrīt');
       return;
     }
 
     setLoading(true);
-
     try {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
@@ -39,91 +37,101 @@ export default function RegisterPage() {
       });
 
       const data = await res.json();
-
       if (!res.ok) {
-        setError(data.error || 'Reģistrācija neizdevās.');
+        setError(data.error || 'Neizdevās reģistrēties');
         return;
       }
 
-      await login(data.email, data.name || undefined);
+      await login(data.user.email, data.user.name);
       router.push('/');
     } catch {
-      setError('Tīkla kļūda. Lūdzu, mēģiniet vēlreiz.');
+      setError('Radās kļūda. Mēģiniet vēlreiz.');
     } finally {
       setLoading(false);
     }
-  };
+  }
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 bg-[#0a0a0f]">
-      <div className="w-full max-w-md bg-[#12121a] border border-[#1f1f2e] rounded-2xl p-8">
-        <h1 className="text-2xl font-semibold text-[#f0f0f5] mb-8">Reģistrēties</h1>
-
-        {error && (
-          <div className="bg-[#2a1a1a] border border-[#3a2020] rounded-lg p-3 text-sm text-[#e0a0a0] mb-6">
-            {error}
-          </div>
-        )}
+    <div className="min-h-[80vh] flex items-center justify-center px-4">
+      <div className="w-full max-w-sm">
+        <div className="mb-8 text-center">
+          <Link href="/" className="text-lg font-semibold text-[#e8e8ed] tracking-tight">
+            Sell<span className="text-[#7c5aed]">Buy</span>.lv
+          </Link>
+          <h1 className="mt-4 text-xl font-semibold text-[#e8e8ed]">Reģistrēties</h1>
+          <p className="mt-1 text-sm text-[#6a6a7a]">Izveidojiet savu kontu</p>
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          {error && (
+            <div className="bg-[#2a1a1a] border border-[#3a2020] rounded-lg p-3 text-sm text-[#e0a0a0]">
+              {error}
+            </div>
+          )}
+
           <div>
-            <label className="block text-[15px] text-[#8888a0] mb-1.5">Vārds</label>
+            <label htmlFor="name" className="block text-xs text-[#6a6a7a] mb-1.5">Vārds</label>
             <input
+              id="name"
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Jānis Bērziņš"
-              required
-              className="w-full bg-[#12121a] border border-[#1f1f2e] rounded-xl px-4 py-3 text-[#f0f0f5] focus:border-[#7c3aed] outline-none transition"
+              placeholder="Jūsu vārds"
+              className="w-full bg-[#12121a] border border-[#1e1e2a] rounded-lg px-3.5 py-2.5 text-sm text-[#e8e8ed] placeholder:text-[#4a4a5a] outline-none focus:border-[#7c5aed] transition-colors"
             />
           </div>
+
           <div>
-            <label className="block text-[15px] text-[#8888a0] mb-1.5">E-pasts</label>
+            <label htmlFor="email" className="block text-xs text-[#6a6a7a] mb-1.5">E-pasts</label>
             <input
+              id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="jusu@epasts.lv"
               required
-              className="w-full bg-[#12121a] border border-[#1f1f2e] rounded-xl px-4 py-3 text-[#f0f0f5] focus:border-[#7c3aed] outline-none transition"
+              className="w-full bg-[#12121a] border border-[#1e1e2a] rounded-lg px-3.5 py-2.5 text-sm text-[#e8e8ed] placeholder:text-[#4a4a5a] outline-none focus:border-[#7c5aed] transition-colors"
             />
           </div>
+
           <div>
-            <label className="block text-[15px] text-[#8888a0] mb-1.5">Parole</label>
+            <label htmlFor="password" className="block text-xs text-[#6a6a7a] mb-1.5">Parole</label>
             <input
+              id="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
+              placeholder="Vismaz 6 simboli"
               required
-              className="w-full bg-[#12121a] border border-[#1f1f2e] rounded-xl px-4 py-3 text-[#f0f0f5] focus:border-[#7c3aed] outline-none transition"
+              className="w-full bg-[#12121a] border border-[#1e1e2a] rounded-lg px-3.5 py-2.5 text-sm text-[#e8e8ed] placeholder:text-[#4a4a5a] outline-none focus:border-[#7c5aed] transition-colors"
             />
           </div>
+
           <div>
-            <label className="block text-[15px] text-[#8888a0] mb-1.5">Apstiprināt paroli</label>
+            <label htmlFor="confirmPassword" className="block text-xs text-[#6a6a7a] mb-1.5">Apstiprināt paroli</label>
             <input
+              id="confirmPassword"
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="••••••••"
+              placeholder="Atkārtojiet paroli"
               required
-              className="w-full bg-[#12121a] border border-[#1f1f2e] rounded-xl px-4 py-3 text-[#f0f0f5] focus:border-[#7c3aed] outline-none transition"
+              className="w-full bg-[#12121a] border border-[#1e1e2a] rounded-lg px-3.5 py-2.5 text-sm text-[#e8e8ed] placeholder:text-[#4a4a5a] outline-none focus:border-[#7c5aed] transition-colors"
             />
           </div>
+
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#7c3aed] hover:bg-[#6d28d9] text-white rounded-xl py-3 font-semibold transition"
+            className="w-full bg-[#7c5aed] hover:bg-[#6a4bd4] disabled:opacity-50 text-white text-sm font-medium rounded-lg py-2.5 transition-colors"
           >
-            {loading ? 'Notiek ielāde...' : 'Reģistrēties'}
+            {loading ? 'Reģistrējas...' : 'Reģistrēties'}
           </button>
         </form>
 
-        <p className="text-[15px] text-[#8888a0] mt-6 text-center">
+        <p className="mt-6 text-center text-sm text-[#6a6a7a]">
           Jau ir konts?{' '}
-          <Link href="/login" className="text-[#a78bfa] hover:underline">
-            Ieiet
-          </Link>
+          <Link href="/login" className="text-[#a78bfa] hover:text-[#7c5aed] transition-colors">Ieiet</Link>
         </p>
       </div>
     </div>

@@ -4,69 +4,31 @@
 
 @layer base {
   :root {
-    /* SellBuy.lv design system — NOT shadcn defaults */
-    --background: 240 10% 4%;       /* #0a0a0f */
-    --foreground: 240 20% 96%;      /* #f0f0f5 */
-    --card: 240 10% 8%;            /* #12121a */
-    --card-foreground: 240 20% 96%;
-    --popover: 240 10% 10%;
-    --popover-foreground: 240 20% 96%;
-    --primary: 263 70% 58%;        /* #7c3aed */
+    --background: 240 6% 5%;
+    --foreground: 240 4% 90%;
+    --card: 240 6% 8%;
+    --card-foreground: 240 4% 90%;
+    --primary: 258 70% 60%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 240 10% 12%;
-    --secondary-foreground: 240 20% 96%;
-    --muted: 240 10% 12%;
-    --muted-foreground: 240 10% 50%; /* #8888a0 */
-    --accent: 240 10% 12%;
-    --accent-foreground: 240 20% 96%;
-    --destructive: 0 72% 51%;
+    --secondary: 240 5% 12%;
+    --secondary-foreground: 240 4% 90%;
+    --muted: 240 4% 15%;
+    --muted-foreground: 240 3% 50%;
+    --accent: 240 4% 15%;
+    --accent-foreground: 240 4% 90%;
+    --destructive: 0 60% 50%;
     --destructive-foreground: 0 0% 100%;
-    --border: 240 10% 12%;         /* #1f1f2e */
-    --input: 240 10% 12%;
-    --ring: 263 70% 58%;
-    --radius: 0.75rem;
+    --border: 240 5% 12%;
+    --input: 240 5% 12%;
+    --ring: 258 70% 60%;
+    --radius: 0.5rem;
   }
 
   * {
-    @apply border-border;
+    @apply border-[var(--border)];
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
-    font-feature-settings: "rlig" 1, "calt" 1, "ss01" 1;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    @apply bg-[var(--background)] text-[var(--foreground)] antialiased;
   }
-
-  h1, h2, h3, h4, h5, h6 {
-    @apply tracking-tight;
-  }
-}
-
-/* Scrollbar styling — subtle, not distracting */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-/* Focus styles — accessible, not ugly */
-:focus-visible {
-  outline: 2px solid #7c3aed;
-  outline-offset: 2px;
-  border-radius: 4px;
-}
-
-/* Selection — violet accent */
-::selection {
-  background: rgba(124, 58, 237, 0.3);
-  color: #f0f0f5;
 }
