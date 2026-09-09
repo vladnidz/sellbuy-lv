@@ -21,6 +21,8 @@ import { prisma } from '@/app/lib/prisma';
 import { ListingCard } from '@/components/listing-card';
 import { Button } from '@/components/ui/button';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = buildTrilingualMetadata('/', {
   lv: { title: `Sākumlapa | ${BRAND}`, description: 'SellBuy.lv - labākais sludinājumu portāls Latvijā.' },
   ru: { title: `Главная | ${BRAND}`, description: 'SellBuy.lv - лучший портал объявлений в Латвии.' },
