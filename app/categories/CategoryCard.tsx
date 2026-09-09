@@ -216,7 +216,7 @@ export function CategoryCard({ category, index, level = 0 }: CategoryCardProps) 
                     <Badge
                       key={child.id}
                       variant="outline"
-                      className="text-xs h-5 px-2 text-slate-300 border-slate-700 hover:border-blue-500/50 hover:text-blue-300 transition-all"
+                      className="text-xs h-5 px-2 text-[#8888a0] border-[#2a2a3a] hover:border-[#7c3aed]/20 hover:text-[#a78bfa]-300 transition-all"
                     >
                       {child.name}
                     </Badge>

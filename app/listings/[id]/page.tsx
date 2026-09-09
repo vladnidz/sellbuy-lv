@@ -125,7 +125,7 @@ export default async function ListingDetailPage({
 
             {/* Seller Card */}
             <div className="bg-[#12121a] border border-[#1f1f2e] rounded-2xl p-6 flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#7c3aed] to-indigo-500 flex items-center justify-center text-white font-bold">
+              <div className="w-12 h-12 rounded-full bg-[#7c3aed] flex items-center justify-center text-white font-bold">
                 {(listing.author.name || 'U')[0].toUpperCase()}
               </div>
               <div>

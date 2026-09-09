@@ -344,7 +344,7 @@ export default function NewListingPage() {
                     {formData.images.map((file, index) => (
                       <span
                         key={index}
-                        className="flex items-center gap-1 px-3 py-1 bg-blue-950 border border-blue-700 rounded-full text-sm text-blue-300"
+                        className="flex items-center gap-1 px-3 py-1 bg-[#1a1a25] border border-[#2a2a3a] rounded-lg text-sm text-blue-300"
                       >
                         <ImageIcon className="h-3 w-3" />
                         {file.name}
@@ -366,14 +366,14 @@ export default function NewListingPage() {
               </div>
 
               {submitStatus === "error" && (
-                <div className="flex items-center gap-2 p-3 bg-red-950 border border-red-700 rounded-lg text-red-300">
+                <div className="flex items-center gap-2 p-3 bg-[#2a1a1a] border border-[#3a2020] rounded-lg text-[#e0a0a0]">
                   <AlertCircle className="h-5 w-5 flex-shrink-0" />
                   <p>{errorMessage}</p>
                 </div>
               )}
 
               {submitStatus === "success" && (
-                <div className="flex items-center gap-2 p-3 bg-green-950 border border-green-700 rounded-lg text-green-300">
+                <div className="flex items-center gap-2 p-3 bg-[#1a2a1a] border border-[#203a20] rounded-lg text-[#a0e0a0]">
                   <CheckCircle className="h-5 w-5 flex-shrink-0" />
                   <p>Sludinājums veiksmīgi publicēts! Pārejošam uz sludinājumu...</p>
                 </div>

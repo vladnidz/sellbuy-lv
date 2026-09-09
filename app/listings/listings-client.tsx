@@ -236,7 +236,7 @@ export function ListingsPageClient({
           </div>
         ) : (
           <div className="text-center py-20">
-            <div className="text-6xl opacity-10 mb-4">��</div>
+            <div className="text-6xl opacity-10 mb-4 text-[#55556a]"><svg>...</svg></div>
             <h2 className="text-xl font-semibold text-[#f0f0f5] mb-2">Nav atrasti sludinājumi</h2>
             <p className="text-[#8888a0] mb-6">Mēģiniet mainīt meklēšanas kritērijus</p>
             {hasActiveFilters && (

@@ -20,7 +20,7 @@ export default function AboutPage() {
 
         {/* Hero */}
         <div className="text-center mb-16">
-          <h1 className="text-5xl font-extrabold mb-6 bg-gradient-to-r from-white via-blue-100 to-indigo-200 bg-clip-text text-transparent">
+          <h1 className="text-5xl font-extrabold mb-6 text-[#f0f0f5]">
             Par SellBuy.lv
           </h1>
           <p className="text-slate-300 max-w-2xl mx-auto text-lg">

@@ -117,7 +117,7 @@ export default async function CategoriesPage() {
       {/* Hero Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center mb-12">
-          <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight mb-4 bg-gradient-to-r from-white via-blue-100 to-indigo-200 bg-clip-text text-transparent">
+          <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight mb-4 text-[#f0f0f5]">
             Visas Kategorijas
           </h1>
           <p className="text-slate-300 max-w-2xl mx-auto text-lg">
@@ -140,11 +140,11 @@ export default async function CategoriesPage() {
                 />
               </div>
               <div className="flex gap-2">
-                <Button variant="outline" className="h-12 px-6 bg-slate-900 border-slate-700 hover:border-blue-500/50 hover:bg-blue-500/10">
+                <Button variant="outline" className="h-12 px-6 bg-[#12121a] border-[#2a2a3a] hover:border-[#7c3aed]/200 hover:bg-blue-500/10">
                   <Grid className="h-4 w-4 mr-2" aria-hidden="true" />
                   Rindas
                 </Button>
-                <Button variant="outline" className="h-12 px-6 bg-slate-900 border-slate-700 hover:border-blue-500/50 hover:bg-blue-500/10">
+                <Button variant="outline" className="h-12 px-6 bg-[#12121a] border-[#2a2a3a] hover:border-[#7c3aed]/200 hover:bg-blue-500/10">
                   <List className="h-4 w-4 mr-2" aria-hidden="true" />
                   Saraksts
                 </Button>
@@ -169,7 +169,7 @@ export default async function CategoriesPage() {
         {categories.length === 0 && (
           <Card className="bg-slate-900/50 border-slate-800 py-20 text-center col-span-full">
             <CardContent>
-              <div className="text-6xl mb-4">📂</div>
+              <div className="text-6xl mb-4 text-[#55556a]"><svg>...</svg></div>
               <h3 className="text-2xl font-bold mb-2">Kategorijas nav atrastas</h3>
               <p className="text-slate-400 mb-6">Vēl nav izveidota neviens kategorija.</p>
               <Link href="/new-listing">

@@ -48,7 +48,7 @@ export default function LoginPage() {
         <p className="text-[15px] text-[#8888a0] mb-8">Ievadiet savu e-pastu un paroli</p>
 
         {error && (
-          <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-3 text-sm text-red-400 mb-6">
+          <div className="bg-[#2a1a1a] border border-[#3a2020] rounded-lg p-3 text-sm text-[#e0a0a0] mb-6">
             {error}
           </div>
         )}

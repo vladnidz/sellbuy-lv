@@ -70,12 +70,12 @@ export default async function HomePage() {
   return (
     <div className="flex flex-col gap-12 sm:gap-20">
       {/* 1. HERO */}
-      <section className="relative w-full bg-gradient-to-br from-[#0a0a0f] via-[#12121a] to-[#1a1033] py-24 sm:py-32 border-b border-[#1f1f2e]">
+      <section className="relative w-full bg-[#0a0a0f] py-24 sm:py-32 border-b border-[#1f1f2e]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl sm:text-6xl font-bold text-[#f0f0f5] tracking-tight mb-8">
             Pērc un pārdod visā Latvijā
           </h1>
-          <div className="max-w-3xl mx-auto bg-[#12121a] border border-[#1f1f2e] p-2 rounded-2xl flex items-center shadow-2xl">
+          <div className="max-w-3xl mx-auto bg-[#12121a] border border-[#1f1f2e] p-2 rounded-2xl flex items-center ">
             <button className="flex items-center gap-2 px-4 py-3 text-[#8888a0] border-r border-[#1f1f2e] hover:text-[#f0f0f5]">
               <span>Kategorija</span>
               <ChevronDown className="w-4 h-4" />
@@ -141,7 +141,7 @@ export default async function HomePage() {
 
       {/* 5. CTA */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-24 sm:pb-32">
-        <div className="bg-gradient-to-r from-[#7c3aed] to-[#5b21b6] rounded-3xl p-12 text-center shadow-2xl">
+        <div className="bg-[#7c3aed] rounded-xl p-12 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-8">Gatavs sākt?</h2>
           <div className="flex gap-4 justify-center">
             <Button size="lg" className="bg-white text-[#7c3aed] hover:bg-gray-100 rounded-xl px-8">

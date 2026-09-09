@@ -60,7 +60,7 @@ export default function RegisterPage() {
         <h1 className="text-2xl font-semibold text-[#f0f0f5] mb-8">Reģistrēties</h1>
 
         {error && (
-          <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-3 text-sm text-red-400 mb-6">
+          <div className="bg-[#2a1a1a] border border-[#3a2020] rounded-lg p-3 text-sm text-[#e0a0a0] mb-6">
             {error}
           </div>
         )}
