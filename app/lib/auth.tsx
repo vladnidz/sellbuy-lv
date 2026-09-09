@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
 interface User {
   id: string;
@@ -26,19 +26,20 @@ const DEMO_USER: User = {
 };
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(() => {
-    if (typeof window !== "undefined") {
-      const stored = localStorage.getItem("sellbuy_user");
-      if (stored) {
-        try {
-          return JSON.parse(stored);
-        } catch {
-          localStorage.removeItem("sellbuy_user");
-        }
+  const [user, setUser] = useState<User | null>(null);
+
+  // Load user from localStorage on client mount (not during SSR)
+  useEffect(() => {
+    const stored = localStorage.getItem("sellbuy_user");
+    if (stored) {
+      try {
+        setUser(JSON.parse(stored));
+      } catch {
+        localStorage.removeItem("sellbuy_user");
       }
     }
-    return null;
-  });
+  }, []);
+
   const [isLoading] = useState(false);
 
   const login = async (email: string, name?: string) => {
