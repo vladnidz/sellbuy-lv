@@ -33,7 +33,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const stored = localStorage.getItem("sellbuy_user");
     if (stored) {
       try {
-        setUser(JSON.parse(stored));
+        const parsed = JSON.parse(stored);
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time initialization on mount
+        setUser(parsed);
       } catch {
         localStorage.removeItem("sellbuy_user");
       }
