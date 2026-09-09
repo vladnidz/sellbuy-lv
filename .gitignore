@@ -45,3 +45,4 @@ next-env.d.ts
 # local dev scripts
 check_users.ts
 create_demo_user.ts
+.neon
