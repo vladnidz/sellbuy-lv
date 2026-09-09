@@ -3,16 +3,9 @@ import { Metadata } from 'next';
 import { buildTrilingualMetadata, BRAND } from '@/app/lib/seo';
 import { prisma } from '@/app/lib/prisma';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
-import Image from 'next/image';
-import { ArrowLeft, Shield, Truck, MessageCircle, MapPin } from 'lucide-react';
+import { ArrowLeft, MapPin, MessageCircle, Star, Calendar, Shield } from 'lucide-react';
 import { notFound } from 'next/navigation';
 
 export async function generateMetadata(
@@ -32,13 +25,6 @@ export async function generateMetadata(
   });
 }
 
-interface CategoryWithPath {
-  id: string;
-  name: string;
-  path: string;
-  parentId: string | null;
-}
-
 export default async function ListingDetailPage({
   params,
 }: {
@@ -50,7 +36,13 @@ export default async function ListingDetailPage({
     where: { id },
     include: {
       category: true,
-      author: { select: { id: true, name: true, email: true } },
+      author: { select: { id: true, name: true } },
+      ratings: {
+        where: { sellerId: { not: undefined } },
+        select: { score: true, comment: true, createdAt: true, buyer: { select: { name: true } } },
+        orderBy: { createdAt: 'desc' },
+        take: 5,
+      },
     },
   });
 
@@ -63,157 +55,139 @@ export default async function ListingDetailPage({
     currency: 'EUR',
   }).format(Number(listing.price));
 
-  const images = listing.images && listing.images.length > 0 ? listing.images : [];
-  const mainImage = images[0] || null;
-  const galleryImages = images.slice(1, 5);
+  const avgRating = listing.ratings.length > 0
+    ? listing.ratings.reduce((sum, r) => sum + r.score, 0) / listing.ratings.length
+    : 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white py-12">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Back Link */}
+    <div className="min-h-screen bg-background">
+      <div className="container-app py-8">
+        {/* Breadcrumb */}
         <Link
-          href="/"
-          className="inline-flex items-center gap-2 text-slate-400 hover:text-white mb-8 transition-colors"
+          href="/listings"
+          className="inline-flex items-center gap-2 text-sm text-white/40 hover:text-white/70 transition-colors mb-8"
         >
           <ArrowLeft className="h-4 w-4" />
-          Atpakaļ uz sākumlapu
+          Atpakaļ uz sludinājumiem
         </Link>
 
-        <div className="grid lg:grid-cols-2 gap-8">
-          {/* Image Gallery */}
-          <div>
-            <div className="rounded-2xl overflow-hidden border border-slate-800 bg-slate-900/50 aspect-square mb-4 relative">
-              {mainImage ? (
-                <Image
-                  src={mainImage}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Main content */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Image */}
+            <div className="aspect-[16/10] rounded-2xl overflow-hidden bg-surface-subtle">
+              {listing.images.length > 0 && listing.images[0] ? (
+                <img
+                  src={listing.images[0]}
                   alt={listing.title}
-                  fill
-                  className="object-cover"
-                  priority
+                  className="w-full h-full object-cover"
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-6xl opacity-20">
-                  📦
+                <div className="w-full h-full flex items-center justify-center">
+                  <div className="text-6xl opacity-20">📷</div>
                 </div>
               )}
             </div>
-            {galleryImages.length > 0 && (
-              <div className="grid grid-cols-4 gap-2">
-                {galleryImages.map((img, idx) => (
-                  <div
-                    key={idx}
-                    className="rounded-lg overflow-hidden border border-slate-800 bg-slate-900/50 aspect-square relative"
-                  >
-                    <Image
-                      src={img}
-                      alt={`${listing.title} - ${idx + 2}`}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                ))}
+
+            {/* Title & Meta */}
+            <div>
+              <div className="flex items-center gap-3 mb-3">
+                {listing.category && (
+                  <Badge variant="secondary" className="bg-white/[0.06] text-white/60 border-0">
+                    {listing.category.name}
+                  </Badge>
+                )}
+                <span className="text-sm text-white/30 flex items-center gap-1">
+                  <Calendar className="h-3.5 w-3.5" />
+                  {new Date(listing.createdAt).toLocaleDateString('lv-LV', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </span>
+              </div>
+
+              <h1 className="text-3xl font-semibold text-white mb-3 tracking-tight">
+                {listing.title}
+              </h1>
+
+              <p className="text-4xl font-bold text-white tracking-tight">
+                {price}
+              </p>
+            </div>
+
+            {/* Description */}
+            <div className="card-subtle rounded-2xl p-6">
+              <h2 className="text-lg font-medium text-white mb-4">Apraksts</h2>
+              <p className="text-white/60 leading-relaxed whitespace-pre-wrap">
+                {listing.description || 'Nav apraksta.'}
+              </p>
+            </div>
+
+            {/* Location */}
+            {listing.city && (
+              <div className="flex items-center gap-2 text-white/50">
+                <MapPin className="h-4 w-4" />
+                <span className="text-sm">{listing.city}</span>
               </div>
             )}
           </div>
 
-          {/* Details */}
-          <div>
-            <div className="flex items-center gap-2 mb-3">
-              <Badge variant="secondary" className="bg-blue-950 text-blue-300 border-blue-800">
-                {listing.category?.name || 'Kategorija'}
-              </Badge>
-              {listing.category && (
-                <span className="text-xs text-slate-500">
-                  {String(
-                    (listing.category as unknown as Partial<CategoryWithPath>).path ?? ''
-                  ).replace(/\./g, ' › ')}
-                </span>
-              )}
+          {/* Sidebar */}
+          <div className="space-y-6">
+            {/* Price card */}
+            <div className="card-subtle rounded-2xl p-6">
+              <p className="text-3xl font-bold text-white mb-6">{price}</p>
+              <div className="space-y-3">
+                <Button className="w-full bg-violet-600 hover:bg-violet-700 text-white h-12 text-base font-medium">
+                  <MessageCircle className="h-5 w-5 mr-2" />
+                  Sazināties
+                </Button>
+                <Button variant="outline" className="w-full border-white/10 text-white hover:bg-white/5 h-12 text-base">
+                  Piedāvāt cenu
+                </Button>
+              </div>
             </div>
 
-            <h1 className="text-3xl lg:text-4xl font-extrabold mb-4 bg-gradient-to-r from-white via-blue-100 to-indigo-200 bg-clip-text text-transparent">
-              {listing.title}
-            </h1>
-
-            <div className="text-4xl font-bold text-blue-400 mb-6">{price}</div>
-
-            <Card className="bg-slate-900/50 border-slate-800 mb-6">
-              <CardHeader className="border-b border-slate-800">
-                <CardTitle className="text-lg">Apraksts</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-slate-300 whitespace-pre-wrap leading-relaxed">
-                  {listing.description}
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* Seller Info */}
-            <Card className="bg-slate-900/50 border-slate-800 mb-6">
-              <CardContent className="pt-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-blue-950 border border-blue-700 flex items-center justify-center text-xl font-bold text-blue-400">
-                    {(listing.author?.name || 'A')[0].toUpperCase()}
-                  </div>
-                  <div>
-                    <div className="font-semibold">
-                      {listing.author?.name || 'Anonīms pārdevējs'}
-                    </div>
-                    <div className="text-sm text-slate-400 flex items-center gap-1">
-                      <Shield className="h-3.5 w-3.5 text-green-400" />
-                      Smart-ID verificēts
-                    </div>
-                  </div>
+            {/* Seller card */}
+            <div className="card-subtle rounded-2xl p-6">
+              <h3 className="text-sm font-medium text-white/40 mb-4">PĀRDEVĒJS</h3>
+              <Link
+                href={`/profile/${listing.author?.id}`}
+                className="flex items-center gap-3 group"
+              >
+                <div className="h-12 w-12 rounded-full bg-gradient-to-br from-violet-500/20 to-indigo-500/20 flex items-center justify-center text-lg font-bold text-white/70">
+                  {(listing.author?.name || 'U').charAt(0).toUpperCase()}
                 </div>
-              </CardContent>
-            </Card>
-
-            {/* CTA */}
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Button
-                size="lg"
-                className="flex-1 bg-blue-600 hover:bg-blue-700"
-              >
-                <MessageCircle className="h-4 w-4 mr-2" />
-                Rakstīt pārdevējam
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-blue-600 text-blue-400 hover:bg-blue-950"
-              >
-                <Truck className="h-4 w-4 mr-2" />
-                Omniva/DPD piegāde
-              </Button>
+                <div>
+                  <p className="font-medium text-white group-hover:text-violet-300 transition-colors">
+                    {listing.author?.name || 'Lietotājs'}
+                  </p>
+                  {avgRating > 0 && (
+                    <div className="flex items-center gap-1 mt-0.5">
+                      <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />
+                      <span className="text-sm text-white/50">
+                        {avgRating.toFixed(1)} ({listing.ratings.length})
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </Link>
             </div>
 
-            {/* Trust Footer */}
-            <div className="mt-6 flex items-center gap-4 text-xs text-slate-500">
-              <span className="flex items-center gap-1">
-                <Shield className="h-3.5 w-3.5 text-green-400" />
-                Escrow aizsardzība
-              </span>
-              <span className="flex items-center gap-1">
-                <MapPin className="h-3.5 w-3.5 text-slate-400" />
-                Visā Latvijā
-              </span>
+            {/* Trust signal — not checklist theater */}
+            <div className="rounded-2xl border border-violet-500/10 bg-violet-500/[0.03] p-6">
+              <div className="flex items-center gap-3 mb-3">
+                <Shield className="h-5 w-5 text-violet-400" />
+                <h3 className="font-medium text-white">Drošs darījums</h3>
+              </div>
+              <p className="text-sm text-white/50 leading-relaxed">
+                Visi darījumi caur SellBuy.lv ir aizsargāti ar Escrow sistēmu —
+                nauda tiek atbrīvota tikai pēc preces saņemšanas.
+              </p>
             </div>
           </div>
         </div>
-
-        {/* Related / Safety */}
-        <Card className="mt-12 bg-gradient-to-br from-blue-950/50 to-indigo-950/50 border-blue-900/30">
-          <CardContent className="pt-6">
-            <h2 className="text-xl font-bold text-blue-400 mb-3">
-              Drošības padomi
-            </h2>
-            <ul className="text-sm text-slate-300 space-y-2">
-              <li>• Izmantojiet escrow sistēmu — nauda atbrīvojama tikai pēc preces saņemšanas.</li>
-              <li>• Pārbaudiet pārdevēja Smart-ID verifikāciju pirms darījuma.</li>
-              <li>• Izvairieties no maksājumiem ārpus platformas.</li>
-            </ul>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );

@@ -43,13 +43,13 @@ const steps = [
 ];
 
 export default async function Home() {
-  let recentListings: Awaited<ReturnType<typeof prisma.listing.findMany>> = [];
+  let recentListings: { id: string; title: string; price: unknown; images: string[]; city: string | null; category: { name: string } | null }[] = [];
 
   try {
     recentListings = await prisma.listing.findMany({
       orderBy: { createdAt: 'desc' },
       take: 8,
-      include: { category: true },
+      include: { category: { select: { name: true } } },
     });
   } catch {
     // Database may not be available during build
@@ -186,15 +186,15 @@ export default async function Home() {
             </Link>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {recentListings.map((listing) => (
+            {listingsForCard.map((listing) => (
               <ListingCard
                 key={listing.id}
                 id={listing.id}
                 title={listing.title}
-                price={Number(listing.price)}
+                price={listing.price}
                 images={listing.images}
                 city={listing.city}
-                categoryName={listing.category.name}
+                categoryName={listing.categoryName}
               />
             ))}
           </div>
