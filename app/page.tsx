@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import {
@@ -13,6 +14,7 @@ import {
   MessageCircle,
   ShieldCheck,
   ArrowRight,
+  ChevronDown,
 } from 'lucide-react';
 import { buildTrilingualMetadata, BRAND } from '@/app/lib/seo';
 import { prisma } from '@/app/lib/prisma';
@@ -25,237 +27,126 @@ export const metadata: Metadata = buildTrilingualMetadata('/', {
   en: { title: `Home | ${BRAND}`, description: 'SellBuy.lv - the best classifieds portal in Latvia.' },
 });
 
-const categories = [
-  { name: 'Transports', path: '/categories/transports', icon: Car },
-  { name: 'Nekustamie īpašumi', path: '/categories/nekustamie-ipasumi', icon: Building2 },
-  { name: 'Elektronika', path: '/categories/elektronika', icon: Smartphone },
-  { name: 'Celtniecība', path: '/categories/celtnieciba', icon: Hammer },
-  { name: 'Darbs & Bizness', path: '/categories/darbs-bizness', icon: Briefcase },
-  { name: 'Māja & Dārzs', path: '/categories/maja-darzs', icon: HomeIcon },
-  { name: 'Apģērbi', path: '/categories/apgerbi', icon: Shirt },
-  { name: 'Bērniem', path: '/categories/berniem', icon: Baby },
-];
+async function RecentListings() {
+  const listings = await prisma.listing.findMany({
+    orderBy: { createdAt: 'desc' },
+    take: 8,
+    include: { category: { select: { name: true } } },
+  });
 
-const steps = [
-  { title: 'Atrodi preci', description: 'Meklē tūkstošos sludinājumu', icon: Search },
-  { title: 'Sazinies ar pārdevēju', description: 'Droša saziņa caur platformu', icon: MessageCircle },
-  { title: 'Drošs darījums', description: 'Escrow aizsardzība līdz preces saņemšanai', icon: ShieldCheck },
-];
-
-export default async function Home() {
-  let recentListings: { id: string; title: string; price: unknown; images: string[]; city: string | null; category: { name: string } | null }[] = [];
-
-  try {
-    recentListings = await prisma.listing.findMany({
-      orderBy: { createdAt: 'desc' },
-      take: 8,
-      include: { category: { select: { name: true } } },
-    });
-  } catch {
-    // Database may not be available during build
-  }
-
-  const listingsForCard = recentListings.map((l) => ({
-    id: l.id,
-    title: l.title,
-    price: Number(l.price),
-    images: l.images,
-    city: l.city,
-    categoryName: l.category?.name ?? '',
-  }));
+  if (listings.length === 0) return null;
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden">
-        {/* Subtle gradient background — only here, not on every element */}
-        <div className="absolute inset-0 bg-gradient-to-b from-violet-600/5 via-transparent to-transparent" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-20">
-          <div className="text-center max-w-3xl mx-auto">
-            <h1 className="text-5xl sm:text-6xl font-semibold tracking-tight text-white mb-6">
-              Pērc un pārdod visā Latvijā
-            </h1>
-            <p className="text-lg text-white/60 max-w-2xl mx-auto mb-10">
-              Tūkstoši sludinājumu no uzticamiem pārdevējiem. Smart-ID verificēts, ar Escrow aizsardzību.
-            </p>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {listings.map((listing) => (
+        <ListingCard
+          key={listing.id}
+          id={listing.id}
+          title={listing.title}
+          price={Number(listing.price)}
+          images={listing.images as string[]}
+          city={listing.city}
+          categoryName={listing.category?.name || 'Cits'}
+        />
+      ))}
+    </div>
+  );
+}
 
-            {/* Search Bar */}
-            <form
-              action="/listings"
-              method="get"
-              className="flex flex-col sm:flex-row gap-3 max-w-2xl mx-auto mb-8"
-            >
-              <div className="relative flex-shrink-0 sm:w-48">
-                <select
-                  name="category"
-                  className="w-full h-12 rounded-xl bg-white/5 border border-white/10 text-white/80 text-sm px-4 appearance-none cursor-pointer hover:border-white/20 transition-colors focus:outline-none focus:ring-2 focus:ring-violet-500/50 focus:border-violet-500/50"
-                >
-                  <option value="">Visas kategorijas</option>
-                  {categories.map((cat) => (
-                    <option key={cat.path} value={cat.path}>
-                      {cat.name}
-                    </option>
-                  ))}
-                </select>
-                <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-white/40">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
-              </div>
-              <div className="relative flex-1">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
-                <input
-                  type="text"
-                  name="q"
-                  placeholder="Ko Tu meklē?"
-                  className="w-full h-12 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/30 pl-11 pr-4 text-sm hover:border-white/20 transition-colors focus:outline-none focus:ring-2 focus:ring-violet-500/50 focus:border-violet-500/50"
-                />
-              </div>
-              <Button
-                type="submit"
-                size="lg"
-                className="h-12 px-8 bg-violet-600 hover:bg-violet-700 text-white font-medium rounded-xl"
-              >
-                Meklēt
-              </Button>
-            </form>
+export default async function HomePage() {
+  const categories = [
+    { name: 'Transports', path: '/categories/transports', icon: Car },
+    { name: 'Nekustamie īpašumi', path: '/categories/nekustamie-ipasumi', icon: Building2 },
+    { name: 'Elektronika', path: '/categories/elektronika', icon: Smartphone },
+    { name: 'Celtniecība', path: '/categories/celtnieciba', icon: Hammer },
+    { name: 'Darbs & Bizness', path: '/categories/darbs-bizness', icon: Briefcase },
+    { name: 'Māja & Dārzs', path: '/categories/maja-darzs', icon: HomeIcon },
+    { name: 'Apģērbi', path: '/categories/apgerbi', icon: Shirt },
+    { name: 'Bērniem', path: '/categories/berniem', icon: Baby },
+  ];
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Button
-                size="lg"
-                className="h-11 px-6 bg-white text-slate-950 hover:bg-white/90 font-medium rounded-xl"
-                asChild
-              >
-                <Link href="/listings/new">Ievietot sludinājumu</Link>
-              </Button>
-              <Button
-                variant="ghost"
-                size="lg"
-                className="h-11 px-6 text-white/70 hover:text-white hover:bg-white/5 font-medium rounded-xl"
-                asChild
-              >
-                <Link href="/listings">
-                  Pārlūkot
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-            </div>
+  return (
+    <div className="flex flex-col gap-12 sm:gap-20">
+      {/* 1. HERO */}
+      <section className="relative w-full bg-gradient-to-br from-[#0a0a0f] via-[#12121a] to-[#1a1033] py-24 sm:py-32 border-b border-[#1f1f2e]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-4xl sm:text-6xl font-bold text-[#f0f0f5] tracking-tight mb-8">
+            Pērc un pārdod visā Latvijā
+          </h1>
+          <div className="max-w-3xl mx-auto bg-[#12121a] border border-[#1f1f2e] p-2 rounded-2xl flex items-center shadow-2xl">
+            <button className="flex items-center gap-2 px-4 py-3 text-[#8888a0] border-r border-[#1f1f2e] hover:text-[#f0f0f5]">
+              <span>Kategorija</span>
+              <ChevronDown className="w-4 h-4" />
+            </button>
+            <input
+              type="text"
+              placeholder="Meklēt preces..."
+              className="flex-1 px-4 py-3 bg-transparent text-[#f0f0f5] placeholder-[#55556a] focus:outline-none"
+            />
+            <Button className="bg-[#7c3aed] text-white hover:bg-[#6d28d9] rounded-xl px-6">
+              <Search className="w-5 h-5" />
+            </Button>
           </div>
         </div>
       </section>
 
-      {/* Featured Categories */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <h2 className="text-2xl font-semibold text-white mb-8">
-          Populārākās kategorijas
-        </h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-          {categories.map((cat) => {
-            const Icon = cat.icon;
-            return (
-              <Link key={cat.path} href={cat.path}>
-                <div className="group flex items-center gap-3 p-4 rounded-xl border border-white/5 hover:border-white/10 hover:bg-white/[0.02] transition-all duration-200">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/5 group-hover:bg-violet-600/10 transition-colors">
-                    <Icon className="h-5 w-5 text-white/50 group-hover:text-violet-400 transition-colors" />
-                  </div>
-                  <span className="text-sm font-medium text-white/70 group-hover:text-white transition-colors">
-                    {cat.name}
-                  </span>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* Recent Listings */}
-      {recentListings.length > 0 && (
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-semibold text-white">
-              Jaunākie sludinājumi
-            </h2>
+      {/* 2. CATEGORIES */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <h2 className="text-2xl font-bold text-[#f0f0f5] mb-12">Kategorijas</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
+          {categories.map((cat) => (
             <Link
-              href="/listings"
-              className="text-sm text-white/40 hover:text-white/70 transition-colors flex items-center gap-1"
+              key={cat.path}
+              href={cat.path}
+              className="group block rounded-2xl border border-[#1f1f2e] bg-[#12121a] p-6 transition-transform duration-200 hover:scale-[1.02] hover:shadow-lg hover:border-[#2a2a3a]"
             >
-              Visi sludinājumi
-              <ArrowRight className="h-3.5 w-3.5" />
+              <cat.icon className="w-8 h-8 text-[#7c3aed] mb-4" />
+              <span className="text-lg font-medium text-[#f0f0f5]">{cat.name}</span>
             </Link>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {listingsForCard.map((listing) => (
-              <ListingCard
-                key={listing.id}
-                id={listing.id}
-                title={listing.title}
-                price={listing.price}
-                images={listing.images}
-                city={listing.city}
-                categoryName={listing.categoryName}
-              />
+          ))}
+        </div>
+      </section>
+
+      {/* 3. LISTINGS */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <h2 className="text-2xl font-bold text-[#f0f0f5] mb-12">Jaunākie sludinājumi</h2>
+        <Suspense fallback={<div className="text-[#8888a0]">Ielādē...</div>}>
+          <RecentListings />
+        </Suspense>
+      </section>
+
+      {/* 4. HOW IT WORKS */}
+      <section className="bg-[#12121a] py-24 sm:py-32">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-2xl font-bold text-[#f0f0f5] mb-12 text-center">Kā tas darbojas?</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-12">
+            {[
+              { icon: Search, title: 'Atrodi preci', desc: 'Meklē tūkstošos sludinājumu' },
+              { icon: MessageCircle, title: 'Sazinies', desc: 'Droša saziņa caur platformu' },
+              { icon: ShieldCheck, title: 'Drošs darījums', desc: 'Escrow aizsardzība' },
+            ].map((step, i) => (
+              <div key={i} className="flex flex-col items-center text-center">
+                <div className="w-16 h-16 rounded-full bg-[#1a1033] flex items-center justify-center text-[#7c3aed] font-bold text-2xl mb-6 border border-[#7c3aed]/20">
+                  {i + 1}
+                </div>
+                <h3 className="text-xl font-bold text-[#f0f0f5] mb-2">{step.title}</h3>
+                <p className="text-[#8888a0]">{step.desc}</p>
+              </div>
             ))}
           </div>
-        </section>
-      )}
-
-      {/* How It Works */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <h2 className="text-2xl font-semibold text-white text-center mb-12">
-          Kā tas strādā
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {steps.map((step, index) => {
-            const Icon = step.icon;
-            return (
-              <div
-                key={step.title}
-                className="text-center group"
-              >
-                <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white/5 mb-5 group-hover:bg-violet-600/10 transition-colors">
-                  <Icon className="h-5 w-5 text-white/50 group-hover:text-violet-400 transition-colors" />
-                </div>
-                <div className="text-xs font-medium text-white/30 mb-3 tracking-wider uppercase">
-                  {index + 1}. solis
-                </div>
-                <h3 className="text-lg font-medium text-white mb-2">
-                  {step.title}
-                </h3>
-                <p className="text-sm text-white/50 max-w-xs mx-auto">
-                  {step.description}
-                </p>
-              </div>
-            );
-          })}
         </div>
       </section>
 
-      {/* Footer CTA */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="text-center">
-          <h2 className="text-3xl font-semibold text-white mb-4">
-            Gatavs sākt?
-          </h2>
-          <p className="text-white/50 mb-8 max-w-md mx-auto">
-            Pievienojies tūkstošiem lietotāju, kas jau tirgojas droši.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Button
-              size="lg"
-              className="h-11 px-6 bg-violet-600 hover:bg-violet-700 text-white font-medium rounded-xl"
-              asChild
-            >
-              <Link href="/register">Reģistrēties</Link>
+      {/* 5. CTA */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-24 sm:pb-32">
+        <div className="bg-gradient-to-r from-[#7c3aed] to-[#5b21b6] rounded-3xl p-12 text-center shadow-2xl">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-8">Gatavs sākt?</h2>
+          <div className="flex gap-4 justify-center">
+            <Button size="lg" className="bg-white text-[#7c3aed] hover:bg-gray-100 rounded-xl px-8">
+              Pievienot sludinājumu
             </Button>
-            <Button
-              variant="ghost"
-              size="lg"
-              className="h-11 px-6 text-white/70 hover:text-white hover:bg-white/5 font-medium rounded-xl"
-              asChild
-            >
-              <Link href="/listings">Pārlūkot sludinājumus</Link>
+            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 rounded-xl px-8">
+              Skatīt visus
             </Button>
           </div>
         </div>
