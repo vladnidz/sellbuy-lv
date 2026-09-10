@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
+import { createContext, useContext, useState, useEffect, startTransition, ReactNode, useCallback } from 'react';
 
 type Theme = 'dark' | 'light';
 
@@ -18,7 +18,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const stored = localStorage.getItem('sellbuy_theme');
     if (stored === 'dark' || stored === 'light') {
-      setThemeState(stored);
+      startTransition(() => setThemeState(stored));
       document.documentElement.classList.toggle('light', stored === 'light');
     }
   }, []);

@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
+import { createContext, useContext, useState, useEffect, startTransition, ReactNode, useCallback } from 'react';
 import { Locale, DEFAULT_LOCALE, SUPPORTED_LOCALES } from './i18n';
 import { translations } from './translations';
 
@@ -40,7 +40,7 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const stored = localStorage.getItem('sellbuy_locale');
     if (stored && SUPPORTED_LOCALES.includes(stored as Locale)) {
-      setLocaleState(stored as Locale);
+      startTransition(() => setLocaleState(stored as Locale));
     }
   }, []);
 
