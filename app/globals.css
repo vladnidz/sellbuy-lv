@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Dark theme (default) */
 *,
 *::before,
 *::after {
@@ -26,3 +27,34 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+/* Light theme */
+html.light *,
+html.light *::before,
+html.light *::after {
+  border-color: #e2e2ea;
+}
+
+html.light body {
+  background-color: #f8f8fa;
+  color: #1a1a25;
+}
+
+/* Light theme overrides for key elements */
+html.light .bg-\[#0a0a0f\] { background-color: #f8f8fa; }
+html.light .bg-\[#12121a\] { background-color: #ffffff; }
+html.light .bg-\[#15151f\] { background-color: #f0f0f5; }
+html.light .bg-\[#1a1a25\] { background-color: #e8e8f0; }
+html.light .border-\[#1e1e2a\] { border-color: #e2e2ea; }
+html.light .border-\[#2a2a3a\] { border-color: #d0d0da; }
+html.light .text-\[#e8e8ed\] { color: #1a1a25; }
+html.light .text-\[#8a8a9a\] { color: #6a6a7a; }
+html.light .text-\[#6a6a7a\] { color: #8a8a9a; }
+html.light .text-\[#4a4a5a\] { color: #aaaaBA; }
+html.light .text-\[#a78bfa\] { color: #7c5aed; }
+html.light .text-\[#7c5aed\] { color: #6a4bd4; }
+html.light .bg-\[#0a0a0f\]\/80 { background-color: rgba(248, 248, 250, 0.8); }
+html.light .bg-\[#7c5aed\]\/10 { background-color: rgba(124, 90, 237, 0.1); }
+html.light .bg-\[#2a1a1a\] { background-color: #fef2f2; }
+html.light .border-\[#3a2020\] { border-color: #fecaca; }
+html.light .text-\[#e0a0a0\] { color: #dc2626; }

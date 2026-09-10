@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { MapPin } from 'lucide-react';
+import { MapPin, Image as ImageIcon } from 'lucide-react';
 
 interface ListingCardProps {
   id: string;
@@ -10,38 +10,56 @@ interface ListingCardProps {
   images: string[];
   city: string | null;
   categoryName: string;
+  createdAt?: string;
 }
 
-export function ListingCard({ id, title, price, images, city, categoryName }: ListingCardProps) {
+export function ListingCard({ id, title, price, images, city, categoryName, createdAt }: ListingCardProps) {
   return (
-    <Link href={`/listings/${id}`} className="group block bg-[#12121a] border border-[#1e1e2a] rounded-lg overflow-hidden hover:border-[#2a2a3a] transition-colors">
-      {/* Image */}
-      <div className="aspect-[4/3] bg-[#15151f] overflow-hidden">
+    <Link 
+      href={`/listings/${id}`} 
+      className="group block bg-[#12121a] border border-[#1e1e2a] rounded-xl overflow-hidden hover:border-[#7c5aed]/30 hover:shadow-lg hover:shadow-[#7c5aed]/5 hover:-translate-y-1 transition-all duration-300"
+    >
+      {/* Image Container */}
+      <div className="relative aspect-[4/3] overflow-hidden">
         {images && images.length > 0 ? (
           <img
             src={images[0]}
             alt={title}
-            className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300"
+            className="w-full h-full object-cover"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-[#2a2a3a]">
-            <span className="text-4xl"> </span>
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#1a1a25] to-[#12121a] text-[#2a2a3a]">
+            <ImageIcon className="w-12 h-12" />
           </div>
         )}
+        
+        {/* Gradient Overlay & Price Badge */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0f]/60 to-transparent" />
+        <div className="absolute bottom-2 left-2 bg-[#0a0a0f]/80 backdrop-blur-sm text-white font-bold text-sm rounded-full px-3 py-1">
+          €{price.toFixed(2)}
+        </div>
       </div>
 
       {/* Content */}
-      <div className="p-3.5">
-        {categoryName && (
-          <span className="text-xs text-[#6a6a7a]">{categoryName}</span>
-        )}
-        <h3 className="text-sm font-medium text-[#e8e8ed] mt-1 line-clamp-2 leading-snug">{title}</h3>
-        <div className="mt-2 flex items-center justify-between">
-          <span className="text-sm font-semibold text-[#e8e8ed]">€{price.toFixed(2)}</span>
+      <div className="p-4">
+        <span className="text-xs text-[#7c5aed] font-medium uppercase tracking-wider">
+          {categoryName}
+        </span>
+        <h3 className="text-sm font-medium text-[#e8e8ed] line-clamp-2 mt-1">
+          {title}
+        </h3>
+        
+        {/* Footer */}
+        <div className="flex justify-between items-center mt-3">
           {city && (
-            <span className="flex items-center gap-1 text-xs text-[#4a4a5a]">
+            <span className="flex items-center gap-1 text-xs text-[#6a6a7a]">
               <MapPin className="h-3 w-3" />
               {city}
+            </span>
+          )}
+          {createdAt && (
+            <span className="text-xs text-[#4a4a5a]">
+              {new Date(createdAt).toLocaleDateString()}
             </span>
           )}
         </div>
