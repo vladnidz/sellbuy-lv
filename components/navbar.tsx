@@ -6,16 +6,18 @@ import { Plus, Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import { LanguageSwitcher } from '@/components/language-switcher';
 import { ThemeToggle } from '@/components/theme-toggle';
-
-const navLinks = [
-  { href: '/listings', label: 'Sludinājumi' },
-  { href: '/categories', label: 'Kategorijas' },
-  { href: '/about', label: 'Par mums' },
-];
+import { useLocale } from '@/app/lib/locale-context';
 
 export function Navbar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { t } = useLocale();
+
+  const navLinks = [
+    { href: '/listings', label: t('nav.sludinājumi') },
+    { href: '/categories', label: t('nav.kategorijas') },
+    { href: '/about', label: t('nav.par_mums') },
+  ];
 
   return (
     <nav className="sticky top-0 z-50 backdrop-blur-xl border-b" style={{ backgroundColor: 'var(--nav-bg)', borderColor: 'var(--border)' }}>
@@ -50,25 +52,20 @@ export function Navbar() {
             <LanguageSwitcher />
             <ThemeToggle />
             <Link href="/new-listing" className="flex items-center gap-1.5 text-sm transition-colors px-2 py-1.5" style={{ color: 'var(--text-secondary)' }}>
-              <Plus className="h-4 w-4" /> Ievietot
+              <Plus className="h-4 w-4" /> {t('nav.ievietot')}
             </Link>
             <Link href="/login" className="text-sm transition-colors px-2 py-1.5" style={{ color: 'var(--text-secondary)' }}>
-              Ieiet
+              {t('nav.ieiet')}
             </Link>
             <Link href="/register" className="text-sm text-white px-3.5 py-1.5 rounded-lg transition-colors" style={{ backgroundColor: 'var(--accent)' }}>
-              Reģistrēties
+              {t('nav.registrēties')}
             </Link>
           </div>
 
           <div className="flex md:hidden items-center gap-2">
             <LanguageSwitcher />
             <ThemeToggle />
-            <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className="p-2 transition-colors"
-              style={{ color: 'var(--text-secondary)' }}
-              aria-label="Menu"
-            >
+            <button onClick={() => setMobileOpen(!mobileOpen)} className="p-2 transition-colors" style={{ color: 'var(--text-secondary)' }} aria-label="Menu">
               {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
           </div>
@@ -79,26 +76,18 @@ export function Navbar() {
             {navLinks.map((link) => {
               const active = pathname === link.href;
               return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  className="block px-3 py-2 text-sm rounded-lg transition-colors"
-                  style={{
-                    color: active ? 'var(--text-primary)' : 'var(--text-secondary)',
-                    backgroundColor: active ? 'var(--bg-elevated)' : 'transparent',
-                  }}
-                >
+                <Link key={link.href} href={link.href} onClick={() => setMobileOpen(false)} className="block px-3 py-2 text-sm rounded-lg transition-colors"
+                  style={{ color: active ? 'var(--text-primary)' : 'var(--text-secondary)', backgroundColor: active ? 'var(--bg-elevated)' : 'transparent' }}>
                   {link.label}
                 </Link>
               );
             })}
             <div className="border-t pt-3 mt-3 space-y-1" style={{ borderColor: 'var(--border)' }}>
               <Link href="/new-listing" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 px-3 py-2 text-sm rounded-lg" style={{ color: 'var(--text-secondary)' }}>
-                <Plus className="h-4 w-4" /> Ievietot
+                <Plus className="h-4 w-4" /> {t('nav.ievietot')}
               </Link>
-              <Link href="/login" onClick={() => setMobileOpen(false)} className="block px-3 py-2 text-sm rounded-lg" style={{ color: 'var(--text-secondary)' }}>Ieiet</Link>
-              <Link href="/register" onClick={() => setMobileOpen(false)} className="block px-3 py-2 text-sm text-white rounded-lg text-center" style={{ backgroundColor: 'var(--accent)' }}>Reģistrēties</Link>
+              <Link href="/login" onClick={() => setMobileOpen(false)} className="block px-3 py-2 text-sm rounded-lg" style={{ color: 'var(--text-secondary)' }}>{t('nav.ieiet')}</Link>
+              <Link href="/register" onClick={() => setMobileOpen(false)} className="block px-3 py-2 text-sm text-white rounded-lg text-center" style={{ backgroundColor: 'var(--accent)' }}>{t('nav.registrēties')}</Link>
             </div>
           </div>
         )}

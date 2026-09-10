@@ -6,7 +6,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { CategoryWithCounts } from "./page";
+export type CategoryWithCounts = { id: string; name: string; nameLv?: string | null; path: string; attributes?: unknown; parentId?: string | null; _count?: { listings: number; children?: number }; children?: CategoryWithCounts[] };
 
 interface CategoryCardProps {
   category: CategoryWithCounts;

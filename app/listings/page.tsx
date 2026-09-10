@@ -67,8 +67,6 @@ export default async function ListingsPage({ searchParams }: PageProps) {
     orderBy: { name: 'asc' },
   });
 
-  const cities = ['Rīga', 'Daugavpils', 'Jelgava', 'Jūrmala', 'Liepāja', 'Rēzekne', 'Valmiera', 'Ventspils'];
-
   const listingsForCard = listings.map((l) => ({
     id: l.id,
     title: l.title,
@@ -82,10 +80,9 @@ export default async function ListingsPage({ searchParams }: PageProps) {
     <ListingsPageClient
       listings={listingsForCard}
       categories={categories}
-      cities={cities}
       total={total}
-      page={page}
-      pageSize={pageSize}
+      currentPage={page}
+      totalPages={Math.ceil(total / pageSize)}
       currentFilters={{ q, category: categorySlug, minPrice: params.minPrice, maxPrice: params.maxPrice, sort, city }}
     />
   );

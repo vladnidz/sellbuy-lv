@@ -5,8 +5,9 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Search, SlidersHorizontal, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { ListingCard } from '@/components/listing-card';
+import { useLocale } from '@/app/lib/locale-context';
 
-interface ListingItem {
+interface Listing {
   id: string;
   title: string;
   price: number;
@@ -20,201 +21,125 @@ interface Category {
   name: string;
 }
 
-interface ListingsPageClientProps {
-  listings: ListingItem[];
+interface Props {
+  listings: Listing[];
   categories: Category[];
-  cities: string[];
   total: number;
-  page: number;
-  pageSize: number;
+  currentPage: number;
+  totalPages: number;
   currentFilters: {
-    q: string;
-    category: string;
+    q?: string;
+    category?: string;
+    city?: string;
     minPrice?: string;
     maxPrice?: string;
-    sort: string;
-    city: string;
+    sort?: string;
   };
 }
 
-export function ListingsPageClient({
-  listings,
-  categories,
-  cities,
-  total,
-  page,
-  pageSize,
-  currentFilters,
-}: ListingsPageClientProps) {
+export function ListingsPageClient({ listings, categories, total, currentPage, totalPages, currentFilters }: Props) {
   const router = useRouter();
+  const [search, setSearch] = useState(currentFilters.q || '');
   const [showFilters, setShowFilters] = useState(false);
-  const [searchQuery, setSearchQuery] = useState(currentFilters.q);
-
-  const totalPages = Math.ceil(total / pageSize);
-
-  function updateFilter(key: string, value: string) {
-    const params = new URLSearchParams();
-    if (currentFilters.q) params.set('q', currentFilters.q);
-    if (currentFilters.category) params.set('category', currentFilters.category);
-    if (currentFilters.minPrice) params.set('minPrice', currentFilters.minPrice);
-    if (currentFilters.maxPrice) params.set('maxPrice', currentFilters.maxPrice);
-    if (currentFilters.sort) params.set('sort', currentFilters.sort);
-    if (currentFilters.city) params.set('city', currentFilters.city);
-    if (value) params.set(key, value);
-    else params.delete(key);
-    if (key !== 'page') params.delete('page');
-    router.push(`/listings?${params.toString()}`);
-  }
+  const { t } = useLocale();
 
   function handleSearch(e: React.FormEvent) {
     e.preventDefault();
-    updateFilter('q', searchQuery);
+    const params = new URLSearchParams();
+    if (search) params.set('q', search);
+    if (currentFilters.category) params.set('category', currentFilters.category);
+    router.push(`/listings?${params.toString()}`);
   }
 
-  function clearFilters() {
-    router.push('/listings');
+  function buildUrl(overrides: Record<string, string>) {
+    const params = new URLSearchParams();
+    const merged = { ...currentFilters, ...overrides };
+    Object.entries(merged).forEach(([k, v]) => { if (v) params.set(k, v); });
+    return `/listings?${params.toString()}`;
   }
-
-  const hasActiveFilters = currentFilters.q || currentFilters.category || currentFilters.minPrice || currentFilters.maxPrice || currentFilters.city;
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f]">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 py-8">
-        {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-2xl sm:text-3xl font-semibold text-[#e8e8ed] tracking-tight">Sludinājumi</h1>
-          <p className="text-sm text-[#6a6a7a] mt-1">{total} {total === 1 ? 'rezultāts' : 'rezultāti'}</p>
-        </div>
-
-        {/* Search + filter toggle */}
-        <div className="flex gap-3 mb-6">
-          <form onSubmit={handleSearch} className="flex-1 flex items-center bg-[#12121a] border border-[#1e1e2a] rounded-lg overflow-hidden">
-            <Search className="ml-4 h-4 w-4 text-[#4a4a5a] shrink-0" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Meklēt..."
-              className="flex-1 bg-transparent px-3 py-2.5 text-sm text-[#e8e8ed] placeholder:text-[#4a4a5a] outline-none"
-            />
-            {searchQuery && (
-              <button type="button" onClick={() => { setSearchQuery(''); updateFilter('q', ''); }} className="px-2 text-[#4a4a5a] hover:text-[#8a8a9a]">
-                <X className="h-4 w-4" />
-              </button>
-            )}
+    <div className="mx-auto max-w-6xl px-4 sm:px-6 py-8">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+        <h1 className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>{t('listings.title')}</h1>
+        <div className="flex items-center gap-3">
+          <form onSubmit={handleSearch} className="flex items-center border rounded-lg overflow-hidden" style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--border)' }}>
+            <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t('listings.search_placeholder')}
+              className="bg-transparent px-3 py-2 text-sm outline-none w-40" style={{ color: 'var(--text-primary)' }} />
+            <button type="submit" className="px-3 py-2" style={{ color: 'var(--text-tertiary)' }}><Search className="h-4 w-4" /></button>
           </form>
-          <button
-            onClick={() => setShowFilters(!showFilters)}
-            className={`flex items-center gap-2 px-3 py-2.5 rounded-lg border text-sm transition-colors ${
-              showFilters || hasActiveFilters
-                ? 'bg-[#7c5aed]/10 border-[#7c5aed]/20 text-[#a78bfa]'
-                : 'bg-[#12121a] border-[#1e1e2a] text-[#8a8a9a] hover:text-[#e8e8ed] hover:border-[#2a2a3a]'
-            }`}
-          >
+          <button onClick={() => setShowFilters(!showFilters)}
+            className="flex items-center gap-1.5 text-sm border rounded-lg px-3 py-2 transition-colors"
+            style={{ color: 'var(--text-secondary)', borderColor: 'var(--border)' }}>
             <SlidersHorizontal className="h-4 w-4" />
-            <span className="hidden sm:inline">Filtri</span>
+            {t('listings.filters')}
           </button>
         </div>
+      </div>
 
-        {/* Active filter badges */}
-        {hasActiveFilters && (
-          <div className="flex flex-wrap gap-2 mb-6">
-            {currentFilters.q && (
-              <span className="flex items-center gap-1.5 bg-[#7c5aed]/10 text-[#a78bfa] text-xs font-medium rounded-md px-2 py-1">
-                {currentFilters.q}
-                <button onClick={() => updateFilter('q', '')}><X className="h-3 w-3" /></button>
-              </span>
-            )}
-            {currentFilters.category && (
-              <span className="flex items-center gap-1.5 bg-[#7c5aed]/10 text-[#a78bfa] text-xs font-medium rounded-md px-2 py-1">
-                {currentFilters.category}
-                <button onClick={() => updateFilter('category', '')}><X className="h-3 w-3" /></button>
-              </span>
-            )}
-            {currentFilters.city && (
-              <span className="flex items-center gap-1.5 bg-[#7c5aed]/10 text-[#a78bfa] text-xs font-medium rounded-md px-2 py-1">
-                {currentFilters.city}
-                <button onClick={() => updateFilter('city', '')}><X className="h-3 w-3" /></button>
-              </span>
-            )}
-            <button onClick={clearFilters} className="text-xs text-[#4a4a5a] hover:text-[#8a8a9a]">Notīrīt</button>
+      {showFilters && (
+        <div className="border rounded-xl p-4 mb-6 grid grid-cols-1 sm:grid-cols-4 gap-4" style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--border)' }}>
+          <div>
+            <label className="block text-xs mb-1.5" style={{ color: 'var(--text-tertiary)' }}>{t('listings.category')}</label>
+            <select value={currentFilters.category || ''} onChange={(e) => router.push(buildUrl({ category: e.target.value, page: '1' }))}
+              className="w-full border rounded-lg px-3 py-2 text-sm" style={{ backgroundColor: 'var(--bg-elevated)', borderColor: 'var(--border)', color: 'var(--text-primary)' }}>
+              <option value="">{t('listings.category')}</option>
+              {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+            </select>
           </div>
-        )}
+          <div>
+            <label className="block text-xs mb-1.5" style={{ color: 'var(--text-tertiary)' }}>{t('listings.sort_newest')}</label>
+            <select value={currentFilters.sort || 'newest'} onChange={(e) => router.push(buildUrl({ sort: e.target.value }))}
+              className="w-full border rounded-lg px-3 py-2 text-sm" style={{ backgroundColor: 'var(--bg-elevated)', borderColor: 'var(--border)', color: 'var(--text-primary)' }}>
+              <option value="newest">{t('listings.sort_newest')}</option>
+              <option value="price_asc">{t('listings.sort_price_asc')}</option>
+              <option value="price_desc">{t('listings.sort_price_desc')}</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-xs mb-1.5" style={{ color: 'var(--text-tertiary)' }}>{t('listings.price_from')}</label>
+            <input type="number" placeholder="€" defaultValue={currentFilters.minPrice || ''}
+              onBlur={(e) => router.push(buildUrl({ minPrice: e.target.value, page: '1' }))}
+              className="w-full border rounded-lg px-3 py-2 text-sm" style={{ backgroundColor: 'var(--bg-elevated)', borderColor: 'var(--border)', color: 'var(--text-primary)' }} />
+          </div>
+          <div>
+            <label className="block text-xs mb-1.5" style={{ color: 'var(--text-tertiary)' }}>{t('listings.price_to')}</label>
+            <input type="number" placeholder="€" defaultValue={currentFilters.maxPrice || ''}
+              onBlur={(e) => router.push(buildUrl({ maxPrice: e.target.value, page: '1' }))}
+              className="w-full border rounded-lg px-3 py-2 text-sm" style={{ backgroundColor: 'var(--bg-elevated)', borderColor: 'var(--border)', color: 'var(--text-primary)' }} />
+          </div>
+        </div>
+      )}
 
-        {/* Filter panel */}
-        {showFilters && (
-          <div className="bg-[#12121a] border border-[#1e1e2a] rounded-lg p-5 mb-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div>
-                <label className="block text-xs text-[#6a6a7a] mb-1.5">Kategorija</label>
-                <select value={currentFilters.category} onChange={(e) => updateFilter('category', e.target.value)} className="w-full bg-[#0a0a0f] border border-[#1e1e2a] rounded-lg px-3 py-2 text-sm text-[#e8e8ed] outline-none">
-                  <option value="">Visas</option>
-                  {categories.map((cat) => <option key={cat.id} value={cat.name}>{cat.name}</option>)}
-                </select>
-              </div>
-              <div>
-                <label className="block text-xs text-[#6a6a7a] mb-1.5">Pilsēta</label>
-                <select value={currentFilters.city} onChange={(e) => updateFilter('city', e.target.value)} className="w-full bg-[#0a0a0f] border border-[#1e1e2a] rounded-lg px-3 py-2 text-sm text-[#e8e8ed] outline-none">
-                  <option value="">Visas</option>
-                  {cities.map((c) => <option key={c} value={c}>{c}</option>)}
-                </select>
-              </div>
-              <div>
-                <label className="block text-xs text-[#6a6a7a] mb-1.5">Cena no</label>
-                <input type="number" value={currentFilters.minPrice || ''} onChange={(e) => updateFilter('minPrice', e.target.value)} placeholder="€0" className="w-full bg-[#0a0a0f] border border-[#1e1e2a] rounded-lg px-3 py-2 text-sm text-[#e8e8ed] placeholder:text-[#4a4a5a] outline-none" />
-              </div>
-              <div>
-                <label className="block text-xs text-[#6a6a7a] mb-1.5">Cena līdz</label>
-                <input type="number" value={currentFilters.maxPrice || ''} onChange={(e) => updateFilter('maxPrice', e.target.value)} placeholder="€999999" className="w-full bg-[#0a0a0f] border border-[#1e1e2a] rounded-lg px-3 py-2 text-sm text-[#e8e8ed] placeholder:text-[#4a4a5a] outline-none" />
-              </div>
-            </div>
-            <div className="mt-4 pt-4 border-t border-[#1e1e2a] flex flex-wrap gap-2">
-              {['newest', 'price_asc', 'price_desc'].map((s) => (
-                <button key={s} onClick={() => updateFilter('sort', s)} className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${currentFilters.sort === s ? 'bg-[#7c5aed]/10 text-[#a78bfa]' : 'text-[#8a8a9a] hover:text-[#e8e8ed]'}`}>
-                  {s === 'newest' ? 'Jaunākie' : s === 'price_asc' ? 'Cena ↑' : 'Cena ↓'}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
+      <p className="text-sm mb-4" style={{ color: 'var(--text-tertiary)' }}>{total} {t('listings.results')}</p>
 
-        {/* Listings grid */}
-        {listings.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {listings.map((listing) => <ListingCard key={listing.id} {...listing} />)}
-          </div>
-        ) : (
-          <div className="text-center py-20">
-            <p className="text-[#6a6a7a] mb-2">Nav atrasti sludinājumi</p>
-            <p className="text-sm text-[#4a4a5a] mb-6">Mēģiniet mainīt meklēšanas kritērijus</p>
-            {hasActiveFilters && (
-              <button onClick={clearFilters} className="text-sm bg-[#7c5aed] hover:bg-[#6a4bd4] text-white px-4 py-2 rounded-lg transition-colors">
-                Notīrīt filtrus
-              </button>
-            )}
-          </div>
-        )}
+      {listings.length === 0 ? (
+        <div className="text-center py-20">
+          <Search className="h-12 w-12 mx-auto mb-4" style={{ color: 'var(--text-muted)' }} />
+          <p className="text-lg font-medium" style={{ color: 'var(--text-secondary)' }}>{t('listings.empty_state')}</p>
+          <Link href="/listings" className="text-sm mt-3 inline-block transition-colors" style={{ color: 'var(--accent-text)' }}>{t('listings.clear_filters')}</Link>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {listings.map((listing) => <ListingCard key={listing.id} {...listing} />)}
+        </div>
+      )}
 
-        {/* Pagination */}
-        {totalPages > 1 && (
-          <div className="flex items-center justify-center gap-1 mt-10">
-            <Link href={`/listings?${new URLSearchParams({ ...Object.fromEntries(Object.entries(currentFilters).filter(([_, v]) => v)), page: String(page - 1) }).toString()}`} className={`p-2 rounded-md transition-colors ${page <= 1 ? 'text-[#2a2a3a] pointer-events-none' : 'text-[#8a8a9a] hover:text-[#e8e8ed]'}`}>
+      {totalPages > 1 && (
+        <div className="flex items-center justify-center gap-2 mt-8">
+          {currentPage > 1 && (
+            <Link href={buildUrl({ page: String(currentPage - 1) })} className="p-2 rounded-lg border transition-colors" style={{ borderColor: 'var(--border)' }}>
               <ChevronLeft className="h-4 w-4" />
             </Link>
-            {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
-              const pageNum = i + 1;
-              return (
-                <Link key={pageNum} href={`/listings?${new URLSearchParams({ ...Object.fromEntries(Object.entries(currentFilters).filter(([_, v]) => v)), page: String(pageNum) }).toString()}`} className={`w-8 h-8 flex items-center justify-center rounded-md text-sm transition-colors ${pageNum === page ? 'bg-[#7c5aed] text-white' : 'text-[#8a8a9a] hover:text-[#e8e8ed]'}`}>
-                  {pageNum}
-                </Link>
-              );
-            })}
-            <Link href={`/listings?${new URLSearchParams({ ...Object.fromEntries(Object.entries(currentFilters).filter(([_, v]) => v)), page: String(page + 1) }).toString()}`} className={`p-2 rounded-md transition-colors ${page >= totalPages ? 'text-[#2a2a3a] pointer-events-none' : 'text-[#8a8a9a] hover:text-[#e8e8ed]'}`}>
+          )}
+          <span className="text-sm px-3 py-2" style={{ color: 'var(--text-tertiary)' }}>{currentPage} / {totalPages}</span>
+          {currentPage < totalPages && (
+            <Link href={buildUrl({ page: String(currentPage + 1) })} className="p-2 rounded-lg border transition-colors" style={{ borderColor: 'var(--border)' }}>
               <ChevronRight className="h-4 w-4" />
             </Link>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

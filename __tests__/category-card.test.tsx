@@ -6,7 +6,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { CategoryCard } from '@/app/categories/CategoryCard';
-import type { CategoryWithCounts } from '@/app/categories/page';
+import type { CategoryWithCounts } from '@/app/categories/CategoryCard';
 
 jest.mock('framer-motion', () => {
   const passthrough = ({ children, ...props }: React.PropsWithChildren<Record<string, unknown>>) => (
