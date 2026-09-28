@@ -74,7 +74,8 @@ describe('GET /api/listings', () => {
 
     // descendant lookup executed with the given ltree path
     expect(prisma.$queryRaw).toHaveBeenCalled();
-    expect((prisma.$queryRaw as jest.Mock).mock.calls[0][0].text).toContain('@>');
+    const rawSql = JSON.stringify((prisma.$queryRaw as jest.Mock).mock.calls[0][0]);
+    expect(rawSql).toContain('@>');
 
     expect(prisma.listing.findMany).toHaveBeenLastCalledWith(
       expect.objectContaining({

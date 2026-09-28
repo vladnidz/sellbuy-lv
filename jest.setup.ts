@@ -45,6 +45,15 @@ if (typeof global.TextDecoder === 'undefined') {
   global.TextDecoder = TextDecoder as unknown as typeof global.TextDecoder;
 }
 
+if (typeof global.ReadableStream === 'undefined') {
+  try {
+    const { ReadableStream, TransformStream, WritableStream } = require('node:stream/web');
+    global.ReadableStream = ReadableStream;
+    global.TransformStream = TransformStream;
+    global.WritableStream = WritableStream;
+  } catch {}
+}
+
 // jsdom lacks Web API globals (Request, Response, Headers, fetch) needed by Next.js server routes
 const { Request: EdgeRequest, Response: EdgeResponse, Headers: EdgeHeaders, fetch: edgeFetch } = require('next/dist/compiled/@edge-runtime/primitives/fetch');
 if (typeof global.Request === 'undefined') {

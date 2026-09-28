@@ -38,7 +38,12 @@ export default async function ListingsPage({ searchParams }: PageProps) {
 
   // Build where clause
   const where: Prisma.ListingWhereInput = {};
-  if (q) where.title = { contains: q, mode: 'insensitive' };
+  if (q) {
+    where.OR = [
+      { title: { contains: q, mode: 'insensitive' } },
+      { description: { contains: q, mode: 'insensitive' } },
+    ];
+  }
   if (minPrice !== undefined || maxPrice !== undefined) {
     where.price = {};
     if (minPrice !== undefined) where.price.gte = minPrice;
@@ -46,14 +51,22 @@ export default async function ListingsPage({ searchParams }: PageProps) {
   }
   if (city) where.city = city;
   if (categorySlug) {
-    const category = await prisma.category.findFirst({ where: { name: categorySlug } });
-    if (category) where.categoryId = category.id;
+    const matchingCategories = await prisma.$queryRaw<
+      Array<{ id: string }>
+    >`SELECT id FROM "Category" WHERE "path" @> ${categorySlug}::ltree`;
+    const categoryIds = matchingCategories.map((c) => c.id);
+    if (categoryIds.length > 0) {
+      where.categoryId = { in: categoryIds };
+    } else {
+      where.categoryId = { in: ['__no_match__'] };
+    }
   }
 
   // Build orderBy
   let orderBy: Prisma.ListingOrderByWithRelationInput = { createdAt: 'desc' };
   if (sort === 'price_asc') orderBy = { price: 'asc' };
   else if (sort === 'price_desc') orderBy = { price: 'desc' };
+  else if (sort === 'oldest') orderBy = { createdAt: 'asc' };
 
   const [listings, total] = await Promise.all([
     prisma.listing.findMany({

@@ -7,7 +7,7 @@ import { prisma } from '@/app/lib/prisma';
 import { GET } from '@/app/api/categories/tree/route';
 
 jest.mock('@/app/lib/prisma', () => {
-  const original = jest.requireActual('__tests__/mocks/prisma');
+  const original = jest.requireActual('./mocks/prisma');
   return original;
 });
 

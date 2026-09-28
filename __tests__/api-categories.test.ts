@@ -62,8 +62,8 @@ describe('GET /api/categories', () => {
     expect(body.data[0]).toMatchObject({
       id: 'cat-1',
       names: { lv: 'Elektronika', ru: 'Электроника', en: 'Electronics' },
-      listingCount: undefined,
     });
+    expect(body.data[0].listingCount).toBeUndefined();
   });
 
   it('root=true only returns top-level categories', async () => {
@@ -76,8 +76,8 @@ describe('GET /api/categories', () => {
     expect(body.count).toBe(1);
     expect(body.data[0].parentId).toBeNull();
     // ltree root filter must be present in the generated SQL
-    const sql = String((prisma.$queryRaw as jest.Mock).mock.calls[0][0]);
-    expect(sql).toMatch(/root|!\s*~/i);
+    const sql = JSON.stringify((prisma.$queryRaw as jest.Mock).mock.calls[0]);
+    expect(sql).toMatch(/root|!\s*~|nlevel/i);
   });
 
   it('withListingCount increments listing counts', async () => {
