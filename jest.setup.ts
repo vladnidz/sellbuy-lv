@@ -45,6 +45,21 @@ if (typeof global.TextDecoder === 'undefined') {
   global.TextDecoder = TextDecoder as unknown as typeof global.TextDecoder;
 }
 
+// jsdom lacks Web API globals (Request, Response, Headers, fetch) needed by Next.js server routes
+const { Request: EdgeRequest, Response: EdgeResponse, Headers: EdgeHeaders, fetch: edgeFetch } = require('next/dist/compiled/@edge-runtime/primitives/fetch');
+if (typeof global.Request === 'undefined') {
+  global.Request = EdgeRequest;
+}
+if (typeof global.Response === 'undefined') {
+  global.Response = EdgeResponse;
+}
+if (typeof global.Headers === 'undefined') {
+  global.Headers = EdgeHeaders;
+}
+if (typeof global.fetch === 'undefined') {
+  global.fetch = edgeFetch;
+}
+
 // jsdom lacks matchMedia, needed by framer-motion (skip under node environment)
 if (typeof window !== 'undefined') {
   Object.defineProperty(window, 'matchMedia', {
