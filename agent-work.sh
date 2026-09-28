@@ -4,22 +4,23 @@ cd /home/shadow3/projects/sellbuy-v2
 while true; do
     echo "$(date): Starting work cycle" >> /home/shadow3/agent.log
     
-    # Run hermes with oneshot query mode
     hermes chat --oneshot \
-        -q "You are an autonomous developer working on sellbuy-v2 project. 
-             1. Check git status for any uncommitted changes
-             2. Review recent commits to understand current state  
-             3. Look at open TODOs, issues, or PR comments
-             4. Pick the highest priority task (feature, bug fix, or docs)
-             5. Complete meaningful work and commit with descriptive message
-             
-             Focus on: features, bug fixes, tests, or documentation improvements.
-             Work in /home/shadow3/projects/sellbuy-v2.
-             Use standard tools: git, npm, node, etc.
-             When done, commit your changes and report what you accomplished." \
-        --max-turns 30 \
+        -q "You are an autonomous developer. CRITICAL: Work FAST and EFFICIENTLY.
+            
+            1. Check git status - if there are uncommitted changes, commit them NOW with clear message
+            2. Review what needs to be done - check open PRs, issues, TODOs in code
+            3. Pick ONE high-impact task and COMPLETE it
+            4. Write/run tests if possible
+            5. Commit with descriptive message
+            
+            Focus on: Features, bug fixes, performance, or critical improvements.
+            Work in /home/shadow3/projects/sellbuy-v2.
+            Use: git, npm, node, etc.
+            
+            Report: What you worked on and what you accomplished." \
+        --max-turns 25 \
         2>&1 | tee -a /home/shadow3/agent.log
     
-    echo "$(date): Work cycle complete, sleeping..." >> /home/shadow3/agent.log
-    sleep 120
+    echo "$(date): Work cycle complete" >> /home/shadow3/agent.log
+    sleep 90  # Faster cycle
 done
