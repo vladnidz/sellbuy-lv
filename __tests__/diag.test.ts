@@ -5,15 +5,15 @@ import { prisma } from '@/app/lib/prisma';
 
 describe('diag', () => {
   it('shows what prisma resolves to', () => {
+    const p = prisma as unknown as Record<string, unknown>;
     console.log('keys:', Object.keys(prisma));
-    console.log('user keys:', Object.keys((prisma as any).user));
-    console.log('user.create:', (prisma as any).user.create);
+    console.log('user keys:', Object.keys(p.user as Record<string, unknown>));
+    console.log('user.create:', (p.user as Record<string, unknown>).create);
     console.log('$queryRaw type:', typeof prisma.$queryRaw);
     try {
-      // eslint-disable-next-line
-      const anyPrisma = prisma as any;
-      console.log('isSpy?', typeof anyPrisma.$queryRaw.mock !== 'undefined');
-      console.log('getQueryMock?', typeof anyPrisma.$queryRaw.getMockName === 'function');
+      const anyPrisma = p;
+      console.log('isSpy?', typeof (anyPrisma.$queryRaw as { mock?: unknown }).mock !== 'undefined');
+      console.log('getQueryMock?', typeof (anyPrisma.$queryRaw as { getMockName?: unknown }).getMockName === 'function');
     } catch (e) {
       console.log('err', String(e));
     }

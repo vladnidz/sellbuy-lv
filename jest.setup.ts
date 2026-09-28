@@ -75,26 +75,28 @@ if (typeof global.TextDecoder === 'undefined') {
 
 if (typeof global.ReadableStream === 'undefined') {
   try {
-    import { ReadableStream, TransformStream, WritableStream } from 'node:stream/web';
-    global.ReadableStream = ReadableStream;
-    global.TransformStream = TransformStream;
-    global.WritableStream = WritableStream;
+    const streamWeb = require('node:stream/web');
+    global.ReadableStream = streamWeb.ReadableStream;
+    global.TransformStream = streamWeb.TransformStream;
+    global.WritableStream = streamWeb.WritableStream;
   } catch {}
 }
 
 // jsdom lacks Web API globals (Request, Response, Headers, fetch) needed by Next.js server routes
-import { Request as EdgeRequest, Response as EdgeResponse, Headers as EdgeHeaders, fetch as edgeFetch } from 'next/dist/compiled/@edge-runtime/primitives/fetch';
-if (typeof global.Request === 'undefined') {
-  global.Request = EdgeRequest;
-}
-if (typeof global.Response === 'undefined') {
-  global.Response = EdgeResponse;
-}
-if (typeof global.Headers === 'undefined') {
-  global.Headers = EdgeHeaders;
-}
-if (typeof global.fetch === 'undefined') {
-  global.fetch = edgeFetch;
+if (typeof global.Request === 'undefined' || typeof global.fetch === 'undefined') {
+  const edgeFetch = require('next/dist/compiled/@edge-runtime/primitives/fetch');
+  if (typeof global.Request === 'undefined') {
+    global.Request = edgeFetch.Request;
+  }
+  if (typeof global.Response === 'undefined') {
+    global.Response = edgeFetch.Response;
+  }
+  if (typeof global.Headers === 'undefined') {
+    global.Headers = edgeFetch.Headers;
+  }
+  if (typeof global.fetch === 'undefined') {
+    global.fetch = edgeFetch.fetch;
+  }
 }
 
 // jsdom lacks matchMedia, needed by framer-motion (skip under node environment)

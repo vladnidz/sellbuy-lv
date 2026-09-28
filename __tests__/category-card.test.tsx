@@ -13,7 +13,7 @@ jest.mock('framer-motion', () => {
     <div {...props}>{children}</div>
   );
   return {
-    motion: new Proxy({}, { get: (_t, key) => passthrough }),
+    motion: new Proxy({}, { get: () => passthrough }),
     useReducedMotion: () => false,
   };
 });
@@ -54,8 +54,9 @@ describe('<CategoryCard />', () => {
   });
 
   it('shows 0 when there is no _count data', () => {
-    const { _count, ...noCount } = makeCategory();
-    render(<CategoryCard category={noCount as CategoryWithCounts} index={0} />);
+    const category = makeCategory();
+    delete (category as { _count?: unknown })._count;
+    render(<CategoryCard category={category} index={0} />);
     expect(screen.getByText(/0/)).toBeInTheDocument();
   });
 
