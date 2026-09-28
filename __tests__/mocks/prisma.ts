@@ -27,6 +27,10 @@ export const prisma = {
   },
   user: {
     findUnique: jest.fn().mockResolvedValue(null),
+    findFirst: jest.fn().mockResolvedValue(null),
+    create: jest.fn().mockResolvedValue(null),
+    update: jest.fn().mockResolvedValue(null),
+    delete: jest.fn().mockResolvedValue(null),
   },
 };
 

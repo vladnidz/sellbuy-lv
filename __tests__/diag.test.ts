@@ -6,6 +6,8 @@ import { prisma } from '@/app/lib/prisma';
 describe('diag', () => {
   it('shows what prisma resolves to', () => {
     console.log('keys:', Object.keys(prisma));
+    console.log('user keys:', Object.keys((prisma as any).user));
+    console.log('user.create:', (prisma as any).user.create);
     console.log('$queryRaw type:', typeof prisma.$queryRaw);
     try {
       // eslint-disable-next-line

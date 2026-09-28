@@ -94,8 +94,9 @@ export default function ProfilePage() {
     );
   }
 
-  const memberSince = profile.listings.length > 0 
-    ? new Date(profile.listings[profile.listings.length - 1]?.createdAt || Date.now())
+  const currentTimestamp = Date.now();
+  const memberSince = profile.listings.length > 0
+    ? new Date(profile.listings[profile.listings.length - 1]?.createdAt || currentTimestamp)
     : new Date();
 
   return (
