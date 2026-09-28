@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/app/lib/auth';
 import { useLocale } from '@/app/lib/locale-context';
+import { colors, typography, components } from '@/app/lib/design-system';
 
 export default function RegisterPage() {
   const [name, setName] = useState('');
@@ -31,7 +32,7 @@ export default function RegisterPage() {
       });
       const data = await res.json();
       if (!res.ok) { setError(data.error || t('common.error')); return; }
-      await login(data.user.email, data.user.name);
+      await login(data.email, data.name);
       router.push('/');
     } catch {
       setError(t('common.error'));
@@ -41,51 +42,22 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4">
-      <div className="w-full max-w-sm">
-        <div className="mb-8 text-center">
-          <Link href="/" className="text-lg font-bold bg-gradient-to-r from-[#7c5aed] to-[#a78bfa] bg-clip-text text-transparent">SellBuy.lv</Link>
-          <h1 className="mt-4 text-xl font-semibold" style={{ color: 'var(--text-primary)' }}>{t('auth.register_title')}</h1>
-        </div>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {error && (
-            <div className="rounded-lg p-3 text-sm border" style={{ backgroundColor: 'var(--error-bg)', borderColor: 'var(--error-border)', color: 'var(--error-text)' }}>{error}</div>
-          )}
-          <div>
-            <label htmlFor="name" className="block text-xs mb-1.5" style={{ color: 'var(--text-tertiary)' }}>{t('auth.name')}</label>
-            <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder={t('auth.name')}
-              className="w-full border rounded-lg px-3.5 py-2.5 text-sm outline-none transition-colors"
-              style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--border)', color: 'var(--text-primary)' }} />
-          </div>
-          <div>
-            <label htmlFor="email" className="block text-xs mb-1.5" style={{ color: 'var(--text-tertiary)' }}>{t('auth.email')}</label>
-            <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="jusu@epasts.lv" required
-              className="w-full border rounded-lg px-3.5 py-2.5 text-sm outline-none transition-colors"
-              style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--border)', color: 'var(--text-primary)' }} />
-          </div>
-          <div>
-            <label htmlFor="password" className="block text-xs mb-1.5" style={{ color: 'var(--text-tertiary)' }}>{t('auth.password')}</label>
-            <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" required
-              className="w-full border rounded-lg px-3.5 py-2.5 text-sm outline-none transition-colors"
-              style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--border)', color: 'var(--text-primary)' }} />
-          </div>
-          <div>
-            <label htmlFor="confirmPassword" className="block text-xs mb-1.5" style={{ color: 'var(--text-tertiary)' }}>{t('auth.confirm_password')}</label>
-            <input id="confirmPassword" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="••••••••" required
-              className="w-full border rounded-lg px-3.5 py-2.5 text-sm outline-none transition-colors"
-              style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--border)', color: 'var(--text-primary)' }} />
-          </div>
-          <button type="submit" disabled={loading}
-            className="w-full text-white text-sm font-medium rounded-lg py-2.5 transition-colors disabled:opacity-50"
-            style={{ backgroundColor: 'var(--accent)' }}>
-            {loading ? t('auth.registering') : t('auth.register_btn')}
-          </button>
-        </form>
-        <p className="mt-6 text-center text-sm" style={{ color: 'var(--text-tertiary)' }}>
-          {t('auth.has_account')}{' '}
-          <Link href="/login" className="transition-colors" style={{ color: 'var(--accent-text)' }}>{t('auth.login_btn')}</Link>
-        </p>
-      </div>
+    <div className={`min-h-[80vh] flex flex-col items-center justify-center ${components.card} p-8 max-w-md mx-auto`}>
+      <h1 className={typography.h1}>Sign Up</h1>
+      <p className={typography.body + " text-text-secondary mt-2"}>Create your SellBuy account.</p>
+      
+      <form onSubmit={handleSubmit} className="w-full mt-8 space-y-4">
+        <input type="text" placeholder="Name" value={name} onChange={e => setName(e.target.value)} className="w-full p-3 rounded-xl bg-surface border-border border" />
+        <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} className="w-full p-3 rounded-xl bg-surface border-border border" />
+        <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} className="w-full p-3 rounded-xl bg-surface border-border border" />
+        <input type="password" placeholder="Confirm Password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} className="w-full p-3 rounded-xl bg-surface border-border border" />
+        
+        {error && <p className="text-red-500 text-sm">{error}</p>}
+        
+        <button type="submit" disabled={loading} className={`${components.buttonPrimary} w-full`}>
+          {loading ? 'Registering...' : 'Sign Up'}
+        </button>
+      </form>
     </div>
   );
 }

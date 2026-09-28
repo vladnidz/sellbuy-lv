@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { RatingStars } from '@/components/rating-stars';
 import { RatingCard } from '@/components/rating-card';
-import { ArrowLeft, MapPin } from 'lucide-react';
+import { ArrowLeft, MapPin, Package, Star, Calendar, Mail } from 'lucide-react';
 
 interface UserProfile {
   id: string;
@@ -63,7 +63,13 @@ export default function ProfilePage() {
   if (loading) {
     return (
       <div className="min-h-[80vh] flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-violet-500"></div>
+        <div className="flex flex-col items-center gap-4">
+          <div className="relative">
+            <div className="w-12 h-12 rounded-full border-2 border-[var(--accent)] border-t-transparent animate-spin" />
+            <div className="absolute inset-0 w-12 h-12 rounded-full border border-[var(--border)]" />
+          </div>
+          <p className="text-[var(--text-secondary)] text-sm">Ielādē profilu...</p>
+        </div>
       </div>
     );
   }
@@ -72,10 +78,13 @@ export default function ProfilePage() {
     return (
       <div className="min-h-[80vh] flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-white mb-2">Lietotājs nav atrasts</h1>
-          <p className="text-white/50 mb-4">Šis lietotājs neeksistē.</p>
+          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[var(--bg-elevated)] border border-[var(--border)] flex items-center justify-center">
+            <span className="text-3xl">👤</span>
+          </div>
+          <h1 className="text-2xl font-bold text-[var(--text-primary)] mb-2">Lietotājs nav atrasts</h1>
+          <p className="text-[var(--text-secondary)] mb-6">Šis lietotājs neeksistē.</p>
           <Link href="/">
-            <Button variant="outline" className="border-white/20 text-white">
+            <Button variant="outline" className="border-[var(--border)] text-[var(--text-primary)] hover:bg-[var(--bg-hover)]">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Atpakaļ
             </Button>
@@ -85,125 +94,208 @@ export default function ProfilePage() {
     );
   }
 
+  const memberSince = profile.listings.length > 0 
+    ? new Date(profile.listings[profile.listings.length - 1]?.createdAt || Date.now())
+    : new Date();
+
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8">
-      {/* Header */}
-      <div className="mb-8">
-        <Link href="/listings" className="text-sm text-white/50 hover:text-white mb-4 inline-flex items-center">
-          <ArrowLeft className="h-4 w-4 mr-1" />
+    <div className="min-h-screen bg-[var(--bg-base)]">
+      {/* Background Gradient */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-[var(--accent)] opacity-5 blur-3xl rounded-full" />
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-indigo-500 opacity-5 blur-3xl rounded-full" />
+      </div>
+
+      <div className="relative mx-auto max-w-5xl px-4 py-8">
+        {/* Back Link */}
+        <Link href="/listings" className="inline-flex items-center text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] mb-6 transition-colors">
+          <ArrowLeft className="h-4 w-4 mr-2" />
           Atpakaļ uz sludinājumiem
         </Link>
 
-        <Card className="glass-morphism border-white/10 bg-white/5">
-          <CardContent className="p-6">
-            <div className="flex items-start gap-6">
-              <div className="h-20 w-20 rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-3xl font-bold text-white">
-                {(profile.name || 'U').charAt(0).toUpperCase()}
+        {/* Profile Header Card */}
+        <Card className="relative overflow-hidden border-[var(--border)] bg-[var(--bg-surface)]/80 backdrop-blur-xl mb-8">
+          <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent)]/5 to-transparent pointer-events-none" />
+          <CardContent className="relative p-8">
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
+              {/* Avatar */}
+              <div className="relative">
+                <div className="h-24 w-24 rounded-2xl bg-gradient-to-br from-[var(--accent)] to-indigo-600 flex items-center justify-center text-4xl font-bold text-white shadow-lg shadow-[var(--accent)]/20">
+                  {(profile.name || 'U').charAt(0).toUpperCase()}
+                </div>
+                {profile.averageRating >= 4.5 && (
+                  <div className="absolute -bottom-1 -right-1 h-7 w-7 rounded-full bg-green-500 border-2 border-[var(--bg-surface)] flex items-center justify-center">
+                    <Star className="h-3.5 w-3.5 text-white fill-white" />
+                  </div>
+                )}
               </div>
+
+              {/* User Info */}
               <div className="flex-1">
-                <h1 className="text-2xl font-bold text-white mb-1">
+                <h1 className="text-2xl font-bold text-[var(--text-primary)] mb-2">
                   {profile.name || 'Lietotājs'}
                 </h1>
-                <div className="flex items-center gap-3 mb-3">
-                  <RatingStars score={Math.round(profile.averageRating)} size="md" />
-                  <span className="text-white/60">
-                    {profile.averageRating > 0
-                      ? `${profile.averageRating} (${profile.totalRatings} vērtējumi)`
-                      : 'Nav vērtējumu'}
-                  </span>
+                
+                {/* Rating Row */}
+                <div className="flex flex-wrap items-center gap-3 mb-4">
+                  <div className="flex items-center gap-2">
+                    <RatingStars score={Math.round(profile.averageRating)} size="md" />
+                    <span className="text-[var(--text-primary)] font-medium">
+                      {profile.averageRating > 0 
+                        ? profile.averageRating.toFixed(1) 
+                        : 'Jauns'}
+                    </span>
+                  </div>
+                  {profile.totalRatings > 0 && (
+                    <span className="text-[var(--text-secondary)] text-sm">
+                      ({profile.totalRatings} vērtējumi)
+                    </span>
+                  )}
                 </div>
-                <div className="flex gap-4">
-                  <Badge variant="secondary" className="bg-white/10 text-white/70">
+
+                {/* Stats Row */}
+                <div className="flex flex-wrap gap-3">
+                  <Badge variant="secondary" className="bg-[var(--bg-elevated)] text-[var(--text-primary)] border border-[var(--border)] px-3 py-1.5">
+                    <Package className="h-3.5 w-3.5 mr-1.5 text-[var(--accent)]" />
                     {profile.listings.length} sludinājumi
                   </Badge>
-                  <Badge variant="secondary" className="bg-white/10 text-white/70">
-                    Kopš {new Date(profile.listings[0]?.createdAt || '2026-01-01').toLocaleDateString('lv-LV', { year: 'numeric', month: 'long' })}
+                  <Badge variant="secondary" className="bg-[var(--bg-elevated)] text-[var(--text-primary)] border border-[var(--border)] px-3 py-1.5">
+                    <Calendar className="h-3.5 w-3.5 mr-1.5 text-[var(--accent)]" />
+                    Kopš {memberSince.toLocaleDateString('lv-LV', { year: 'numeric', month: 'long' })}
                   </Badge>
                 </div>
+              </div>
+
+              {/* Contact Button */}
+              <div className="hidden md:block">
+                <Link href={`/messages/${profile.id}`}>
+                  <Button className="bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white px-6 py-2.5 rounded-xl shadow-lg shadow-[var(--accent)]/20">
+                    <Mail className="h-4 w-4 mr-2" />
+                    Sazināties
+                  </Button>
+                </Link>
               </div>
             </div>
           </CardContent>
         </Card>
-      </div>
 
-      {/* Listings */}
-      <div className="mb-8">
-        <h2 className="text-xl font-semibold text-white mb-4">Sludinājumi</h2>
-        {profile.listings.length === 0 ? (
-          <Card className="glass-morphism border-white/10 bg-white/5">
-            <CardContent className="p-8 text-center">
-              <p className="text-white/50">Nav sludinājumu</p>
-            </CardContent>
-          </Card>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {profile.listings.map((listing) => (
-              <Link key={listing.id} href={`/listings/${listing.id}`}>
-                <Card className="glass-morphism border-white/10 bg-white/5 hover:bg-white/10 transition-colors cursor-pointer h-full">
-                  <CardContent className="p-4">
-                    <div className="flex items-start gap-3">
-                      <div className="h-16 w-16 rounded-lg bg-gradient-to-br from-violet-500/20 to-indigo-600/20 flex items-center justify-center">
-                        {listing.images.length > 0 ? (
-                          <img
-                            src={listing.images[0]}
-                            alt={listing.title}
-                            className="h-16 w-16 rounded-lg object-cover"
-                          />
-                        ) : (
-                          <span className="text-2xl">📷</span>
-                        )}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h3 className="text-sm font-medium text-white truncate">
-                          {listing.title}
-                        </h3>
-                        <p className="text-lg font-bold text-violet-400 mt-1">
-                          €{Number(listing.price).toFixed(2)}
-                        </p>
-                        <div className="flex items-center gap-2 mt-1">
-                          {listing.city && (
-                            <span className="text-xs text-white/40 flex items-center">
-                              <MapPin className="h-3 w-3 mr-0.5" />
-                              {listing.city}
-                            </span>
+        {/* Listings Section */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-semibold text-[var(--text-primary)]">Sludinājumi</h2>
+            {profile.listings.length > 0 && (
+              <span className="text-sm text-[var(--text-secondary)]">
+                {profile.listings.length} aktīvi
+              </span>
+            )}
+          </div>
+
+          {profile.listings.length === 0 ? (
+            <Card className="border-[var(--border)] bg-[var(--bg-surface)]/50">
+              <CardContent className="p-12 text-center">
+                <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-[var(--bg-elevated)] border border-[var(--border)] flex items-center justify-center">
+                  <Package className="h-6 w-6 text-[var(--text-muted)]" />
+                </div>
+                <p className="text-[var(--text-secondary)]">Nav aktīvu sludinājumu</p>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {profile.listings.map((listing) => (
+                <Link key={listing.id} href={`/listings/${listing.id}`}>
+                  <Card className="group border-[var(--border)] bg-[var(--bg-surface)]/50 hover:bg-[var(--bg-surface)] hover:border-[var(--border-hover)] transition-all duration-200 cursor-pointer h-full overflow-hidden">
+                    <CardContent className="p-4">
+                      <div className="flex items-start gap-4">
+                        {/* Image */}
+                        <div className="h-20 w-20 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border)] flex items-center justify-center overflow-hidden flex-shrink-0">
+                          {listing.images.length > 0 ? (
+                            <img
+                              src={listing.images[0]}
+                              alt={listing.title}
+                              className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                          ) : (
+                            <span className="text-2xl opacity-50">📷</span>
                           )}
-                          <span className="text-xs text-white/40">
-                            {listing.category.name}
-                          </span>
+                        </div>
+                        
+                        {/* Content */}
+                        <div className="flex-1 min-w-0">
+                          <h3 className="text-sm font-medium text-[var(--text-primary)] truncate group-hover:text-[var(--accent)] transition-colors">
+                            {listing.title}
+                          </h3>
+                          <p className="text-lg font-bold text-[var(--accent)] mt-1">
+                            €{Number(listing.price).toFixed(2)}
+                          </p>
+                          <div className="flex items-center gap-2 mt-2">
+                            {listing.city && (
+                              <>
+                                <span className="text-xs text-[var(--text-tertiary)] flex items-center">
+                                  <MapPin className="h-3 w-3 mr-1" />
+                                  {listing.city}
+                                </span>
+                                <span className="text-[var(--text-muted)]">•</span>
+                              </>
+                            )}
+                            <span className="text-xs text-[var(--text-tertiary)]">
+                              {listing.category.name}
+                            </span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
-          </div>
-        )}
-      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
 
-      {/* Reviews */}
-      <div>
-        <h2 className="text-xl font-semibold text-white mb-4">Atsauksmes</h2>
-        {profile.sellerRatings.length === 0 ? (
-          <Card className="glass-morphism border-white/10 bg-white/5">
-            <CardContent className="p-8 text-center">
-              <p className="text-white/50">Nav atsauksmju</p>
-            </CardContent>
-          </Card>
-        ) : (
-          <div className="space-y-4">
-            {profile.sellerRatings.map((rating) => (
-              <RatingCard
-                key={rating.id}
-                score={rating.score}
-                comment={rating.comment}
-                reviewerName={rating.buyer.name}
-                date={rating.createdAt}
-                listingTitle={rating.listing.title}
-              />
-            ))}
+        {/* Reviews Section */}
+        <div>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-semibold text-[var(--text-primary)]">Atsauksmes</h2>
+            {profile.sellerRatings.length > 0 && (
+              <span className="text-sm text-[var(--text-secondary)]">
+                {profile.sellerRatings.length} atsauksmes
+              </span>
+            )}
           </div>
-        )}
+
+          {profile.sellerRatings.length === 0 ? (
+            <Card className="border-[var(--border)] bg-[var(--bg-surface)]/50">
+              <CardContent className="p-12 text-center">
+                <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-[var(--bg-elevated)] border border-[var(--border)] flex items-center justify-center">
+                  <Star className="h-6 w-6 text-[var(--text-muted)]" />
+                </div>
+                <p className="text-[var(--text-secondary)]">Vēl nav atsauksmju</p>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="space-y-4">
+              {profile.sellerRatings.map((rating) => (
+                <RatingCard
+                  key={rating.id}
+                  score={rating.score}
+                  comment={rating.comment}
+                  reviewerName={rating.buyer.name}
+                  date={rating.createdAt}
+                  listingTitle={rating.listing.title}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Mobile Contact Button */}
+        <div className="md:hidden fixed bottom-6 left-4 right-4 z-10">
+          <Link href={`/messages/${profile.id}`}>
+            <Button className="w-full bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white py-3 rounded-xl shadow-lg shadow-[var(--accent)]/20">
+              <Mail className="h-4 w-4 mr-2" />
+              Sazināties ar pārdevēju
+            </Button>
+          </Link>
+        </div>
       </div>
     </div>
   );

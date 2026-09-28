@@ -74,7 +74,6 @@ export async function GET(request: NextRequest) {
       // then intersect with the Prisma where via id IN (...).
       if (equalityKeys.length > 0 || rangeKeys.length > 0) {
         const conditions: Prisma.Sql[] = [];
-        const params: unknown[] = [];
 
         // Equality conditions: attributes @> jsonb_build_object('key', 'value')
         for (const key of equalityKeys) {
@@ -176,8 +175,58 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { title, price, categoryId, description, images, authorId, city, attributes } = body;
+    // Handle both FormData (from new-listing page) and JSON payloads
+    const contentType = request.headers.get('content-type') || '';
+    let title: string;
+    let price: string;
+    let categoryId: string;
+    let description: string;
+    let images: string[];
+    let authorId: string;
+    let city: string | null = null;
+    let attributes: Record<string, unknown> | null = null;
+
+    if (contentType.includes('multipart/form-data')) {
+      const formData = await request.formData();
+      title = formData.get('title') as string;
+      price = formData.get('price') as string;
+      categoryId = formData.get('categoryId') as string;
+      description = formData.get('description') as string;
+      authorId = formData.get('authorId') as string;
+      city = formData.get('city') as string | null;
+      
+      const attributesStr = formData.get('attributes') as string | null;
+      if (attributesStr) {
+        try {
+          attributes = JSON.parse(attributesStr);
+        } catch { /* ignore parse errors */ }
+      }
+
+      // Process uploaded image files
+      const imageFiles = formData.getAll('images') as File[];
+      images = [];
+      
+      // For now, store placeholder URLs for uploaded images
+      // In production, these would be uploaded to S3/R2/Cloudinary
+      for (let i = 0; i < imageFiles.length; i++) {
+        const file = imageFiles[i];
+        if (file && file.size > 0) {
+          // Create a temporary object URL placeholder
+          // TODO: Replace with actual cloud storage upload
+          images.push(`/uploads/temp-${Date.now()}-${i}-${file.name}`);
+        }
+      }
+    } else {
+      const body = await request.json();
+      title = body.title;
+      price = body.price;
+      categoryId = body.categoryId;
+      description = body.description;
+      images = body.images || [];
+      authorId = body.authorId;
+      city = body.city || null;
+      attributes = body.attributes || null;
+    }
 
     if (!title || !price || !categoryId || !description || !authorId) {
       return NextResponse.json(
@@ -203,9 +252,9 @@ export async function POST(request: NextRequest) {
         categoryId,
         description,
         authorId,
-        images: images || [],
-        city: city || null,
-        attributes: attributes || null,
+        images,
+        city,
+        attributes: attributes ? JSON.parse(JSON.stringify(attributes)) : undefined,
       },
       include: {
         category: true,

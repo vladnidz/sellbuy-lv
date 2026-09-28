@@ -1,13 +1,17 @@
 export const dynamic = "force-dynamic";
-import { prisma } from '@/app/lib/prisma';
 import { Metadata } from 'next';
+import { buildTrilingualMetadata, BRAND } from '@/app/lib/seo';
+import { prisma } from '@/app/lib/prisma';
 import { Prisma } from '@prisma/client';
 import { ListingsPageClient } from './listings-client';
 
-export const metadata: Metadata = {
-  title: 'Sludinājumi',
-  description: 'Pārlūkojiet visus sludinājumus SellBuy.lv — transports, nekustamie īpašumi, elektronika un vairāk.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildTrilingualMetadata('/listings', {
+    lv: { title: `Sludinājumi | ${BRAND}`, description: 'Pārlūkojiet visus sludinājumus SellBuy.lv — transports, nekustamie īpašumi, elektronika un vairāk.' },
+    ru: { title: `Объявления | ${BRAND}`, description: 'Просматривайте все объявления на SellBuy.lv — транспорт, недвижимость, электроника и многое другое.' },
+    en: { title: `Listings | ${BRAND}`, description: 'Browse all listings on SellBuy.lv — transport, real estate, electronics, and more.' },
+  });
+}
 
 interface PageProps {
   searchParams: Promise<{
