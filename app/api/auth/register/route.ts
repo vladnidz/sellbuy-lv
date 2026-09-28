@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
 import bcrypt from 'bcryptjs';
+import { signToken, setAuthCookie } from '@/app/lib/auth-server';
 
 export const dynamic = 'force-dynamic';
 
@@ -50,7 +51,19 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    return NextResponse.json(user, { status: 201 });
+    const token = await signToken({
+      id: user.id,
+      email: user.email,
+      name: user.name,
+    });
+
+    const response = NextResponse.json(
+      { user, token },
+      { status: 201 }
+    );
+
+    setAuthCookie(response, token);
+    return response;
   } catch (error) {
     console.error('Registration error:', error);
     return NextResponse.json(

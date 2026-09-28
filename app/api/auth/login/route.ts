@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
 import bcrypt from 'bcryptjs';
+import { signToken, setAuthCookie } from '@/app/lib/auth-server';
 
 export const dynamic = 'force-dynamic';
 
@@ -40,7 +41,20 @@ export async function POST(request: NextRequest) {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password: _, ...userWithoutPassword } = user;
-    return NextResponse.json(userWithoutPassword);
+
+    const token = await signToken({
+      id: userWithoutPassword.id,
+      email: userWithoutPassword.email,
+      name: userWithoutPassword.name,
+    });
+
+    const response = NextResponse.json({
+      user: userWithoutPassword,
+      token,
+    });
+
+    setAuthCookie(response, token);
+    return response;
   } catch (error) {
     console.error('Login error:', error);
     return NextResponse.json(
