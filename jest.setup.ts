@@ -37,6 +37,30 @@ jest.mock('@/app/lib/prisma', () => ({
   default: mockPrisma,
 }));
 
+jest.mock('next/navigation', () => ({
+  useRouter() {
+    return {
+      push: jest.fn(),
+      replace: jest.fn(),
+      prefetch: jest.fn(),
+      back: jest.fn(),
+      forward: jest.fn(),
+      refresh: jest.fn(),
+    };
+  },
+  usePathname() {
+    return '/';
+  },
+  useSearchParams() {
+    return new URLSearchParams();
+  },
+  useParams() {
+    return {};
+  },
+  redirect: jest.fn(),
+  notFound: jest.fn(),
+}));
+
 // jsdom polyfills
 if (typeof global.TextEncoder === 'undefined') {
   global.TextEncoder = TextEncoder;
