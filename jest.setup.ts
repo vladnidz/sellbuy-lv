@@ -34,6 +34,14 @@ const mockPrisma = {
     update: jest.fn(),
     delete: jest.fn(),
   },
+  rating: {
+    findMany: jest.fn(),
+    findFirst: jest.fn(),
+    findUnique: jest.fn(),
+    create: jest.fn(),
+    count: jest.fn(),
+    aggregate: jest.fn(),
+  },
 };
 jest.mock('@/app/lib/prisma', () => ({
   __esModule: true,
