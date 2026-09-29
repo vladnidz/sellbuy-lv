@@ -92,6 +92,7 @@ if (typeof global.TextDecoder === 'undefined') {
 
 if (typeof global.ReadableStream === 'undefined') {
   try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const streamWeb = require('node:stream/web');
     global.ReadableStream = streamWeb.ReadableStream;
     global.TransformStream = streamWeb.TransformStream;
@@ -101,6 +102,7 @@ if (typeof global.ReadableStream === 'undefined') {
 
 // jsdom lacks Web API globals (Request, Response, Headers, fetch) needed by Next.js server routes
 if (typeof global.Request === 'undefined' || typeof global.fetch === 'undefined') {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const edgeFetch = require('next/dist/compiled/@edge-runtime/primitives/fetch');
   if (typeof global.Request === 'undefined') {
     global.Request = edgeFetch.Request;
