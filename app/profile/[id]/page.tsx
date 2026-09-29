@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-const STATIC_TIMESTAMP = Date.now();
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -95,10 +94,8 @@ export default function ProfilePage() {
     );
   }
 
-  const currentTimestamp = Date.now();
-  const memberSince = profile.listings.length > 0
-    ? new Date(profile.listings[profile.listings.length - 1]?.createdAt || currentTimestamp)
-    : new Date();
+  const lastListing = profile.listings[profile.listings.length - 1];
+  const memberSinceDate = lastListing?.createdAt ? new Date(lastListing.createdAt) : null;
 
   return (
     <div className="min-h-screen bg-[var(--bg-base)]">
@@ -163,7 +160,7 @@ export default function ProfilePage() {
                   </Badge>
                   <Badge variant="secondary" className="bg-[var(--bg-elevated)] text-[var(--text-primary)] border border-[var(--border)] px-3 py-1.5">
                     <Calendar className="h-3.5 w-3.5 mr-1.5 text-[var(--accent)]" />
-                    Kopš {memberSince.toLocaleDateString('lv-LV', { year: 'numeric', month: 'long' })}
+                    Kopš {memberSinceDate ? memberSinceDate.toLocaleDateString('lv-LV', { year: 'numeric', month: 'long' }) : 'Nesen'}
                   </Badge>
                 </div>
               </div>

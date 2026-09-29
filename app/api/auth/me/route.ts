@@ -17,10 +17,6 @@ export async function GET(request: NextRequest) {
         id: true,
         email: true,
         name: true,
-        phone: true,
-        avatarUrl: true,
-        role: true,
-        createdAt: true,
       },
     });
 
