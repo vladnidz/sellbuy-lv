@@ -5,14 +5,23 @@ import { RatingStars } from '@/components/rating-stars';
 import { Button } from '@/components/ui/button';
 import { Star, CheckCircle, AlertCircle } from 'lucide-react';
 
-interface RatingFormProps {
-  listingId: string;
-  sellerId: string;
-  buyerId?: string;
-  onSuccess?: (rating: any) => void;
+export interface RatingResponse {
+  id?: string;
+  score: number;
+  comment: string | null;
+  createdAt?: string | Date;
+  buyer?: {
+    name: string | null;
+  };
 }
 
-export function RatingForm({ listingId, sellerId, buyerId, onSuccess }: RatingFormProps) {
+interface RatingFormProps {
+  listingId: string;
+  buyerId?: string;
+  onSuccess?: (rating: RatingResponse) => void;
+}
+
+export function RatingForm({ listingId, buyerId, onSuccess }: RatingFormProps) {
   const [score, setScore] = useState<number>(5);
   const [comment, setComment] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -53,7 +62,7 @@ export function RatingForm({ listingId, sellerId, buyerId, onSuccess }: RatingFo
           onSuccess(data);
         }
       }
-    } catch (err) {
+    } catch {
       setError('Tīkla kļūda. Lūdzu, mēģiniet vēlreiz.');
     } finally {
       setSubmitting(false);

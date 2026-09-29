@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { RatingCard } from '@/components/rating-card';
-import { RatingForm } from '@/components/rating-form';
+import { RatingForm, type RatingResponse } from '@/components/rating-form';
 import { Star } from 'lucide-react';
 
 interface RatingItem {
@@ -34,13 +34,13 @@ export function ListingRatingsSection({
       ? (ratings.reduce((sum, r) => sum + r.score, 0) / ratings.length).toFixed(1)
       : null;
 
-  const handleRatingSuccess = (newRating: any) => {
+  const handleRatingSuccess = (newRating: RatingResponse) => {
     setRatings((prev) => [
       {
         id: newRating.id,
         score: newRating.score,
         comment: newRating.comment,
-        createdAt: newRating.createdAt || new Date().toISOString(),
+        createdAt: newRating.createdAt ? new Date(newRating.createdAt).toISOString() : new Date().toISOString(),
         buyer: { name: newRating.buyer?.name || 'Pircējs' },
       },
       ...prev,
@@ -74,7 +74,6 @@ export function ListingRatingsSection({
       {showForm && (
         <RatingForm
           listingId={listingId}
-          sellerId={sellerId}
           onSuccess={handleRatingSuccess}
         />
       )}

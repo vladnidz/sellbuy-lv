@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { MessageSquare, Loader2, X, Send, Tag, User } from 'lucide-react';
@@ -29,20 +29,15 @@ export function ChatInitiateButton({
   const router = useRouter();
   const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState(() => 
+    listingTitle 
+      ? `Labdien! Mani interesē jūsu sludinājums "${listingTitle}". Vai tas vēl ir pieejams?`
+      : 'Labdien! Vēlos uzzināt vairāk par šo sludinājumu.'
+  );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const isOwner = user?.id === sellerId;
-
-  // Set default prefilled message when opening dialog or when listingTitle changes
-  useEffect(() => {
-    if (listingTitle) {
-      setMessage(`Labdien! Mani interesē jūsu sludinājums "${listingTitle}". Vai tas vēl ir pieejams?`);
-    } else {
-      setMessage('Labdien! Vēlos uzzināt vairāk par šo sludinājumu.');
-    }
-  }, [listingTitle]);
 
   const handleOpenModal = () => {
     if (isOwner) {

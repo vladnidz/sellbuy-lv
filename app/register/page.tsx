@@ -2,10 +2,9 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { useAuth } from '@/app/lib/auth';
 import { useLocale } from '@/app/lib/locale-context';
-import { colors, typography, components } from '@/app/lib/design-system';
+import { typography, components } from '@/app/lib/design-system';
 
 export default function RegisterPage() {
   const [name, setName] = useState('');

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Search, Car, Building2, Smartphone, Hammer, Briefcase, Home, Shirt, Baby } from 'lucide-react';
 import { ListingCard } from '@/components/listing-card';
 import { useLocale } from '@/app/lib/locale-context';
-import { colors, typography, components, spacing } from '@/app/lib/design-system';
+import { typography, components, spacing } from '@/app/lib/design-system';
 
 const CATEGORY_ICONS: Record<string, React.ElementType> = {
   'Automobiļi': Car,
