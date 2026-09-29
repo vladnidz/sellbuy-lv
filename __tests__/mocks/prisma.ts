@@ -32,6 +32,21 @@ export const prisma = {
     update: jest.fn().mockResolvedValue(null),
     delete: jest.fn().mockResolvedValue(null),
   },
+  chat: {
+    findMany: jest.fn().mockResolvedValue([]),
+    findUnique: jest.fn().mockResolvedValue(null),
+    findFirst: jest.fn().mockResolvedValue(null),
+    create: jest.fn(),
+    update: jest.fn(),
+    delete: jest.fn(),
+  },
+  message: {
+    findMany: jest.fn().mockResolvedValue([]),
+    findUnique: jest.fn().mockResolvedValue(null),
+    create: jest.fn(),
+    update: jest.fn(),
+    delete: jest.fn(),
+  },
 };
 
 export default prisma;
