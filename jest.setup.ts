@@ -42,6 +42,15 @@ const mockPrisma = {
     count: jest.fn(),
     aggregate: jest.fn(),
   },
+  chat: {
+    findMany: jest.fn(),
+    findUnique: jest.fn(),
+    create: jest.fn(),
+  },
+  message: {
+    findMany: jest.fn(),
+    create: jest.fn(),
+  },
 };
 jest.mock('@/app/lib/prisma', () => ({
   __esModule: true,
