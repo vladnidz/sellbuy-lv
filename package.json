@@ -2,6 +2,9 @@
   "name": "sellbuy",
   "version": "0.1.0",
   "private": true,
+  "allowScripts": [
+    "*"
+  ],
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "rm -rf .next && prisma generate && next build --webpack",

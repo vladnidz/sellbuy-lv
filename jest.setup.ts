@@ -83,6 +83,27 @@ jest.mock('next/navigation', () => ({
   notFound: jest.fn(),
 }));
 
+jest.mock('jose', () => ({
+  SignJWT: jest.fn().mockImplementation(() => ({
+    setProtectedHeader: jest.fn().mockReturnThis(),
+    setIssuedAt: jest.fn().mockReturnThis(),
+    setExpirationTime: jest.fn().mockReturnThis(),
+    sign: jest.fn().mockResolvedValue('mocked-jwt-token'),
+  })),
+  jwtVerify: jest.fn().mockImplementation(async (token: string) => {
+    if (token === 'invalid-token') {
+      throw new Error('Invalid token');
+    }
+    return {
+      payload: {
+        id: 'user-1',
+        email: 'test@example.com',
+        name: 'Test User',
+      },
+    };
+  }),
+}));
+
 // jsdom polyfills
 if (typeof global.TextEncoder === 'undefined') {
   global.TextEncoder = TextEncoder;

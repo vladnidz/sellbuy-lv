@@ -6,6 +6,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowLeft, MapPin, Star, Shield } from 'lucide-react';
 import { notFound } from 'next/navigation';
+import { ListingRatingsSection } from '@/components/listing-ratings-section';
+import { ChatInitiateButton } from '@/components/chat-initiate-button';
 
 export async function generateMetadata(
   props: { params: Promise<{ id: string }> }
@@ -37,7 +39,7 @@ export default async function ListingDetailPage({
       category: true,
       author: { select: { id: true, name: true, email: true } },
       ratings: {
-        select: { score: true, comment: true, createdAt: true, buyer: { select: { name: true } } },
+        select: { id: true, score: true, comment: true, createdAt: true, buyer: { select: { name: true } } },
         orderBy: { createdAt: 'desc' },
         take: 5,
       },
@@ -102,14 +104,30 @@ export default async function ListingDetailPage({
               <h2 className="text-lg font-semibold text-white mb-3">Apraksts</h2>
               {listing.description}
             </div>
+
+            {/* Ratings & Feedback Section */}
+            <ListingRatingsSection
+              listingId={listing.id}
+              sellerId={listing.authorId}
+              sellerName={listing.author?.name}
+              initialRatings={listing.ratings}
+            />
           </div>
           
-          {/* Sidebar - Placeholder for Author/Contact */}
+          {/* Sidebar - Author / Contact */}
           <div className="lg:col-span-1">
              <div className="sticky top-24 bg-[#12121a] border border-[#1f1f2e] rounded-2xl p-6 space-y-4">
                  <h3 className="font-semibold text-white">Pārdevējs</h3>
-                 <div className="text-[#8888a0]">{listing.author?.name}</div>
-                 <Button className="w-full bg-[#7c3aed] hover:bg-[#6d28d9] text-white">Sazināties</Button>
+                 <div className="text-[#8888a0]">{listing.author?.name || 'Anonīms lietotājs'}</div>
+                 <ChatInitiateButton
+                   listingId={listing.id}
+                   sellerId={listing.authorId}
+                   listingTitle={listing.title}
+                   listingPrice={Number(listing.price)}
+                   listingImage={listing.images && listing.images.length > 0 ? listing.images[0] : undefined}
+                   sellerName={listing.author?.name || undefined}
+                   className="w-full bg-[#7c3aed] hover:bg-[#6d28d9] text-white"
+                 />
              </div>
           </div>
         </div>

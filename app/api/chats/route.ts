@@ -9,6 +9,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const sessionUser = await getSessionUser(request);
     const userId = searchParams.get('userId') || sessionUser?.id;
+    const listingId = searchParams.get('listingId');
 
     if (!userId) {
       return NextResponse.json(
@@ -17,13 +18,22 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    const whereClause: {
+      OR: Array<{ buyerId: string } | { sellerId: string }>;
+      listingId?: string;
+    } = {
+      OR: [
+        { buyerId: userId },
+        { sellerId: userId },
+      ],
+    };
+
+    if (listingId) {
+      whereClause.listingId = listingId;
+    }
+
     const chats = await prisma.chat.findMany({
-      where: {
-        OR: [
-          { buyerId: userId },
-          { sellerId: userId },
-        ],
-      },
+      where: whereClause,
       include: {
         buyer: { select: { id: true, name: true } },
         seller: { select: { id: true, name: true } },
@@ -118,11 +128,14 @@ export async function POST(request: NextRequest) {
         });
       }
 
-      return NextResponse.json({
-        chat: existingChat,
-        isNew: false,
-        message: createdMessage,
-      }, { status: 200 });
+      return NextResponse.json(
+        {
+          chat: existingChat,
+          isNew: false,
+          message: createdMessage,
+        },
+        { status: 200 }
+      );
     }
 
     const trimmedMsg = typeof initialMessage === 'string' ? initialMessage.trim() : '';
