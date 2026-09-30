@@ -19,6 +19,7 @@
 | React 19 render purity & TypeScript build fixes | 2026-09-29 | agency/qa | `app/profile/[id]/page.tsx`, `app/api/auth/me/route.ts` |
 | GitHub CI & Pre-commit verification gate | 2026-09-29 | agency/devops | `.git/hooks/pre-commit`, `.github/workflows/ci.yml` |
 | Seller Ratings & Feedback API (`/api/ratings`) + Rating Form & UI | 2026-09-29 | agency/backend | `app/api/ratings/route.ts`, `components/rating-form.tsx`, `components/listing-ratings-section.tsx`, `__tests__/api-ratings.test.ts` |
+| Multi-Image Drag & Drop Upload | 2026-09-30 | agency/frontend | `components/image-uploader.tsx`, `app/new-listing/page.tsx`, `__tests__/image-uploader.test.tsx` |
 
 ---
 
