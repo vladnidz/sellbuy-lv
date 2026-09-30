@@ -25,6 +25,7 @@ import { useEffect } from "react";
 import { useAiAutofill } from "@/app/lib/ai-autofill";
 
 import { ImageUploader } from "@/components/image-uploader";
+import { LockerPicker } from "@/components/locker-picker";
 
 interface Category {
   value: string;
