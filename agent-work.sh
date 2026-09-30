@@ -18,7 +18,7 @@ RULES & QUALITY ENFORCEMENT:
 3. Check FEATURE_BACKLOG.md for the next uncompleted feature (e.g. Postgres FTS full-text search, Smart-ID trust badges, Omniva/DPD locker picker).
 4. MUST run 'npm run lint' locally and fix ALL lint errors and warnings before committing. Never use 'any' types or state updates in useEffect.
 5. MUST run 'npm test' and 'npm run build' locally before committing. If build fails, fix or revert before ending.
-6. Commit immediately with conventional commit message (e.g. feat(fts): ...) and push to origin main." \
+6. Commit immediately with conventional commit message (e.g. feat(fts): ...), push to origin main, and run 'docker compose up -d --build sellbuy' to update production live!" \
         2>&1 | tee -a /home/shadow3/agent.log
 
     EXIT_STATUS=${PIPESTATUS[0]}

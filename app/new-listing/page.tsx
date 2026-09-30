@@ -18,7 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Link from "next/link";
-import { ArrowLeft, Image as ImageIcon, Loader2, AlertCircle, CheckCircle, Sparkles } from "lucide-react";
+import { ArrowLeft, Loader2, AlertCircle, CheckCircle, Sparkles } from "lucide-react";
 import { useDemoAuth } from "@/app/lib/auth";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -187,26 +187,8 @@ export default function NewListingPage() {
     }
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const newFiles = Array.from(e.target.files);
-      if (formData.images.length + newFiles.length > 10) {
-        setErrorMessage("Maksimālais attēlu skaits ir 10");
-        return;
-      }
-      setFormData((prev) => ({
-        ...prev,
-        images: [...prev.images, ...newFiles],
-      }));
-      setErrorMessage("");
-    }
-  };
-
-  const removeImage = (index: number) => {
-    setFormData((prev) => ({
-      ...prev,
-      images: prev.images.filter((_, i) => i !== index),
-    }));
+  const handleImageError = (error: string) => {
+    setErrorMessage(error);
   };
 
   return (
@@ -334,38 +316,14 @@ export default function NewListingPage() {
                 <label className="block text-sm font-medium text-slate-300 mb-2">
                   Attēli (vismaz 1, maksimum 10)
                 </label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  onChange={handleImageUpload}
-                  className="bg-slate-900 border-slate-700 text-white rounded-lg px-4 py-3 w-full focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  disabled={isSubmitting || formData.images.length >= 10}
+                <ImageUploader
+                  files={formData.images}
+                  onChange={(files) => setFormData((prev) => ({ ...prev, images: files }))}
+                  maxFiles={10}
+                  disabled={isSubmitting}
+                  error={errorMessage}
+                  onError={handleImageError}
                 />
-                {formData.images.length > 0 && (
-                  <div className="mt-3 flex gap-2 flex-wrap">
-                    {formData.images.map((file, index) => (
-                      <span
-                        key={index}
-                        className="flex items-center gap-1 px-3 py-1 bg-[#1a1a25] border border-[#2a2a3a] rounded-lg text-sm text-blue-300"
-                      >
-                        <ImageIcon className="h-3 w-3" />
-                        {file.name}
-                        <button
-                          type="button"
-                          onClick={() => removeImage(index)}
-                          className="hover:text-blue-100 transition-colors"
-                          aria-label="Dzēst attēlu"
-                        >
-                          ✕
-                        </button>
-                      </span>
-                    ))}
-                  </div>
-                )}
-                {formData.images.length === 0 && (
-                  <p className="mt-2 text-sm text-slate-500">Nav izvēlēti attēli</p>
-                )}
               </div>
 
               {submitStatus === "error" && (

@@ -31,18 +31,18 @@ ENV PORT=3000
 WORKDIR /app
 
 # Non-root user
-RUN addgroup -g 1001 -S node && adduser -u 1001 -S -G node -s /bin/sh -D node
 USER node
 
 # The standalone build output
 COPY --from=builder --chown=node:node /app/.next/standalone/  .
 COPY --from=builder --chown=node:node /app/.next/static       ./.next/static
+COPY --from=builder --chown=node:node /app/public              ./public
 
 # node_modules required by the standalone server (includes prisma client + engine)
 COPY --from=builder --chown=node:node /app/node_modules/      /app/node_modules/
 
-# Runtime Prisma resources: migrations + generated client metadata (engine lives in node_modules above)
-COPY --from=builder --chown=node:node /app/prisma/migrations ./prisma/migrations
+# Runtime Prisma resources: migrations + schema + generated client metadata
+COPY --from=builder --chown=node:node /app/prisma            ./prisma
 COPY --from=builder --chown=node:node /app/prisma.config.ts  ./
 
 # Custom entrypoint (optional DB migrations + seed)
