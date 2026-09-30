@@ -26,7 +26,7 @@
 
 | Priority | Feature | Specs Source | Agent Context | Target Deliverable File(s) | Notes |
 |---|---|---|---|---|---|
-| **P0** | **Listing Chat Initiation** | `docs/functional/chat.md` | agency/fullstack | `app/listings/[id]/page.tsx`, `app/api/messages/route.ts` | "Sazināties ar pārdevēju" button creates/opens chat with listing context prefilled. |
+| **P0** | **Listing Chat Initiation** | `docs/functional/chat.md` | agency/fullstack | `app/listings/[id]/page.tsx`, `app/api/chats/route.ts`, `components/chat-initiate-button.tsx` | ✅ Completed 2026-09-30. "Sazināties ar pārdevēju" button creates/opens chat with listing context prefilled. |
 | **P1** | **Multi-Image Drag & Drop Upload** | `docs/specifications/SellBuy-lv-Full-Feature-Specifications.md` | agency/frontend | `components/image-uploader.tsx`, `app/new-listing/page.tsx` | Interactive photo uploader with preview, drag reordering, and validation. |
 | **P1** | **Postgres Full-Text Search (FTS)** | `docs/specifications/SellBuy-lv-Full-Feature-Specifications.md` | agency/backend | `app/api/listings/route.ts`, `app/listings/page.tsx` | Trigram & tsvector search across title, description, and city with ltree filtering. |
 | **P1** | **User Verification & Trust Badges** | `docs/integrations/smart-id.md` | agency/frontend | `components/verification-badge.tsx`, `app/profile/[id]/page.tsx` | Smart-ID / eParaksts / phone verification badges for user trust & C2C safety. |
