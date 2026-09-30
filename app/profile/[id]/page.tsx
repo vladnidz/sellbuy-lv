@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { RatingStars } from '@/components/rating-stars';
 import { RatingCard } from '@/components/rating-card';
+import { VerificationBadge } from '@/components/verification-badge';
 import { ArrowLeft, MapPin, Package, Star, Calendar, Mail } from 'lucide-react';
 
 interface UserProfile {
@@ -131,9 +132,13 @@ export default function ProfilePage() {
 
               {/* User Info */}
               <div className="flex-1">
-                <h1 className="text-2xl font-bold text-[var(--text-primary)] mb-2">
-                  {profile.name || 'Lietotājs'}
-                </h1>
+                <div className="flex items-center gap-2 mb-2 flex-wrap">
+                  <h1 className="text-2xl font-bold text-[var(--text-primary)]">
+                    {profile.name || 'Lietotājs'}
+                  </h1>
+                  <VerificationBadge type="smart_id" size="sm" />
+                  <VerificationBadge type="phone" size="sm" />
+                </div>
                 
                 {/* Rating Row */}
                 <div className="flex flex-wrap items-center gap-3 mb-4">
