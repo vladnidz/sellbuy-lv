@@ -115,10 +115,44 @@ export async function GET(request: NextRequest) {
     }
 
     if (query) {
-      where.OR = [
-        { title: { contains: query, mode: 'insensitive' } },
-        { description: { contains: query, mode: 'insensitive' } },
-      ];
+      const searchTerms = query.trim().replace(/[^a-zA-Z0-9āčēģīķļņšūžĀČĒĢĪĶĻŅŠŪŽ\s]/g, '').split(/\s+/).filter(Boolean).join(' & ');
+      if (searchTerms) {
+        try {
+          const ftsResults = await prisma.$queryRaw<Array<{ id: string }>>(
+            Prisma.sql`
+              SELECT id
+              FROM "Listing"
+              WHERE (
+                setweight(to_tsvector('simple', coalesce(title, '')), 'A') ||
+                setweight(to_tsvector('simple', coalesce(description, '')), 'B') ||
+                setweight(to_tsvector('simple', coalesce(city, '')), 'C')
+              ) @@ to_tsquery('simple', ${searchTerms + ':*'})
+              LIMIT 100
+            `
+          );
+
+          if (ftsResults.length > 0) {
+            const ftsIds = ftsResults.map(r => r.id);
+            if (where.id) {
+              const existingIds = (where.id as { in?: string[] }).in || [];
+              const intersected = existingIds.filter(id => ftsIds.includes(id));
+              where.id = { in: intersected.length > 0 ? intersected : ['__no_match__'] };
+            } else {
+              where.id = { in: ftsIds };
+            }
+          } else {
+            where.OR = [
+              { title: { contains: query, mode: 'insensitive' } },
+              { description: { contains: query, mode: 'insensitive' } },
+            ];
+          }
+        } catch {
+          where.OR = [
+            { title: { contains: query, mode: 'insensitive' } },
+            { description: { contains: query, mode: 'insensitive' } },
+          ];
+        }
+      }
     }
 
     if (category) {
