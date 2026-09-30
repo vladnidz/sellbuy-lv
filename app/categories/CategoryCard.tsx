@@ -2,7 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -143,15 +143,6 @@ const cardVariantsBase = {
   tap: { scale: 0.98 },
 };
 
-const badgeVariantsBase = {
-  hidden: { opacity: 0, scale: 0.8 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: { duration: 0.3, delay: 0.1 },
-  },
-};
-
 export function CategoryCard({ category, index, level = 0 }: CategoryCardProps) {
   const shouldReduceMotion = useReducedMotion();
 
@@ -161,8 +152,6 @@ export function CategoryCard({ category, index, level = 0 }: CategoryCardProps) 
         visible: { ...cardVariantsBase.visible, transition: { ...cardVariantsBase.visible.transition, duration: 0, delay: 0 } },
       }
     : cardVariantsBase;
-
-  const badgeVariants = badgeVariantsBase;
 
   const isParent = category.children && category.children.length > 0;
   const listingCount = category._count?.listings || 0;
@@ -212,7 +201,7 @@ export function CategoryCard({ category, index, level = 0 }: CategoryCardProps) 
 
               {isParent && category.children && category.children.length > 0 && (
                 <div className="mt-2 flex flex-wrap gap-1.5" role="list" aria-label="Apakškategorijas">
-                  {category.children.slice(0, 4).map((child: CategoryWithCounts, i: number) => (
+                  {category.children.slice(0, 4).map((child: CategoryWithCounts) => (
                     <Badge
                       key={child.id}
                       variant="outline"

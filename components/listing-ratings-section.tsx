@@ -22,8 +22,6 @@ interface ListingRatingsSectionProps {
 
 export function ListingRatingsSection({
   listingId,
-  sellerId,
-  sellerName,
   initialRatings = [],
 }: ListingRatingsSectionProps) {
   const [ratings, setRatings] = useState<RatingItem[]>(initialRatings);

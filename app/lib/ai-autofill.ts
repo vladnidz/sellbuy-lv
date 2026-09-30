@@ -84,7 +84,7 @@ export function useAiAutofill() {
         setStatus("success");
         setMessage("AI ieteikumi piemēroti");
         return safe;
-      } catch (err) {
+      } catch {
         if (controller.signal.aborted) return {};
         // Graceful degradation: endpoint missing or errored → local heuristic.
         const suggestion = heuristicSuggest(input);

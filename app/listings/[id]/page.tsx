@@ -1,10 +1,9 @@
 import { Metadata } from 'next';
 import { buildTrilingualMetadata, BRAND } from '@/app/lib/seo';
 import { prisma } from '@/app/lib/prisma';
-import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowLeft, MapPin, Star, Shield } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import { ListingRatingsSection } from '@/components/listing-ratings-section';
 import { ChatInitiateButton } from '@/components/chat-initiate-button';

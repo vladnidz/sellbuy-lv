@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Search, SlidersHorizontal, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, SlidersHorizontal, ChevronLeft, ChevronRight } from 'lucide-react';
 import { ListingCard } from '@/components/listing-card';
 import { useLocale } from '@/app/lib/locale-context';
 
