@@ -24,6 +24,8 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useAiAutofill } from "@/app/lib/ai-autofill";
 
+import { ImageUploader } from "@/components/image-uploader";
+
 interface Category {
   value: string;
   label: string;

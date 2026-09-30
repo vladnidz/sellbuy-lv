@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { Upload, X, ArrowLeft, ArrowRight, Star, AlertCircle, Image as ImageIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
@@ -18,6 +18,21 @@ export interface ImageUploaderProps {
 const DEFAULT_ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/avif"];
 const DEFAULT_MAX_SIZE = 5 * 1024 * 1024; // 5MB
 
+const objectUrlMap = new WeakMap<File, string>();
+
+function getObjectUrl(file: File): string {
+  let url = objectUrlMap.get(file);
+  if (!url) {
+    if (typeof URL !== "undefined" && typeof URL.createObjectURL === "function") {
+      url = URL.createObjectURL(file);
+    } else {
+      url = "";
+    }
+    objectUrlMap.set(file, url);
+  }
+  return url;
+}
+
 export function ImageUploader({
   files,
   onChange,
@@ -34,16 +49,7 @@ export function ImageUploader({
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const previewUrls = useMemo(
-    () => files.map((file) => URL.createObjectURL(file)),
-    [files]
-  );
-
-  useEffect(() => {
-    return () => {
-      previewUrls.forEach((url) => URL.revokeObjectURL(url));
-    };
-  }, [previewUrls]);
+  const previewUrls = files.map((file) => getObjectUrl(file));
 
   const setError = (msg: string | null) => {
     setInternalError(msg);
@@ -122,7 +128,6 @@ export function ImageUploader({
     if (e.target.files && e.target.files.length > 0) {
       handleAddFiles(e.target.files);
     }
-    // Reset file input value so selecting the same file again triggers change
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -154,12 +159,10 @@ export function ImageUploader({
     moveFile(index, 0);
   };
 
-  // Thumbnail drag and drop reordering
   const handleItemDragStart = (e: React.DragEvent<HTMLDivElement>, index: number) => {
     if (disabled) return;
     setDraggedIndex(index);
     e.dataTransfer.effectAllowed = "move";
-    e.dataTransfer.setData("text/plain", index.toString());
   };
 
   const handleItemDragOver = (e: React.DragEvent<HTMLDivElement>, index: number) => {
@@ -208,7 +211,7 @@ export function ImageUploader({
           data-testid="image-uploader-input"
         />
 
-        <div className="flex flex-col items-center justify-center space-y-3">
+        <div className="flex flex-col items-center justify-center gap-2">
           <div className="p-3 rounded-full bg-slate-800 text-indigo-400 border border-slate-700">
             <Upload className="h-6 w-6" />
           </div>
