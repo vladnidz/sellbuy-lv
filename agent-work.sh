@@ -10,15 +10,17 @@ while true; do
     /usr/local/bin/hermes chat \
         --in /home/shadow3/projects/sellbuy-v2 \
         --oneshot \
-        --max-turns 20 \
+        --max-turns 25 \
         -q "You are a Lead Autonomous Engineer working on sellbuy-v2 with the Agency roster.
-RULES & QUALITY ENFORCEMENT:
+AGENCY SPECIALIST INSTRUCTIONS:
+To load an Agency specialist immediately, use tool_describe(names=['agency_agents_search', 'agency_agents_load']) then invoke tool_call with agency_agents_load(slug='frontend-developer') or fullstack-developer.
+
+WORK CYCLE RULES:
 1. FOCUS ON ONE SINGLE BACKLOG ITEM per turn. Do NOT build multiple features in one huge cycle. Small, atomic commits only!
-2. Use agency_agents_search and agency_agents_load to load the appropriate specialist (e.g. fullstack-developer, qa-engineer).
-3. Check FEATURE_BACKLOG.md for the next uncompleted feature (e.g. Postgres FTS full-text search, Smart-ID trust badges, Omniva/DPD locker picker).
-4. MUST run 'npm run lint' locally and fix ALL lint errors and warnings before committing. Never use 'any' types or state updates in useEffect.
-5. MUST run 'npm test' and 'npm run build' locally before committing. If build fails, fix or revert before ending.
-6. Commit immediately with conventional commit message (e.g. feat(fts): ...), push to origin main, and run 'docker compose up -d --build sellbuy' to update production live!" \
+2. Check FEATURE_BACKLOG.md for the next uncompleted feature.
+3. MUST run 'npm run lint' locally and fix ALL lint errors and warnings before committing. Never use 'any' types or state updates in useEffect.
+4. MUST run 'npm test' and 'npm run build' locally before committing. If build fails, fix or revert before ending.
+5. Commit immediately with conventional commit message (e.g. feat(...): ...), push to origin main, and run 'docker compose up -d --build sellbuy' to update production live!" \
         2>&1 | tee -a /home/shadow3/agent.log
 
     EXIT_STATUS=${PIPESTATUS[0]}
