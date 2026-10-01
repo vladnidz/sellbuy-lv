@@ -20,6 +20,7 @@
 | GitHub CI & Pre-commit verification gate | 2026-09-29 | agency/devops | `.git/hooks/pre-commit`, `.github/workflows/ci.yml` |
 | Seller Ratings & Feedback API (`/api/ratings`) + Rating Form & UI | 2026-09-29 | agency/backend | `app/api/ratings/route.ts`, `components/rating-form.tsx`, `components/listing-ratings-section.tsx`, `__tests__/api-ratings.test.ts` |
 | Multi-Image Drag & Drop Upload | 2026-09-30 | agency/frontend | `components/image-uploader.tsx`, `app/new-listing/page.tsx`, `__tests__/image-uploader.test.tsx` |
+| AI Listing Assist Endpoint (`/api/listings/ai-assist`) | 2026-10-01 | agency/ai | `app/api/listings/ai-assist/route.ts`, `__tests__/api-ai-assist.test.ts` |
 
 ---
 
@@ -32,4 +33,4 @@
 | **P1** | **Postgres Full-Text Search (FTS)** | `docs/specifications/SellBuy-lv-Full-Feature-Specifications.md` | agency/backend | `app/api/listings/route.ts`, `app/listings/page.tsx` | Trigram & tsvector search across title, description, and city with ltree filtering. |
 | **P1** | **User Verification & Trust Badges** | `docs/integrations/smart-id.md` | agency/frontend | `components/verification-badge.tsx`, `app/profile/[id]/page.tsx` | Smart-ID / eParaksts / phone verification badges for user trust & C2C safety. |
 | **P2** | **Omniva / DPD Locker Delivery Integration** | `docs/integrations/logistics.md` | agency/integrations | `components/delivery-picker.tsx`, `app/api/delivery/route.ts` | Terminal selection widget for Omniva/DPD parcel lockers in Latvia. |
-| **P2** | **AI Listing Assist Endpoint** | `docs/specifications/SellBuy-lv-Full-Feature-Specifications.md` | agency/ai | `app/api/listings/ai-assist/route.ts` | Automated category suggestion, title cleanup, and price estimation for sellers. |
+| **P2** | **AI Listing Assist Endpoint** | `docs/specifications/SellBuy-lv-Full-Feature-Specifications.md` | agency/ai | `app/api/listings/ai-assist/route.ts` | ✅ Completed 2026-10-01. Automated category suggestion, title cleanup, price benchmark, and scam detection for sellers. |
