@@ -48,16 +48,27 @@ export function Navbar() {
             })}
           </div>
 
-          <div className="hidden md:flex items-center gap-2">
+          <div className="hidden md:flex items-center gap-2.5">
             <LanguageSwitcher />
             <ThemeToggle />
-            <Link href="/new-listing" className="flex items-center gap-1.5 text-sm transition-colors px-2 py-1.5" style={{ color: 'var(--text-secondary)' }}>
+            <Link 
+              href="/new-listing" 
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-white bg-gradient-to-r from-[#7c3aed] to-[#6d28d9] hover:from-[#6d28d9] hover:to-[#5b21b6] px-3.5 py-1.5 rounded-lg shadow-sm hover:shadow transition-all transform hover:-translate-y-0.5"
+            >
               <Plus className="h-4 w-4" /> {t('nav.ievietot')}
             </Link>
-            <Link href="/login" className="text-sm transition-colors px-2 py-1.5" style={{ color: 'var(--text-secondary)' }}>
+            <Link 
+              href="/login" 
+              className="text-sm font-medium transition-colors px-3 py-1.5 rounded-lg border border-[var(--border)] hover:bg-[var(--surface-hover)]" 
+              style={{ color: 'var(--text-primary)' }}
+            >
               {t('nav.ieiet')}
             </Link>
-            <Link href="/register" className="text-sm text-white px-3.5 py-1.5 rounded-lg transition-colors" style={{ backgroundColor: 'var(--accent)' }}>
+            <Link 
+              href="/register" 
+              className="text-sm font-medium text-white px-3.5 py-1.5 rounded-lg transition-colors hover:opacity-90 shadow-sm" 
+              style={{ backgroundColor: 'var(--accent)' }}
+            >
               {t('nav.registrēties')}
             </Link>
           </div>
