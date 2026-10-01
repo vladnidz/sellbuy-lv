@@ -46,6 +46,7 @@ export function ImageUploader({
   const [isDragging, setIsDragging] = useState(false);
   const [internalError, setInternalError] = useState<string | null>(null);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+const [showDropTarget, setShowDropTarget] = useState(false);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 

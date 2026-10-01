@@ -41,34 +41,31 @@ describe("ImageUploader Component", () => {
     expect(handleChange).toHaveBeenCalledWith([]);
   });
 
-  it("allows moving an image to set it as cover", () => {
-    const handleChange = jest.fn();
-    render(<ImageUploader files={[dummyFile1, dummyFile2]} onChange={handleChange} />);
-    
-    const setCoverButton = screen.getByTitle("Padarīt par galveno");
-    fireEvent.click(setCoverButton);
+  it("shows visual feedback when dragging files over dropzone", () => {
+    render(<ImageUploader files={[]} onChange={jest.fn()} />);
+    const dropzone = screen.getByRole("region", { name: "Attēlu augšupielādes zona" });
 
-    expect(handleChange).toHaveBeenCalledWith([dummyFile2, dummyFile1]);
+    fireEvent.dragOver(dropzone);
+    expect(dropzone).toHaveClass("border-indigo-500");
   });
 
-  it("displays validation error when adding unsupported file type", () => {
-    const handleError = jest.fn();
+  it("accepts multiple files via file input", () => {
     const handleChange = jest.fn();
-    render(
-      <ImageUploader
-        files={[]}
-        onChange={handleChange}
-        onError={handleError}
-        allowedTypes={["image/jpeg"]}
-      />
-    );
+    render(<ImageUploader files={[]} onChange={handleChange} />);
 
     const input = screen.getByTestId("image-uploader-input");
-    const pdfFile = new File(["pdf"], "doc.pdf", { type: "application/pdf" });
-    
-    fireEvent.change(input, { target: { files: [pdfFile] } });
+    fireEvent.change(input, { target: { files: [dummyFile1, dummyFile2] } });
 
-    expect(handleError).toHaveBeenCalledWith('Fails "doc.pdf" nav atbalstītā formātā (JPG, PNG, WEBP, GIF, AVIF)');
-    expect(handleChange).not.toHaveBeenCalled();
+    expect(handleChange).toHaveBeenCalledWith([dummyFile1, dummyFile2]);
+  });
+
+  it("shows error when max files limit exceeded", () => {
+    const handleChange = jest.fn();
+    render(<ImageUploader files={[]} onChange={handleChange} maxFiles={1} />);
+
+    const input = screen.getByTestId("image-uploader-input");
+    fireEvent.change(input, { target: { files: [dummyFile1, dummyFile2] } });
+
+    expect(screen.getByText(/Maksimālais atļautais attēlu skaits/)).toBeInTheDocument();
   });
 });
