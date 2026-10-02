@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -213,9 +214,11 @@ export default function ProfilePage() {
                         {/* Image */}
                         <div className="h-20 w-20 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border)] flex items-center justify-center overflow-hidden flex-shrink-0">
                           {listing.images.length > 0 ? (
-                            <img
+                            <Image
                               src={listing.images[0]}
                               alt={listing.title}
+                              width={80}
+                              height={80}
                               className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
                             />
                           ) : (

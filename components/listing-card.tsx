@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { MapPin } from 'lucide-react';
 
 interface ListingCardProps {
@@ -33,9 +34,10 @@ export function ListingCard({ id, title, price, images, city, categoryName }: Li
     >
       <div className="aspect-[4/3] overflow-hidden relative" style={{ backgroundColor: 'var(--bg-elevated)' }}>
         {images && images.length > 0 ? (
-          <img
+          <Image
             src={images[0]}
             alt={title}
+            fill
             className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300"
           />
         ) : (
