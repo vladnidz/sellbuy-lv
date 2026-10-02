@@ -70,7 +70,7 @@ export default async function ListingsPage({ searchParams }: PageProps) {
             OR: [
               { id: categorySlug },
               { name: { equals: categorySlug, mode: 'insensitive' } },
-              { path: { equals: categorySlug, mode: 'insensitive' } },
+              { nameLv: { equals: categorySlug, mode: 'insensitive' } },
             ],
           },
         });
