@@ -16,6 +16,9 @@ export async function GET(
         id: true,
         email: true,
         name: true,
+        isVerified: true,
+        verifiedTypes: true,
+        verifiedAt: true,
         listings: {
           select: {
             id: true,
