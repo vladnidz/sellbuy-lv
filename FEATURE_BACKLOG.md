@@ -21,6 +21,7 @@
 | Seller Ratings & Feedback API (`/api/ratings`) + Rating Form & UI | 2026-09-29 | agency/backend | `app/api/ratings/route.ts`, `components/rating-form.tsx`, `components/listing-ratings-section.tsx`, `__tests__/api-ratings.test.ts` |
 | Multi-Image Drag & Drop Upload | 2026-09-30 | agency/frontend | `components/image-uploader.tsx`, `app/new-listing/page.tsx`, `__tests__/image-uploader.test.tsx` |
 | AI Listing Assist Endpoint (`/api/listings/ai-assist`) | 2026-10-01 | agency/ai | `app/api/listings/ai-assist/route.ts`, `__tests__/api-ai-assist.test.ts` |
+| AI Listing Autofill Endpoint (`/api/ai/listing-autofill`) | 2026-10-02 | agency/ai | `app/api/ai/listing-autofill/route.ts`, `__tests__/api-ai-autofill.test.ts` |
 
 ---
 
