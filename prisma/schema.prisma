@@ -13,6 +13,10 @@ model User {
   email         String   @unique
   name          String?
   password      String   @default("")
+  isVerified    Boolean  @default(false)
+  verifiedTypes String[] @default([])
+  personalCode  String?
+  verifiedAt    DateTime?
   listings      Listing[]
   buyerChats    Chat[]   @relation("BuyerChats")
   sellerChats   Chat[]   @relation("SellerChats")
