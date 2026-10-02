@@ -68,4 +68,28 @@ describe("ImageUploader Component", () => {
 
     expect(screen.getByText(/Maksimālais atļautais attēlu skaits/)).toBeInTheDocument();
   });
+
+  it("sets second image as cover when cover button is clicked", () => {
+    const handleChange = jest.fn();
+    render(<ImageUploader files={[dummyFile1, dummyFile2]} onChange={handleChange} />);
+
+    const setCoverBtn = screen.getByTitle("Padarīt par galveno");
+    fireEvent.click(setCoverBtn);
+
+    expect(handleChange).toHaveBeenCalledWith([dummyFile2, dummyFile1]);
+  });
+
+  it("reorders images via drag and drop on thumbnail items", () => {
+    const handleChange = jest.fn();
+    render(<ImageUploader files={[dummyFile1, dummyFile2]} onChange={handleChange} />);
+
+    const item0 = screen.getByTestId("image-preview-item-0");
+    const item1 = screen.getByTestId("image-preview-item-1");
+
+    fireEvent.dragStart(item1, { dataTransfer: { effectAllowed: "" } });
+    fireEvent.dragOver(item0);
+    fireEvent.drop(item0);
+
+    expect(handleChange).toHaveBeenCalledWith([dummyFile2, dummyFile1]);
+  });
 });

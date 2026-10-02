@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { RatingStars } from '@/components/rating-stars';
 import { RatingCard } from '@/components/rating-card';
-import { VerificationBadge, VerificationType } from '@/components/verification-badge';
+import { VerificationBadge } from '@/components/verification-badge';
 import { ArrowLeft, MapPin, Package, Star, Calendar, Mail } from 'lucide-react';
 
 interface UserProfile {
