@@ -16,11 +16,14 @@ export const prisma = {
   category: {
     findMany: jest.fn().mockResolvedValue([]),
     findUnique: jest.fn().mockResolvedValue(null),
+    findFirst: jest.fn().mockResolvedValue(null),
   },
   listing: {
     findMany: jest.fn().mockResolvedValue([]),
     findUnique: jest.fn().mockResolvedValue(null),
+    findFirst: jest.fn().mockResolvedValue(null),
     count: jest.fn().mockResolvedValue(0),
+    aggregate: jest.fn().mockResolvedValue({ _avg: {}, _min: {}, _max: {} }),
     create: jest.fn(),
     update: jest.fn(),
     delete: jest.fn(),
