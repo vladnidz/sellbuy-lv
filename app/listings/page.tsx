@@ -51,14 +51,37 @@ export default async function ListingsPage({ searchParams }: PageProps) {
   }
   if (city) where.city = city;
   if (categorySlug) {
-    const matchingCategories = await prisma.$queryRaw<
-      Array<{ id: string }>
-    >`SELECT id FROM "Category" WHERE "path" @> ${categorySlug}::ltree`;
-    const categoryIds = matchingCategories.map((c) => c.id);
-    if (categoryIds.length > 0) {
-      where.categoryId = { in: categoryIds };
-    } else {
-      where.categoryId = { in: ['__no_match__'] };
+    try {
+      // Validate ltree syntax: alphanumeric, underscores and hyphens separated by dots
+      const isValidLtree = /^[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)*$/.test(categorySlug);
+      if (isValidLtree) {
+        const matchingCategories = await prisma.$queryRaw<
+          Array<{ id: string }>
+        >`SELECT id FROM "Category" WHERE "path" @> ${categorySlug}::ltree`;
+        const categoryIds = matchingCategories.map((c) => c.id);
+        if (categoryIds.length > 0) {
+          where.categoryId = { in: categoryIds };
+        } else {
+          where.categoryId = { in: ['__no_match__'] };
+        }
+      } else {
+        const matched = await prisma.category.findFirst({
+          where: {
+            OR: [
+              { id: categorySlug },
+              { name: { equals: categorySlug, mode: 'insensitive' } },
+              { path: { equals: categorySlug, mode: 'insensitive' } },
+            ],
+          },
+        });
+        if (matched) {
+          where.categoryId = matched.id;
+        } else {
+          where.categoryId = '__no_match__';
+        }
+      }
+    } catch {
+      where.categoryId = '__no_match__';
     }
   }
 

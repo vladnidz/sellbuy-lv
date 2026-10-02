@@ -54,7 +54,7 @@ export function HomePageContent({ listings, categories }: HomePageContentProps) 
           <div className="mt-10 flex justify-center">
             <Link href="/listings" className={components.buttonPrimary}>
               <Search className="w-4 h-4 mr-2" />
-              {t('hero.browse_btn')}
+              {t('hero.cta_secondary')}
             </Link>
           </div>
         </div>
