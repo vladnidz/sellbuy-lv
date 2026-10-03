@@ -6,7 +6,7 @@ generator client {
 
 datasource db {
   provider          = "postgresql"
-  extensions        = [ltree()]
+  extensions        = [pg_trgm(), ltree()]
 }
 
 model User {
@@ -59,7 +59,7 @@ model Category {
 model Listing {
   id          String   @id @default(uuid())
   title       String
-  description String @default("")
+  description String   @default("")
   price       Decimal
   images      String[] @default([])
   city        String?
@@ -71,6 +71,9 @@ model Listing {
   author      User     @relation(fields: [authorId], references: [id])
   authorId    String
   createdAt   DateTime @default(now())
+
+  @@index([city], type: Gist)
+  @@index([title, description, city], type: Gist)
 }
 
 model Chat {
