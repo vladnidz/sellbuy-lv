@@ -43,13 +43,7 @@ export function NotificationBell({ userId }: NotificationBellProps) {
     async function load() {
       setLoading(true);
       try {
-        const url = userId ? `/api/notifications?userId=${userId}` : '/api/notifications';
-        const res = await fetch(url);
-        if (res.ok && !ignore) {
-          const data = await res.json();
-          setNotifications(data.notifications || []);
-          setUnreadCount(data.unreadCount || 0);
-        }
+        await fetchNotifications();
       } catch (err) {
         console.error('Failed to fetch notifications', err);
       } finally {
@@ -58,11 +52,15 @@ export function NotificationBell({ userId }: NotificationBellProps) {
         }
       }
     }
+
     load();
+
+    const interval = setInterval(load, 60000);
     return () => {
       ignore = true;
+      clearInterval(interval);
     };
-  }, [userId]);
+  }, [userId, fetchNotifications]);
 
   const markAllAsRead = async () => {
     try {

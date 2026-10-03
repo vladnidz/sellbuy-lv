@@ -64,6 +64,7 @@ model Listing {
   images      String[] @default([])
   city        String?
   attributes  Json?
+  search_vector Unsupported("tsvector")? @default(dbgenerated("setweight(to_tsvector('simple', coalesce(title, '')), 'A') || setweight(to_tsvector('simple', coalesce(description, '')), 'B') || setweight(to_tsvector('simple', coalesce(city, '')), 'C')"))
   category    Category @relation(fields: [categoryId], references: [id])
   categoryId  String
   ratings     Rating[]
@@ -74,6 +75,7 @@ model Listing {
 
   @@index([city], type: Gist)
   @@index([title, description, city], type: Gist)
+  @@index([search_vector], type: Gin)
 }
 
 model Chat {
