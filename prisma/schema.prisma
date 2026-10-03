@@ -1,6 +1,7 @@
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["postgresqlExtensions"]
+  binaryTargets   = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
@@ -23,6 +24,7 @@ model User {
   messages      Message[]
   buyerRatings  Rating[] @relation("BuyerRatings")
   sellerRatings Rating[] @relation("SellerRatings")
+  notifications Notification[]
 }
 
 model Rating {
@@ -91,4 +93,16 @@ model Message {
   chatId    String
   sender    User     @relation(fields: [senderId], references: [id])
   senderId  String
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      String
+  title     String
+  message   String
+  read      Boolean  @default(false)
+  link      String?
+  createdAt DateTime @default(now())
 }

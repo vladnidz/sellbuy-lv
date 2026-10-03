@@ -38,74 +38,82 @@ export default async function ListingsPage({ searchParams }: PageProps) {
 
   // Build where clause
   const where: Prisma.ListingWhereInput = {};
-  if (q) {
-    where.OR = [
-      { title: { contains: q, mode: 'insensitive' } },
-      { description: { contains: q, mode: 'insensitive' } },
-    ];
-  }
-  if (minPrice !== undefined || maxPrice !== undefined) {
-    where.price = {};
-    if (minPrice !== undefined) where.price.gte = minPrice;
-    if (maxPrice !== undefined) where.price.lte = maxPrice;
-  }
-  if (city) where.city = city;
-  if (categorySlug) {
-    try {
-      // Validate ltree syntax: alphanumeric, underscores and hyphens separated by dots
-      const isValidLtree = /^[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)*$/.test(categorySlug);
-      if (isValidLtree) {
-        const matchingCategories = await prisma.$queryRaw<
-          Array<{ id: string }>
-        >`SELECT id FROM "Category" WHERE "path" @> ${categorySlug}::ltree`;
-        const categoryIds = matchingCategories.map((c) => c.id);
-        if (categoryIds.length > 0) {
-          where.categoryId = { in: categoryIds };
-        } else {
-          where.categoryId = { in: ['__no_match__'] };
-        }
-      } else {
-        const matched = await prisma.category.findFirst({
-          where: {
-            OR: [
-              { id: categorySlug },
-              { name: { equals: categorySlug, mode: 'insensitive' } },
-              { nameLv: { equals: categorySlug, mode: 'insensitive' } },
-            ],
-          },
-        });
-        if (matched) {
-          where.categoryId = matched.id;
-        } else {
-          where.categoryId = '__no_match__';
-        }
-      }
-    } catch {
-      where.categoryId = '__no_match__';
+    if (q) {
+      where.OR = [
+        { title: { contains: q, mode: 'insensitive' } },
+        { description: { contains: q, mode: 'insensitive' } },
+      ];
     }
+    if (minPrice !== undefined || maxPrice !== undefined) {
+      where.price = {};
+      if (minPrice !== undefined) where.price.gte = minPrice;
+      if (maxPrice !== undefined) where.price.lte = maxPrice;
+    }
+    if (city) where.city = city;
+    if (categorySlug) {
+      try {
+        const isValidLtree = /^[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)*$/.test(categorySlug);
+        if (isValidLtree) {
+          const matchingCategories = await prisma.$queryRaw<
+            Array<{ id: string }>
+          >`SELECT id FROM "Category" WHERE "path" @> ${categorySlug}::ltree`;
+          const categoryIds = matchingCategories.map((c) => c.id);
+          if (categoryIds.length > 0) {
+            where.categoryId = { in: categoryIds };
+          } else {
+            where.categoryId = { in: ['__no_match__'] };
+          }
+        } else {
+          const matched = await prisma.category.findFirst({
+            where: {
+              OR: [
+                { id: categorySlug },
+                { name: { equals: categorySlug, mode: 'insensitive' } },
+                { nameLv: { equals: categorySlug, mode: 'insensitive' } },
+              ],
+            },
+          });
+          if (matched) {
+            where.categoryId = matched.id;
+          } else {
+            where.categoryId = '__no_match__';
+          }
+        }
+      } catch {
+        where.categoryId = '__no_match__';
+      }
+    }
+
+    let orderBy: Prisma.ListingOrderByWithRelationInput = { createdAt: 'desc' };
+    if (sort === 'price_asc') orderBy = { price: 'asc' };
+    else if (sort === 'price_desc') orderBy = { price: 'desc' };
+    else if (sort === 'oldest') orderBy = { createdAt: 'asc' };
+
+  let listings: Array<{ id: string; title: string; price: Prisma.Decimal; images: string[]; city: string | null; category: { name: string } | null }> = [];
+  let total = 0;
+  let categories: Array<{ id: string; name: string }> = [];
+
+  try {
+    const [listingsResult, totalResult, categoriesResult] = await Promise.all([
+      prisma.listing.findMany({
+        where,
+        orderBy,
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+        include: { category: { select: { name: true } }, author: { select: { id: true, name: true } } },
+      }),
+      prisma.listing.count({ where }),
+      prisma.category.findMany({
+        select: { id: true, name: true },
+        orderBy: { name: 'asc' },
+      }),
+    ]);
+    listings = listingsResult;
+    total = totalResult;
+    categories = categoriesResult;
+  } catch (err) {
+    console.error('Failed to load listings from DB:', err);
   }
-
-  // Build orderBy
-  let orderBy: Prisma.ListingOrderByWithRelationInput = { createdAt: 'desc' };
-  if (sort === 'price_asc') orderBy = { price: 'asc' };
-  else if (sort === 'price_desc') orderBy = { price: 'desc' };
-  else if (sort === 'oldest') orderBy = { createdAt: 'asc' };
-
-  const [listings, total] = await Promise.all([
-    prisma.listing.findMany({
-      where,
-      orderBy,
-      skip: (page - 1) * pageSize,
-      take: pageSize,
-      include: { category: { select: { name: true } }, author: { select: { id: true, name: true } } },
-    }),
-    prisma.listing.count({ where }),
-  ]);
-
-  const categories = await prisma.category.findMany({
-    select: { id: true, name: true },
-    orderBy: { name: 'asc' },
-  });
 
   const listingsForCard = listings.map((l) => ({
     id: l.id,
@@ -122,7 +130,7 @@ export default async function ListingsPage({ searchParams }: PageProps) {
       categories={categories}
       total={total}
       currentPage={page}
-      totalPages={Math.ceil(total / pageSize)}
+      totalPages={Math.max(1, Math.ceil(total / pageSize))}
       currentFilters={{ q, category: categorySlug, minPrice: params.minPrice, maxPrice: params.maxPrice, sort, city }}
     />
   );

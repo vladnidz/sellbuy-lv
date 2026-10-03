@@ -6,6 +6,7 @@ import { Plus, Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import { LanguageSwitcher } from '@/components/language-switcher';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { NotificationBell } from '@/components/notification-bell';
 import { useLocale } from '@/app/lib/locale-context';
 
 export function Navbar() {
@@ -51,6 +52,7 @@ export function Navbar() {
           <div className="hidden md:flex items-center gap-2.5">
             <LanguageSwitcher />
             <ThemeToggle />
+            <NotificationBell />
             <Link 
               href="/new-listing" 
               className="inline-flex items-center gap-1.5 text-sm font-medium text-white bg-gradient-to-r from-[#7c3aed] to-[#6d28d9] hover:from-[#6d28d9] hover:to-[#5b21b6] px-3.5 py-1.5 rounded-lg shadow-sm hover:shadow transition-all transform hover:-translate-y-0.5"

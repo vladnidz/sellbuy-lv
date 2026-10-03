@@ -50,6 +50,15 @@ export const prisma = {
     update: jest.fn(),
     delete: jest.fn(),
   },
+  notification: {
+    findMany: jest.fn().mockResolvedValue([]),
+    findUnique: jest.fn().mockResolvedValue(null),
+    count: jest.fn().mockResolvedValue(0),
+    create: jest.fn(),
+    update: jest.fn(),
+    updateMany: jest.fn().mockResolvedValue({ count: 0 }),
+    delete: jest.fn(),
+  },
 };
 
 export default prisma;
