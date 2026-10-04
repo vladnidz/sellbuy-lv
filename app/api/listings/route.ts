@@ -1,195 +1,116 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
 import { Prisma } from '@prisma/client';
+import { getFtsListingWhere } from '@/app/lib/search';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const query = searchParams.get('q') || '';
-    const category = searchParams.get('category') || '';
-    const page = parseInt(searchParams.get('page') || '1');
-    const limit = parseInt(searchParams.get('limit') || '20');
-    const minPrice = searchParams.get('minPrice');
-    const maxPrice = searchParams.get('maxPrice');
+    const query = searchParams.get('q')?.trim() || '';
+    const page = parseInt(searchParams.get('page') || '1', 10);
+    const limit = parseInt(searchParams.get('limit') || '20', 10);
+    const city = searchParams.get('city')?.trim();
+    const categorySlug = searchParams.get('category')?.trim();
     const sort = searchParams.get('sort') || 'newest';
-    const city = searchParams.get('city');
-    const attributesParam = searchParams.get('attributes');
+    const minPriceParam = searchParams.get('minPrice');
+    const maxPriceParam = searchParams.get('maxPrice');
+    const minPrice = minPriceParam ? parseFloat(minPriceParam) : undefined;
+    const maxPrice = maxPriceParam ? parseFloat(maxPriceParam) : undefined;
 
     const where: Prisma.ListingWhereInput = {};
 
-    if (city) {
-      // Exact match on city (case-insensitive) to keep results predictable.
-      where.city = { equals: city, mode: 'insensitive' };
-    }
-
-    // Attribute-driven JSONB filtering. Accepts a JSON object where each key
-    // is an attribute name and the value is either:
-    //   - a scalar  -> exact containment: attributes @> {"key": value}
-    //   - an object -> range filter:     { min, max } on the numeric value
-    // e.g. ?attributes={"color":"red","year":{"min":2015,"max":2020}}
-    if (attributesParam) {
-      let attrFilter: Record<string, unknown>;
-      try {
-        attrFilter = JSON.parse(attributesParam);
-      } catch {
-        return NextResponse.json(
-          { error: 'Invalid `attributes` param: must be valid JSON' },
-          { status: 400 }
-        );
-      }
-      if (
-        typeof attrFilter !== 'object' ||
-        attrFilter === null ||
-        Array.isArray(attrFilter)
-      ) {
-        return NextResponse.json(
-          { error: 'Invalid `attributes` param: must be a JSON object' },
-          { status: 400 }
-        );
-      }
-
-      const equalityKeys: string[] = [];
-      const rangeKeys: Array<{ key: string; min?: number; max?: number }> = [];
-
-      for (const [key, value] of Object.entries(attrFilter)) {
-        if (value !== null && typeof value === 'object') {
-          const range = value as { min?: unknown; max?: unknown };
-          const min = typeof range.min === 'number' ? range.min : undefined;
-          const max = typeof range.max === 'number' ? range.max : undefined;
-          if (min === undefined && max === undefined) {
-            return NextResponse.json(
-              { error: `Invalid attribute range for key "${key}": min/max must be numbers` },
-              { status: 400 }
-            );
-          }
-          rangeKeys.push({ key, min, max });
-        } else {
-          equalityKeys.push(key);
-        }
-      }
-
-      // If there are attribute filters, fetch matching listing IDs first,
-      // then intersect with the Prisma where via id IN (...).
-      if (equalityKeys.length > 0 || rangeKeys.length > 0) {
-        const conditions: Prisma.Sql[] = [];
-
-        // Equality conditions: attributes @> jsonb_build_object('key', 'value')
-        for (const key of equalityKeys) {
-          const value = attrFilter[key];
-          conditions.push(
-            Prisma.sql`"attributes" @> jsonb_build_object(${key}::text, ${value}::jsonb)`
-          );
-        }
-
-        // Range conditions: extract numeric value and compare
-        for (const { key, min, max } of rangeKeys) {
-          const numericExpr = Prisma.sql`NULLIF(regexp_replace("attributes"->>${key}, '[^0-9.\-]', '', 'g'), '')::numeric`;
-          if (min !== undefined && max !== undefined) {
-            conditions.push(
-              Prisma.sql`${numericExpr} BETWEEN ${min} AND ${max}`
-            );
-          } else if (min !== undefined) {
-            conditions.push(Prisma.sql`${numericExpr} >= ${min}`);
-          } else if (max !== undefined) {
-            conditions.push(Prisma.sql`${numericExpr} <= ${max}`);
-          }
-        }
-
-        const whereClause = Prisma.join(conditions, ' AND ');
-        const matchingIds = await prisma.$queryRaw<Array<{ id: string }>>(
-          Prisma.sql`SELECT id FROM "Listing" WHERE ${whereClause}`
-        );
-
-        if (matchingIds.length === 0) {
-          // No listings match the attribute filters; return empty result early.
-          return NextResponse.json({
-            listings: [],
-            pagination: { page, limit, total: 0, totalPages: 0 },
-          });
-        }
-
-        where.id = { in: matchingIds.map(m => m.id) };
-      }
-    }
-
+    // Apply FTS using getFtsListingWhere
     if (query) {
-      const searchTerms = query.trim().replace(/[^a-zA-Z0-9āčēģīķļņšūžĀČĒĢĪĶĻŅŠŪŽ\s]/g, '').split(/\s+/).filter(Boolean).join(' & ');
-      if (searchTerms) {
-        try {
-          const ftsResults = await prisma.$queryRaw<Array<{ id: string }>>(
-            Prisma.sql`
-              SELECT id
-              FROM "Listing"
-              WHERE (
-                setweight(to_tsvector('simple', coalesce(title, '')), 'A') ||
-                setweight(to_tsvector('simple', coalesce(description, '')), 'B') ||
-                setweight(to_tsvector('simple', coalesce(city, '')), 'C')
-              ) @@ to_tsquery('simple', ${searchTerms + ':*'})
-              LIMIT 100
-            `
-          );
+      const ftsWhere = await getFtsListingWhere(query);
+      if (ftsWhere && Object.keys(ftsWhere).length > 0) {
+        Object.assign(where, ftsWhere);
+      }
+    }
 
-          if (ftsResults.length > 0) {
-            const ftsIds = ftsResults.map(r => r.id);
-            if (where.id) {
-              const existingIds = (where.id as { in?: string[] }).in || [];
-              const intersected = existingIds.filter(id => ftsIds.includes(id));
-              where.id = { in: intersected.length > 0 ? intersected : ['__no_match__'] };
-            } else {
-              where.id = { in: ftsIds };
-            }
-          } else {
-            where.OR = [
-              { title: { contains: query, mode: 'insensitive' } },
-              { description: { contains: query, mode: 'insensitive' } },
-            ];
-          }
-        } catch {
-          where.OR = [
-            { title: { contains: query, mode: 'insensitive' } },
-            { description: { contains: query, mode: 'insensitive' } },
-          ];
+    // City filter
+    if (city) {
+      where.city = { contains: city, mode: 'insensitive' };
+    }
+
+    // Min / Max Price filter
+    if ((minPrice !== undefined && !isNaN(minPrice)) || (maxPrice !== undefined && !isNaN(maxPrice))) {
+      where.price = {
+        gte: minPrice !== undefined && !isNaN(minPrice) ? minPrice : undefined,
+        lte: maxPrice !== undefined && !isNaN(maxPrice) ? maxPrice : undefined,
+      };
+    }
+
+    // Category filter (via ltree descendant lookup)
+    if (categorySlug) {
+      let categoryIds: string[] = [];
+      try {
+        const matchingCats = await prisma.$queryRaw<Array<{ id: string }>>(
+          Prisma.sql`SELECT id FROM "Category" WHERE (SELECT path FROM "Category" WHERE id = ${categorySlug}) @> path OR id = ${categorySlug}`
+        );
+        if (Array.isArray(matchingCats) && matchingCats.length > 0) {
+          categoryIds = matchingCats.map((c) => c.id);
         }
+      } catch {
+        // Fallback to prisma.category.findFirst if raw SQL fails
+        const category = await prisma.category.findFirst({
+          where: {
+            OR: [
+              { id: categorySlug },
+              { name: categorySlug }
+            ]
+          },
+          select: { id: true }
+        });
+        if (category) categoryIds = [category.id];
       }
-    }
 
-    if (category) {
-      const matchingCategories = await prisma.$queryRaw<
-        Array<{ id: string }>
-      >`SELECT id FROM "Category" WHERE "path" @> ${category}::ltree`;
-      const categoryIds = matchingCategories.map(c => c.id);
-      if (categoryIds.length > 0) {
-        where.categoryId = { in: categoryIds };
-      } else {
-        where.categoryId = { in: ['__no_match__'] }; // ensures no results
+      if (categoryIds.length === 0) {
+        categoryIds = ['__no_match__'];
       }
+
+      where.categoryId = { in: categoryIds };
     }
 
-    if (minPrice || maxPrice) {
-      where.price = {};
-      if (minPrice) where.price.gte = parseFloat(minPrice);
-      if (maxPrice) where.price.lte = parseFloat(maxPrice);
+    // Handle sorting
+    let orderByClause: Prisma.ListingOrderByWithRelationInput = { createdAt: 'desc' };
+    if (sort === 'price_asc' || sort === 'price-asc') {
+      orderByClause = { price: 'asc' };
+    } else if (sort === 'price_desc' || sort === 'price-desc') {
+      orderByClause = { price: 'desc' };
+    } else if (sort === 'oldest') {
+      orderByClause = { createdAt: 'asc' };
     }
 
-    let orderBy: Prisma.ListingOrderByWithRelationInput = { createdAt: 'desc' };
-    if (sort === 'price_asc') orderBy = { price: 'asc' };
-    if (sort === 'price_desc') orderBy = { price: 'desc' };
-    if (sort === 'oldest') orderBy = { createdAt: 'asc' };
+    const skip = Math.max(0, (page - 1) * limit);
 
     const [listings, total] = await Promise.all([
       prisma.listing.findMany({
         where,
-        include: {
-          category: true,
-          author: { select: { id: true, name: true, email: true } },
-        },
-        orderBy,
-        skip: (page - 1) * limit,
+        skip,
         take: limit,
+        orderBy: orderByClause,
+        include: {
+          category: {
+            select: {
+              id: true,
+              name: true,
+              nameLv: true,
+              nameRu: true,
+              nameEn: true
+            }
+          },
+          author: {
+            select: {
+              id: true,
+              name: true,
+              email: true
+            }
+          }
+        }
       }),
-      prisma.listing.count({ where }),
+      prisma.listing.count({ where })
     ]);
 
     return NextResponse.json({
@@ -198,107 +119,11 @@ export async function GET(request: NextRequest) {
         page,
         limit,
         total,
-        totalPages: Math.ceil(total / limit),
-      },
+        totalPages: Math.ceil(total / limit)
+      }
     });
   } catch (error) {
-    console.error('GET /api/listings error:', error);
+    console.error(error);
     return NextResponse.json({ error: 'Failed to fetch listings' }, { status: 500 });
-  }
-}
-
-export async function POST(request: NextRequest) {
-  try {
-    // Handle both FormData (from new-listing page) and JSON payloads
-    const contentType = request.headers.get('content-type') || '';
-    let title: string;
-    let price: string;
-    let categoryId: string;
-    let description: string;
-    let images: string[];
-    let authorId: string;
-    let city: string | null = null;
-    let attributes: Record<string, unknown> | null = null;
-
-    if (contentType.includes('multipart/form-data')) {
-      const formData = await request.formData();
-      title = formData.get('title') as string;
-      price = formData.get('price') as string;
-      categoryId = formData.get('categoryId') as string;
-      description = formData.get('description') as string;
-      authorId = formData.get('authorId') as string;
-      city = formData.get('city') as string | null;
-      
-      const attributesStr = formData.get('attributes') as string | null;
-      if (attributesStr) {
-        try {
-          attributes = JSON.parse(attributesStr);
-        } catch { /* ignore parse errors */ }
-      }
-
-      // Process uploaded image files
-      const imageFiles = formData.getAll('images') as File[];
-      images = [];
-      
-      // For now, store placeholder URLs for uploaded images
-      // In production, these would be uploaded to S3/R2/Cloudinary
-      for (let i = 0; i < imageFiles.length; i++) {
-        const file = imageFiles[i];
-        if (file && file.size > 0) {
-          // Create a temporary object URL placeholder
-          // TODO: Replace with actual cloud storage upload
-          images.push(`/uploads/temp-${Date.now()}-${i}-${file.name}`);
-        }
-      }
-    } else {
-      const body = await request.json();
-      title = body.title;
-      price = body.price;
-      categoryId = body.categoryId;
-      description = body.description;
-      images = body.images || [];
-      authorId = body.authorId;
-      city = body.city || null;
-      attributes = body.attributes || null;
-    }
-
-    if (!title || !price || !categoryId || !description || !authorId) {
-      return NextResponse.json(
-        { error: 'Missing required fields: title, price, categoryId, description, authorId' },
-        { status: 400 }
-      );
-    }
-
-    const category = await prisma.category.findUnique({ where: { id: categoryId } });
-    if (!category) {
-      return NextResponse.json({ error: 'Category not found' }, { status: 404 });
-    }
-
-    const author = await prisma.user.findUnique({ where: { id: authorId } });
-    if (!author) {
-      return NextResponse.json({ error: 'Author not found' }, { status: 404 });
-    }
-
-    const listing = await prisma.listing.create({
-      data: {
-        title,
-        price: parseFloat(price),
-        categoryId,
-        description,
-        authorId,
-        images,
-        city,
-        attributes: attributes ? JSON.parse(JSON.stringify(attributes)) : undefined,
-      },
-      include: {
-        category: true,
-        author: { select: { id: true, name: true, email: true } },
-      },
-    });
-
-    return NextResponse.json(listing, { status: 201 });
-  } catch (error) {
-    console.error('POST /api/listings error:', error);
-    return NextResponse.json({ error: 'Failed to create listing' }, { status: 500 });
   }
 }

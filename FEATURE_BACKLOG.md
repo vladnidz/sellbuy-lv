@@ -22,6 +22,7 @@
 | Multi-Image Drag & Drop Upload | 2026-09-30 | agency/frontend | `components/image-uploader.tsx`, `app/new-listing/page.tsx`, `__tests__/image-uploader.test.tsx` |
 | AI Listing Assist Endpoint (`/api/listings/ai-assist`) | 2026-10-01 | agency/ai | `app/api/listings/ai-assist/route.ts`, `__tests__/api-ai-assist.test.ts` |
 | AI Listing Autofill Endpoint (`/api/ai/listing-autofill`) | 2026-10-02 | agency/ai | `app/api/ai/listing-autofill/route.ts`, `__tests__/api-ai-autofill.test.ts` |
+| Postgres Full-Text Search (FTS) | 2026-10-04 | agency/backend | `app/lib/search.ts`, `app/api/listings/route.ts`, `app/listings/page.tsx`, `__tests__/api-listings-fts.test.ts` |
 
 ---
 
@@ -31,7 +32,7 @@
 |---|---|---|---|---|---|
 | **P0** | **Listing Chat Initiation** | `docs/functional/chat.md` | agency/fullstack | `app/listings/[id]/page.tsx`, `app/api/chats/route.ts`, `components/chat-initiate-button.tsx` | ✅ Completed 2026-09-30. "Sazināties ar pārdevēju" button creates/opens chat with listing context prefilled. |
 | **P1** | **Multi-Image Drag & Drop Upload** | `docs/specifications/SellBuy-lv-Full-Feature-Specifications.md` | agency/frontend | `components/image-uploader.tsx`, `app/new-listing/page.tsx` | ✅ Completed 2026-10-03. Interactive photo uploader with preview, drag reordering, validation, and 9 passing tests. |
-| **P1** | **Postgres Full-Text Search (FTS)** | `docs/specifications/SellBuy-lv-Full-Feature-Specifications.md` | agency/backend | `app/api/listings/route.ts`, `app/listings/page.tsx` | Trigram & tsvector search across title, description, and city with ltree filtering. |
+| **P1** | **Postgres Full-Text Search (FTS)** | `docs/specifications/SellBuy-lv-Full-Feature-Specifications.md` | agency/backend | `app/api/listings/route.ts`, `app/listings/page.tsx` | ✅ Completed 2026-10-04. Weighted tsvector & trigram similarity search fallback across title, description, and city. |
 | **P1** | **User Verification & Trust Badges** | `docs/integrations/smart-id.md` | agency/frontend | `components/verification-badge.tsx`, `app/profile/[id]/page.tsx` | Smart-ID / eParaksts / phone verification badges for user trust & C2C safety. |
 | **P2** | **Omniva / DPD Locker Delivery Integration** | `docs/integrations/logistics.md` | agency/integrations | `components/delivery-picker.tsx`, `app/api/delivery/route.ts` | Terminal selection widget for Omniva/DPD parcel lockers in Latvia. |
 | **P2** | **AI Listing Assist Endpoint** | `docs/specifications/SellBuy-lv-Full-Feature-Specifications.md` | agency/ai | `app/api/listings/ai-assist/route.ts` | ✅ Completed 2026-10-01. Automated category suggestion, title cleanup, price benchmark, and scam detection for sellers. |

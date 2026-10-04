@@ -77,13 +77,14 @@ describe('/listings page query logic', () => {
     );
   });
 
-  it('applies search term as insensitive OR across title/description', async () => {
+  it('applies search term as insensitive OR across title/description/city', async () => {
     await renderPage({ q: 'velo' });
 
     const arg = (prisma.listing.findMany as jest.Mock).mock.calls[0][0];
     expect(arg.where.OR).toEqual([
       { title: { contains: 'velo', mode: 'insensitive' } },
       { description: { contains: 'velo', mode: 'insensitive' } },
+      { city: { contains: 'velo', mode: 'insensitive' } },
     ]);
   });
 

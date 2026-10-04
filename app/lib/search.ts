@@ -10,9 +10,10 @@ export async function getFtsListingWhere(query: string): Promise<Prisma.ListingW
   if (!trimmed) return {};
 
   const searchTerms = trimmed
-    .replace(/[^a-zA-Z0-9āčēģīķļņšūžĀČĒĢĪĶĻŅŠŪŽ\s]/g, '')
+    .replace(/[^a-zA-Z0-9āčēģīķļņšūžĀČĒĢĪĶĻŅŠŪŽ\u0400-\u04FF\s]/g, '')
     .split(/\s+/)
     .filter(Boolean)
+    .map((term) => `${term}:*`)
     .join(' & ');
 
   if (searchTerms) {
@@ -26,7 +27,7 @@ export async function getFtsListingWhere(query: string): Promise<Prisma.ListingW
             setweight(to_tsvector('simple', coalesce(title, '')), 'A') ||
             setweight(to_tsvector('simple', coalesce(description, '')), 'B') ||
             setweight(to_tsvector('simple', coalesce(city, '')), 'C')
-          ) @@ to_tsquery('simple', ${searchTerms + ':*'})
+          ) @@ to_tsquery('simple', ${searchTerms})
           LIMIT 100
         `
       );

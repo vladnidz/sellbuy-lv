@@ -25,6 +25,7 @@ model User {
   buyerRatings  Rating[] @relation("BuyerRatings")
   sellerRatings Rating[] @relation("SellerRatings")
   notifications Notification[]
+  savedSearches SavedSearch[]
 }
 
 model Rating {
@@ -73,8 +74,9 @@ model Listing {
   authorId    String
   createdAt   DateTime @default(now())
 
-  @@index([city], type: Gist)
-  @@index([title, description, city], type: Gist)
+  @@index([city])
+  @@index([title])
+  @@index([description])
   @@index([search_vector], type: Gin)
 }
 
@@ -110,4 +112,21 @@ model Notification {
   read      Boolean  @default(false)
   link      String?
   createdAt DateTime @default(now())
+}
+
+model SavedSearch {
+  id           String   @id @default(uuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name         String
+  query        Json     // { q: string, category?: string, filters?: any }
+  lat          Float?
+  lon          Float?
+  radius       Float?   // in km
+  notifyEnabled Boolean @default(false)
+  lastCheckedAt DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([userId])
 }

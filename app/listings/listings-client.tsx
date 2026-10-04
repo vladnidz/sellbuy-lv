@@ -37,9 +37,10 @@ interface Props {
   };
 }
 
-export function ListingsPageClient({ listings, categories, total, currentPage, totalPages, currentFilters }: Props) {
+export function ListingsPageClient({ listings, categories, total, currentPage, totalPages, currentFilters = {} }: Props) {
   const router = useRouter();
-  const [search, setSearch] = useState(currentFilters.q || '');
+  const filters = currentFilters || {};
+  const [search, setSearch] = useState(filters.q || '');
   const [showFilters, setShowFilters] = useState(false);
   const { t } = useLocale();
 
@@ -47,13 +48,13 @@ export function ListingsPageClient({ listings, categories, total, currentPage, t
     e.preventDefault();
     const params = new URLSearchParams();
     if (search) params.set('q', search);
-    if (currentFilters.category) params.set('category', currentFilters.category);
+    if (filters.category) params.set('category', filters.category);
     router.push(`/listings?${params.toString()}`);
   }
 
   function buildUrl(overrides: Record<string, string>) {
     const params = new URLSearchParams();
-    const merged = { ...currentFilters, ...overrides };
+    const merged = { ...filters, ...overrides };
     Object.entries(merged).forEach(([k, v]) => { if (v) params.set(k, v); });
     return `/listings?${params.toString()}`;
   }
