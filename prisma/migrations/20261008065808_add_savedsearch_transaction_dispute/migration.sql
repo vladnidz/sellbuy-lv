@@ -1,15 +1,3 @@
--- DropIndex
-DROP INDEX "listing_city_trgm_idx";
-
--- DropIndex
-DROP INDEX "listing_desc_trgm_idx";
-
--- DropIndex
-DROP INDEX "listing_title_trgm_idx";
-
--- AlterTable
-ALTER TABLE "Listing" ALTER COLUMN "search_vector" SET DEFAULT setweight(to_tsvector('simple', coalesce(title, '')), 'A') || setweight(to_tsvector('simple', coalesce(description, '')), 'B') || setweight(to_tsvector('simple', coalesce(city, '')), 'C');
-
 -- CreateTable
 CREATE TABLE "SavedSearch" (
     "id" TEXT NOT NULL,
@@ -64,31 +52,16 @@ CREATE TABLE "Dispute" (
 CREATE INDEX "SavedSearch_userId_idx" ON "SavedSearch"("userId");
 
 -- CreateIndex
+CREATE INDEX "Transaction_listingId_idx" ON "Transaction"("listingId");
+
+-- CreateIndex
 CREATE INDEX "Transaction_buyerId_idx" ON "Transaction"("buyerId");
 
 -- CreateIndex
 CREATE INDEX "Transaction_sellerId_idx" ON "Transaction"("sellerId");
 
 -- CreateIndex
-CREATE INDEX "Transaction_listingId_idx" ON "Transaction"("listingId");
-
--- CreateIndex
-CREATE INDEX "Transaction_status_idx" ON "Transaction"("status");
-
--- CreateIndex
 CREATE INDEX "Dispute_transactionId_idx" ON "Dispute"("transactionId");
-
--- CreateIndex
-CREATE INDEX "Dispute_raisedById_idx" ON "Dispute"("raisedById");
-
--- CreateIndex
-CREATE INDEX "Listing_city_idx" ON "Listing"("city");
-
--- CreateIndex
-CREATE INDEX "Listing_title_idx" ON "Listing"("title");
-
--- CreateIndex
-CREATE INDEX "Listing_description_idx" ON "Listing"("description");
 
 -- AddForeignKey
 ALTER TABLE "SavedSearch" ADD CONSTRAINT "SavedSearch_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -103,10 +76,7 @@ ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_buyerId_fkey" FOREIGN KEY 
 ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_sellerId_fkey" FOREIGN KEY ("sellerId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Dispute" ADD CONSTRAINT "Dispute_transactionId_fkey" FOREIGN KEY ("transactionId") REFERENCES "Transaction"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Dispute" ADD CONSTRAINT "Dispute_transactionId_fkey" FOREIGN KEY ("transactionId") REFERENCES "Transaction"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Dispute" ADD CONSTRAINT "Dispute_raisedById_fkey" FOREIGN KEY ("raisedById") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- RenameIndex
-ALTER INDEX "listing_search_idx" RENAME TO "Listing_search_vector_idx";
