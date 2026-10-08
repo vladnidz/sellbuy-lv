@@ -1,3 +1,12 @@
+-- DropIndex
+DROP INDEX "listing_city_trgm_idx";
+
+-- DropIndex
+DROP INDEX "listing_desc_trgm_idx";
+
+-- DropIndex
+DROP INDEX "listing_title_trgm_idx";
+
 -- CreateTable
 CREATE TABLE "SavedSearch" (
     "id" TEXT NOT NULL,
@@ -61,7 +70,13 @@ CREATE INDEX "Transaction_buyerId_idx" ON "Transaction"("buyerId");
 CREATE INDEX "Transaction_sellerId_idx" ON "Transaction"("sellerId");
 
 -- CreateIndex
+CREATE INDEX "Transaction_status_idx" ON "Transaction"("status");
+
+-- CreateIndex
 CREATE INDEX "Dispute_transactionId_idx" ON "Dispute"("transactionId");
+
+-- CreateIndex
+CREATE INDEX "Dispute_raisedById_idx" ON "Dispute"("raisedById");
 
 -- AddForeignKey
 ALTER TABLE "SavedSearch" ADD CONSTRAINT "SavedSearch_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -76,7 +91,7 @@ ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_buyerId_fkey" FOREIGN KEY 
 ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_sellerId_fkey" FOREIGN KEY ("sellerId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Dispute" ADD CONSTRAINT "Dispute_transactionId_fkey" FOREIGN KEY ("transactionId") REFERENCES "Transaction"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Dispute" ADD CONSTRAINT "Dispute_transactionId_fkey" FOREIGN KEY ("transactionId") REFERENCES "Transaction"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Dispute" ADD CONSTRAINT "Dispute_raisedById_fkey" FOREIGN KEY ("raisedById") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

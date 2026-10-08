@@ -68,7 +68,7 @@ model Listing {
   images      String[] @default([])
   city        String?
   attributes  Json?
-  search_vector Unsupported("tsvector")? @default(dbgenerated("setweight(to_tsvector('simple', coalesce(title, '')), 'A') || setweight(to_tsvector('simple', coalesce(description, '')), 'B') || setweight(to_tsvector('simple', coalesce(city, '')), 'C')"))
+  search_vector Unsupported("tsvector")? @default(dbgenerated("((setweight(to_tsvector('simple'::regconfig, COALESCE(title, ''::text)), 'A'::\"char\") || setweight(to_tsvector('simple'::regconfig, COALESCE(description, ''::text)), 'B'::\"char\")) || setweight(to_tsvector('simple'::regconfig, COALESCE(city, ''::text)), 'C'::\"char\"))"))
   category    Category @relation(fields: [categoryId], references: [id])
   categoryId  String
   ratings     Rating[]
@@ -78,10 +78,7 @@ model Listing {
   authorId    String
   createdAt   DateTime @default(now())
 
-  @@index([city])
-  @@index([title])
-  @@index([description])
-  @@index([search_vector], type: Gin)
+  @@index([search_vector], map: "listing_search_idx", type: Gin)
 }
 
 model Chat {
