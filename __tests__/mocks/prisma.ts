@@ -59,6 +59,26 @@ export const prisma = {
     updateMany: jest.fn().mockResolvedValue({ count: 0 }),
     delete: jest.fn(),
   },
+  rating: {
+    findMany: jest.fn().mockResolvedValue([]),
+    findUnique: jest.fn().mockResolvedValue(null),
+    create: jest.fn(),
+    aggregate: jest.fn().mockResolvedValue({ _avg: { score: null }, _count: { score: 0 } }),
+  },
+  transaction: {
+    findMany: jest.fn().mockResolvedValue([]),
+    findUnique: jest.fn().mockResolvedValue(null),
+    findFirst: jest.fn().mockResolvedValue(null),
+    create: jest.fn(),
+    update: jest.fn(),
+    delete: jest.fn(),
+  },
+  dispute: {
+    findMany: jest.fn().mockResolvedValue([]),
+    findUnique: jest.fn().mockResolvedValue(null),
+    create: jest.fn(),
+    update: jest.fn(),
+  },
 };
 
 export default prisma;
