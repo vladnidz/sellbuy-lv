@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* Theme as CSS custom properties */
-:root {
+:root, html.dark {
   --bg-base: #0a0a0f;
   --bg-surface: #12121a;
   --bg-elevated: #15151f;
@@ -21,10 +21,20 @@
   --error-bg: #2a1a1a;
   --error-border: #3a2020;
   --error-text: #e0a0a0;
-  --nav-bg: rgba(10, 10, 15, 0.8);
+  --nav-bg: rgba(10, 10, 15, 0.85);
+
+  --background: var(--bg-base);
+  --surface: var(--bg-surface);
+  --foreground: var(--text-primary);
+  --card: var(--bg-surface);
+  --card-foreground: var(--text-primary);
+  --popover: var(--bg-surface);
+  --popover-foreground: var(--text-primary);
+  --muted: var(--bg-elevated);
+  --muted-foreground: var(--text-secondary);
 }
 
-html.light {
+html.light, .light {
   --bg-base: #f8f8fa;
   --bg-surface: #ffffff;
   --bg-elevated: #f0f0f5;
@@ -32,9 +42,9 @@ html.light {
   --border: #e2e2ea;
   --border-hover: #d0d0da;
   --text-primary: #1a1a25;
-  --text-secondary: #6a6a7a;
-  --text-tertiary: #8a8a9a;
-  --text-muted: #aaaaBA;
+  --text-secondary: #57534e;
+  --text-tertiary: #78716c;
+  --text-muted: #a8a29e;
   --accent: #7c5aed;
   --accent-hover: #6a4bd4;
   --accent-soft: rgba(124, 90, 237, 0.08);
@@ -42,7 +52,56 @@ html.light {
   --error-bg: #fef2f2;
   --error-border: #fecaca;
   --error-text: #dc2626;
-  --nav-bg: rgba(248, 248, 250, 0.8);
+  --nav-bg: rgba(248, 248, 250, 0.95);
+
+  --background: var(--bg-base);
+  --surface: var(--bg-surface);
+  --foreground: var(--text-primary);
+  --card: var(--bg-surface);
+  --card-foreground: var(--text-primary);
+  --popover: var(--bg-surface);
+  --popover-foreground: var(--text-primary);
+  --muted: var(--bg-elevated);
+  --muted-foreground: var(--text-secondary);
+}
+
+/* Light mode overrides for legacy hardcoded dark classes */
+html.light .bg-\[\#0a0a0f\],
+html.light .bg-slate-950,
+html.light .bg-zinc-950 {
+  background-color: var(--bg-base) !important;
+}
+
+html.light .bg-\[\#12121a\],
+html.light .bg-slate-900,
+html.light .bg-zinc-900 {
+  background-color: var(--bg-surface) !important;
+}
+
+html.light .bg-\[\#15151f\],
+html.light .bg-slate-800,
+html.light .bg-zinc-800 {
+  background-color: var(--bg-elevated) !important;
+}
+
+html.light .text-\[\#e8e8ed\],
+html.light .text-slate-100,
+html.light .text-zinc-100,
+html.light .text-white {
+  color: var(--text-primary) !important;
+}
+
+html.light .text-\[\#8a8a9a\],
+html.light .text-slate-300,
+html.light .text-slate-400,
+html.light .text-zinc-400 {
+  color: var(--text-secondary) !important;
+}
+
+html.light .border-\[\#1e1e2a\],
+html.light .border-slate-800,
+html.light .border-zinc-800 {
+  border-color: var(--border) !important;
 }
 
 *,

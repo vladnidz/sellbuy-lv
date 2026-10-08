@@ -15,18 +15,26 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>('dark');
 
+  const updateDOMTheme = (currentTheme: Theme) => {
+    if (typeof document !== 'undefined') {
+      document.documentElement.classList.toggle('light', currentTheme === 'light');
+      document.documentElement.classList.toggle('dark', currentTheme === 'dark');
+    }
+  };
+
   useEffect(() => {
     const stored = localStorage.getItem('sellbuy_theme');
-    if (stored === 'dark' || stored === 'light') {
-      startTransition(() => setThemeState(stored));
-      document.documentElement.classList.toggle('light', stored === 'light');
-    }
+    const initialTheme: Theme = (stored === 'light' || stored === 'dark') ? stored : 'dark';
+    startTransition(() => {
+      setThemeState(initialTheme);
+      updateDOMTheme(initialTheme);
+    });
   }, []);
 
   const setTheme = useCallback((newTheme: Theme) => {
     setThemeState(newTheme);
     localStorage.setItem('sellbuy_theme', newTheme);
-    document.documentElement.classList.toggle('light', newTheme === 'light');
+    updateDOMTheme(newTheme);
   }, []);
 
   const toggleTheme = useCallback(() => {
