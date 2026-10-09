@@ -52,6 +52,20 @@ const mockPrisma = {
     findMany: jest.fn(),
     create: jest.fn(),
   },
+  transaction: {
+    findMany: jest.fn(),
+    findUnique: jest.fn(),
+    findFirst: jest.fn(),
+    create: jest.fn(),
+    update: jest.fn(),
+    delete: jest.fn(),
+  },
+  dispute: {
+    findMany: jest.fn(),
+    findUnique: jest.fn(),
+    create: jest.fn(),
+    update: jest.fn(),
+  },
 };
 jest.mock('@/app/lib/prisma', () => ({
   __esModule: true,
@@ -84,15 +98,28 @@ jest.mock('next/navigation', () => ({
 }));
 
 jest.mock('jose', () => ({
-  SignJWT: jest.fn().mockImplementation(() => ({
+  SignJWT: jest.fn().mockImplementation((payload: Record<string, unknown>) => ({
     setProtectedHeader: jest.fn().mockReturnThis(),
     setIssuedAt: jest.fn().mockReturnThis(),
     setExpirationTime: jest.fn().mockReturnThis(),
-    sign: jest.fn().mockResolvedValue('mocked-jwt-token'),
+    sign: jest.fn().mockImplementation(async () => {
+      return `mocked-jwt.${Buffer.from(JSON.stringify(payload)).toString('base64url')}.sig`;
+    }),
   })),
   jwtVerify: jest.fn().mockImplementation(async (token: string) => {
     if (token === 'invalid-token') {
       throw new Error('Invalid token');
+    }
+    if (token.startsWith('mocked-jwt.')) {
+      const parts = token.split('.');
+      if (parts[1]) {
+        try {
+          const payload = JSON.parse(Buffer.from(parts[1], 'base64url').toString('utf-8'));
+          return { payload };
+        } catch {
+          // fallback
+        }
+      }
     }
     return {
       payload: {
