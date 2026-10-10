@@ -1,14 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
+import { getSessionUser } from '@/app/lib/auth-server';
 
 export const dynamic = 'force-dynamic';
 
 // POST /api/saved-searches - Create a new saved search
 export async function POST(request: NextRequest) {
   try {
-    const sessionUser = await prisma.user.findFirst({
-      where: { id: 'user-current-placeholder' } // TODO: Replace with real auth session
-    });
+    const sessionUser = await getSessionUser(request);
 
     if (!sessionUser) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -17,23 +16,25 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { name, query, lat, lon, radius, notifyEnabled } = body;
 
-    if (!name || !query) {
+    if (!name || query === undefined || query === null) {
       return NextResponse.json(
         { error: 'Name and query are required' },
         { status: 400 }
       );
     }
 
+    const queryData = typeof query === 'string' ? { q: query } : query;
+
     const savedSearch = await prisma.savedSearch.create({
       data: {
         userId: sessionUser.id,
-        name,
-        query,
+        name: String(name).trim(),
+        query: queryData,
         lat: lat ? parseFloat(lat) : null,
         lon: lon ? parseFloat(lon) : null,
         radius: radius ? parseFloat(radius) : null,
-        notifyEnabled: notifyEnabled ?? false
-      }
+        notifyEnabled: Boolean(notifyEnabled),
+      },
     });
 
     return NextResponse.json(savedSearch, { status: 201 });
@@ -47,11 +48,9 @@ export async function POST(request: NextRequest) {
 }
 
 // GET /api/saved-searches - Get all saved searches for current user
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const sessionUser = await prisma.user.findFirst({
-      where: { id: 'user-current-placeholder' } // TODO: Replace with real auth session
-    });
+    const sessionUser = await getSessionUser(request);
 
     if (!sessionUser) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -59,7 +58,7 @@ export async function GET() {
 
     const savedSearches = await prisma.savedSearch.findMany({
       where: { userId: sessionUser.id },
-      orderBy: { createdAt: 'desc' }
+      orderBy: { createdAt: 'desc' },
     });
 
     return NextResponse.json(savedSearches);
@@ -75,23 +74,30 @@ export async function GET() {
 // DELETE /api/saved-searches?id=... - Delete a saved search
 export async function DELETE(request: NextRequest) {
   try {
-    const sessionUser = await prisma.user.findFirst({
-      where: { id: 'user-current-placeholder' } // TODO: Replace with real auth session
-    });
+    const sessionUser = await getSessionUser(request);
 
     if (!sessionUser) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const { searchParams } = new URL(request.url);
-    const id = searchParams.get('id');
+    let id = searchParams.get('id');
 
     if (!id) {
-      return NextResponse.json({ error: 'ID query parameter is required' }, { status: 400 });
+      try {
+        const body = await request.json();
+        id = body?.id;
+      } catch {
+        // ignore JSON parse error if body is empty
+      }
+    }
+
+    if (!id) {
+      return NextResponse.json({ error: 'ID is required' }, { status: 400 });
     }
 
     const savedSearch = await prisma.savedSearch.findUnique({
-      where: { id }
+      where: { id },
     });
 
     if (!savedSearch) {
@@ -103,7 +109,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     await prisma.savedSearch.delete({
-      where: { id }
+      where: { id },
     });
 
     return NextResponse.json({ success: true });

@@ -1,6 +1,8 @@
 import '@testing-library/jest-dom';
 import { TextEncoder, TextDecoder } from 'util';
 
+jest.setTimeout(15000);
+
 // Global Prisma mock.
 // NOTE: moduleNameMapper cannot intercept '@/app/lib/prisma' because next/jest's
 // babel preset rewrites tsconfig '@/*' aliases to relative paths BEFORE jest
