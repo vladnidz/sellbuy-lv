@@ -26,6 +26,7 @@
 | User Verification & Trust Badges | 2026-10-04 | agency/frontend | `components/verification-badge.tsx`, `app/api/users/verify/route.ts`, `app/profile/[id]/page.tsx`, `__tests__/api-user-verification.test.ts` |
 | Omniva / DPD Locker Delivery Integration | 2026-10-08 | agency/integrations | `components/delivery-picker.tsx`, `app/api/delivery/route.ts`, `__tests__/delivery-picker.test.tsx`, `__tests__/api-delivery.test.ts` |
 | Escrow & Payment Protection API & UI | 2026-10-08 | agency/fullstack | `app/api/transactions/route.ts`, `app/api/transactions/[id]/route.ts`, `components/escrow-checkout.tsx`, `__tests__/api-transactions.test.ts` |
+| Real-Time Chat & Messaging UI & API | 2026-10-14 | agency/fullstack | `app/api/chats/[id]/route.ts`, `app/api/chats/[id]/messages/route.ts`, `app/messages/page.tsx`, `app/messages/[id]/page.tsx`, `__tests__/api-chat-messages.test.ts` |
 
 ---
 
