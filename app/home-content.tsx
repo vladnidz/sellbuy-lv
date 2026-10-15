@@ -8,7 +8,7 @@ import {
   ShieldCheck, Lock, Truck, ArrowRight, Sparkles, Plus, Flame 
 } from 'lucide-react';
 import { ListingCard } from '@/components/listing-card';
-import { AutoRiaSearchWidget } from '@/components/autoria-search-widget';
+import { VehicleSearchWidget } from '@/components/vehicle-search-widget';
 import { useLocale } from '@/app/lib/locale-context';
 
 const CATEGORY_ICONS: Record<string, React.ElementType> = {
@@ -103,7 +103,7 @@ export function HomePageContent({ listings, categories }: HomePageContentProps) 
               <ShieldCheck className="w-4 h-4" /> Smart-ID Verifikācija
             </span>
             <span className="flex items-center gap-1.5 text-blue-400 bg-blue-500/10 px-3 py-1.5 rounded-lg border border-blue-500/20">
-              <Car className="w-4 h-4" /> AutoRia / CSDD VIN Pārbaude
+              <Car className="w-4 h-4" /> SellBuy VIN & CSDD Pārbaude
             </span>
             <span className="flex items-center gap-1.5 text-indigo-400 bg-indigo-500/10 px-3 py-1.5 rounded-lg border border-indigo-500/20">
               <Lock className="w-4 h-4" /> Escrow Aizsardzība
@@ -113,9 +113,9 @@ export function HomePageContent({ listings, categories }: HomePageContentProps) 
             </span>
           </div>
 
-          {/* AutoRia / CSDD Dedicated Vehicle Search Widget */}
+          {/* SellBuy Vehicle Search Widget */}
           <div className="mt-12 text-left">
-            <AutoRiaSearchWidget />
+            <VehicleSearchWidget />
           </div>
         </div>
       </section>

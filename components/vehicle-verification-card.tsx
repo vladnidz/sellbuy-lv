@@ -56,7 +56,7 @@ export function VehicleVerificationCard({
             <h4 className="font-semibold text-sm sm:text-base flex items-center gap-1.5" style={{ color: 'var(--text-primary)' }}>
               Pārbaudīts transportlīdzeklis
               <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 uppercase tracking-wide">
-                AutoRia / CSDD Standard
+                SellBuy Trust Standard
               </span>
             </h4>
             <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>
@@ -79,7 +79,7 @@ export function VehicleVerificationCard({
           <div className="p-3 rounded-lg border flex items-center justify-between" style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--border)' }}>
             <div className="space-y-0.5">
               <span className="text-[11px] uppercase tracking-wider block" style={{ color: 'var(--text-tertiary)' }}>
-                VIN Kods (AutoRia check)
+                VIN Vēstures pārbaude
               </span>
               <span className="font-mono text-sm font-semibold tracking-wider" style={{ color: 'var(--text-primary)' }}>
                 {maskedVin}

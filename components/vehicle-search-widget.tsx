@@ -8,7 +8,7 @@ const POPULAR_BRANDS = [
   'BMW', 'Audi', 'Volkswagen', 'Mercedes-Benz', 'Toyota', 'Volvo', 'Skoda', 'Ford'
 ];
 
-export function AutoRiaSearchWidget() {
+export function VehicleSearchWidget() {
   const router = useRouter();
   const [selectedBrand, setSelectedBrand] = useState('');
   const [priceFrom, setPriceFrom] = useState('');
@@ -40,11 +40,11 @@ export function AutoRiaSearchWidget() {
       <div className="flex items-center justify-between pb-4 mb-4 border-b" style={{ borderColor: 'var(--border)' }}>
         <div className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-purple-400">
           <Car className="w-5 h-5 text-purple-400" />
-          <span>AutoRia / CSDD Pārbaudīti Auto</span>
+          <span>SellBuy Auto Trust • Pārbaudīti Transportlīdzekļi</span>
         </div>
         <div className="flex items-center gap-1.5 text-xs text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
           <ShieldCheck className="w-3.5 h-3.5" />
-          <span className="hidden sm:inline">100% Pārbaudīti pēc VIN</span>
+          <span className="hidden sm:inline">CSDD & VIN Vēstures Pārbaude</span>
           <span className="sm:hidden">VIN pārbaude</span>
         </div>
       </div>

@@ -99,7 +99,7 @@ export default async function ListingDetailPage({
               <div className="text-4xl font-bold tracking-tighter text-white">{price}</div>
             </div>
 
-            {/* AutoRia / CSDD Trust & Vehicle Verification (if auto or has vehicle attributes) */}
+            {/* SellBuy Vehicle Trust Verification */}
             {Boolean(
               (listing.attributes as Record<string, unknown>)?.vin ||
               listing.category?.name.toLowerCase().includes('auto') ||
