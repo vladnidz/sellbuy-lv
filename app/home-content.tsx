@@ -5,9 +5,10 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { 
   Search, Car, Building2, Smartphone, Hammer, Briefcase, Home, Shirt, Baby, 
-  ShieldCheck, Lock, Truck, ArrowRight, Sparkles, Plus 
+  ShieldCheck, Lock, Truck, ArrowRight, Sparkles, Plus, Flame 
 } from 'lucide-react';
 import { ListingCard } from '@/components/listing-card';
+import { AutoRiaSearchWidget } from '@/components/autoria-search-widget';
 import { useLocale } from '@/app/lib/locale-context';
 
 const CATEGORY_ICONS: Record<string, React.ElementType> = {
@@ -111,6 +112,11 @@ export function HomePageContent({ listings, categories }: HomePageContentProps) 
               <Truck className="w-4 h-4" /> Omniva / DPD Piegāde
             </span>
           </div>
+
+          {/* AutoRia / CSDD Dedicated Vehicle Search Widget */}
+          <div className="mt-12 text-left">
+            <AutoRiaSearchWidget />
+          </div>
         </div>
       </section>
 
@@ -193,9 +199,18 @@ export function HomePageContent({ listings, categories }: HomePageContentProps) 
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-8">
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-[var(--text-primary)]">Jaunākie sludinājumi</h2>
-              <p className="text-sm text-[var(--text-secondary)] mt-1">Nesen pievienoti priekšmeti un piedāvājumi</p>
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="p-1.5 rounded-lg bg-rose-500/10 text-rose-500">
+                  <Flame className="w-5 h-5" />
+                </span>
+                <h2 className="text-2xl sm:text-3xl font-bold text-[var(--text-primary)]">
+                  Aktuālie piedāvājumi & Zibens cenas
+                </h2>
+              </div>
+              <p className="text-sm text-[var(--text-secondary)]">
+                Pārbaudīti sludinājumi ar Escrow aizsardzību un tūlītēju pakomāta nosūtīšanu
+              </p>
             </div>
             <Link 
               href="/listings" 
