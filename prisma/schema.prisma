@@ -29,6 +29,7 @@ model User {
   disputes      Dispute[]
   notifications Notification[]
   savedSearches SavedSearch[]
+  buyerOffers   Offer[]       @relation("BuyerOffers")
 }
 
 model Rating {
@@ -92,6 +93,26 @@ model Chat {
   seller       User      @relation("SellerChats", fields: [sellerId], references: [id])
   sellerId     String
   messages     Message[]
+  offers       Offer[]
+}
+
+model Offer {
+  id         String   @id @default(uuid())
+  chatId     String
+  chat       Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  buyerId    String
+  buyer      User     @relation("BuyerOffers", fields: [buyerId], references: [id])
+  amount     Decimal
+  currency   String   @default("EUR")
+  status     String   @default("open") // open | accepted | declined | countered | expired
+  message    String?
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([chatId])
+  @@index([buyerId])
+  @@index([status])
 }
 
 model Message {

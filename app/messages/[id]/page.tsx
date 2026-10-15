@@ -7,7 +7,8 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/app/lib/auth';
-import { ArrowLeft, Send, ExternalLink, Sparkles, Loader2, Tag, ShieldCheck } from 'lucide-react';
+import { ArrowLeft, Send, ExternalLink, Sparkles, Loader2, Tag, ShieldCheck, DollarSign } from 'lucide-react';
+import { ChatOfferCard, OfferData } from '@/components/chat-offer-card';
 
 interface Message {
   id: string;
@@ -50,6 +51,10 @@ export default function ConversationPage() {
   const [newMessage, setNewMessage] = useState('');
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [offers, setOffers] = useState<OfferData[]>([]);
+  const [showOfferInput, setShowOfferInput] = useState(false);
+  const [offerAmount, setOfferAmount] = useState('');
+  const [offerSending, setOfferSending] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const currentUserId = user?.id || 'demo-user-id';
@@ -81,20 +86,35 @@ export default function ConversationPage() {
     }
   }, [chatId, currentUserId]);
 
+  const fetchOffers = useCallback(async () => {
+    if (!chatId) return;
+    try {
+      const res = await fetch(`/api/offers?chatId=${chatId}`);
+      if (res.ok) {
+        const data = await res.json();
+        setOffers(data.offers || []);
+      }
+    } catch (err) {
+      console.error('Failed to fetch offers:', err);
+    }
+  }, [chatId]);
+
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- initial data fetch
     fetchChat(true);
-  }, [fetchChat]);
+    fetchOffers();
+  }, [fetchChat, fetchOffers]);
 
   // Polling for new messages every 3 seconds
   useEffect(() => {
     if (!chatId) return;
     const interval = setInterval(() => {
       fetchChat(false);
+      fetchOffers();
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [chatId, fetchChat]);
+  }, [chatId, fetchChat, fetchOffers]);
 
   // Scroll to bottom on message list change
   useEffect(() => {
@@ -102,6 +122,34 @@ export default function ConversationPage() {
       scrollToBottom('smooth');
     }
   }, [chat?.messages?.length, scrollToBottom]);
+
+  const handleSendOffer = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const parsedAmount = parseFloat(offerAmount);
+    if (isNaN(parsedAmount) || parsedAmount <= 0 || !chat) return;
+
+    setOfferSending(true);
+    try {
+      const res = await fetch('/api/offers', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chatId: chat.id,
+          amount: parsedAmount,
+          message: `Piedāvāju €${parsedAmount.toFixed(2)}`,
+        }),
+      });
+      if (res.ok) {
+        setOfferAmount('');
+        setShowOfferInput(false);
+        fetchOffers();
+      }
+    } catch (err) {
+      console.error('Failed to send offer:', err);
+    } finally {
+      setOfferSending(false);
+    }
+  };
 
   const handleSend = async (messageText?: string) => {
     const textToSend = (messageText ?? newMessage).trim();
@@ -271,8 +319,70 @@ export default function ConversationPage() {
               <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-[#7c3aed] shrink-0" />
             </Link>
           )}
+
+          {/* Structured Offer Launcher */}
+          {isBuyer && (
+            <button
+              type="button"
+              onClick={() => setShowOfferInput(!showOfferInput)}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-white bg-purple-600 hover:bg-purple-700 transition-colors shadow-sm shrink-0"
+            >
+              <DollarSign className="w-3.5 h-3.5" /> Piedāvāt cenu
+            </button>
+          )}
         </div>
       </div>
+
+      {/* Offer Input Bar */}
+      {showOfferInput && isBuyer && (
+        <div className="border-b p-3 bg-purple-950/20 border-purple-500/30">
+          <form onSubmit={handleSendOffer} className="max-w-4xl mx-auto flex items-center gap-2">
+            <span className="text-xs font-semibold text-purple-300 whitespace-nowrap">
+              Jūsu piedāvājums (€):
+            </span>
+            <input
+              type="number"
+              step="0.01"
+              min="1"
+              value={offerAmount}
+              onChange={(e) => setOfferAmount(e.target.value)}
+              placeholder="Piem., 120.00"
+              className="px-3 py-1.5 rounded-xl text-xs border bg-[var(--bg-surface)] focus:outline-none focus:ring-1 focus:ring-purple-500 w-32"
+              style={{ borderColor: 'var(--border)', color: 'var(--text-primary)' }}
+              required
+            />
+            <button
+              type="submit"
+              disabled={offerSending}
+              className="px-3 py-1.5 rounded-xl text-xs font-bold text-white bg-purple-600 hover:bg-purple-700 transition-colors shadow-sm disabled:opacity-50 inline-flex items-center gap-1"
+            >
+              {offerSending ? <Loader2 className="w-3 h-3 animate-spin" /> : null}
+              Nosūtīt piedāvājumu
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowOfferInput(false)}
+              className="px-2 py-1 text-xs text-gray-400 hover:text-white"
+            >
+              Atcelt
+            </button>
+          </form>
+        </div>
+      )}
+
+      {/* Active Offers Banner / List */}
+      {offers.length > 0 && (
+        <div className="max-w-4xl w-full mx-auto px-4 pt-3 space-y-2">
+          {offers.map((off) => (
+            <ChatOfferCard
+              key={off.id}
+              offer={off}
+              currentUserId={currentUserId}
+              onStatusChange={() => fetchOffers()}
+            />
+          ))}
+        </div>
+      )}
 
       {/* Messages Thread Container */}
       <div className="flex-1 max-w-4xl w-full mx-auto p-4 sm:p-6 overflow-y-auto space-y-4">
