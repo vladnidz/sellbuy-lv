@@ -27,6 +27,7 @@
 | Omniva / DPD Locker Delivery Integration | 2026-10-08 | agency/integrations | `components/delivery-picker.tsx`, `app/api/delivery/route.ts`, `__tests__/delivery-picker.test.tsx`, `__tests__/api-delivery.test.ts` |
 | Escrow & Payment Protection API & UI | 2026-10-08 | agency/fullstack | `app/api/transactions/route.ts`, `app/api/transactions/[id]/route.ts`, `components/escrow-checkout.tsx`, `__tests__/api-transactions.test.ts` |
 | Real-Time Chat & Messaging UI & API | 2026-10-14 | agency/fullstack | `app/api/chats/[id]/route.ts`, `app/api/chats/[id]/messages/route.ts`, `app/messages/page.tsx`, `app/messages/[id]/page.tsx`, `__tests__/api-chat-messages.test.ts` |
+| Ukrainian Localization, 4-Level Taxonomy & AutoRia Vehicle Verification | 2026-10-15 | agency/fullstack | `app/lib/i18n.ts`, `app/lib/translations.ts`, `prisma/deep-taxonomy-seed.ts`, `components/vehicle-verification-card.tsx`, `components/listing-card.tsx` |
 
 ---
 

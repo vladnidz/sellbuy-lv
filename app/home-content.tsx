@@ -97,14 +97,17 @@ export function HomePageContent({ listings, categories }: HomePageContentProps) 
           </form>
 
           {/* Quick Stats / Trust Badges */}
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-6 text-xs sm:text-sm font-medium text-[var(--text-secondary)]">
-            <span className="flex items-center gap-1.5 text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-xs font-medium">
+            <span className="flex items-center gap-1.5 text-emerald-400 bg-emerald-500/10 px-3 py-1.5 rounded-lg border border-emerald-500/20">
               <ShieldCheck className="w-4 h-4" /> Smart-ID Verifikācija
             </span>
-            <span className="flex items-center gap-1.5 text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-full border border-indigo-500/20">
+            <span className="flex items-center gap-1.5 text-blue-400 bg-blue-500/10 px-3 py-1.5 rounded-lg border border-blue-500/20">
+              <Car className="w-4 h-4" /> AutoRia / CSDD VIN Pārbaude
+            </span>
+            <span className="flex items-center gap-1.5 text-indigo-400 bg-indigo-500/10 px-3 py-1.5 rounded-lg border border-indigo-500/20">
               <Lock className="w-4 h-4" /> Escrow Aizsardzība
             </span>
-            <span className="flex items-center gap-1.5 text-purple-400 bg-purple-500/10 px-3 py-1 rounded-full border border-purple-500/20">
+            <span className="flex items-center gap-1.5 text-purple-400 bg-purple-500/10 px-3 py-1.5 rounded-lg border border-purple-500/20">
               <Truck className="w-4 h-4" /> Omniva / DPD Piegāde
             </span>
           </div>

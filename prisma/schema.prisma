@@ -50,6 +50,7 @@ model Category {
   nameLv     String?
   nameRu     String?
   nameEn     String?
+  nameUk     String?
   attributes Json?
   path       Unsupported("ltree") @unique
   parentId   String?

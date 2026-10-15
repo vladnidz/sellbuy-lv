@@ -46,6 +46,17 @@ export const translations: Record<Locale, TranslationKeys> = {
     footer: { navigation: 'Navigation', account: 'Account', security: 'Security', escrow_desc: 'Escrow protection', smart_id_desc: 'Smart-ID verification', encrypted_desc: 'Encrypted messaging', copyright: '© 2026 SellBuy.lv' },
     common: { search: 'Search', loading: 'Loading...', error: 'Error', not_found: 'Not found', return_home: 'Return home' },
   },
+  uk: {
+    nav: { sludinājumi: 'Оголошення', kategorijas: 'Категорії', ievietot: 'Подати оголошення', par_mums: 'Про нас', ieiet: 'Увійти', registrēties: 'Реєстрація' },
+    hero: { title: 'Купуйте та продавайте по всій Латвії', subtitle: 'Тисячі оголошень від перевірених продавців. Верифікація Smart-ID, перевірка авто по VIN, захист Escrow.', search_placeholder: 'Пошук авто, товарів та послуг...', cta_primary: 'Подати оголошення', cta_secondary: 'Переглянути' },
+    categories: { title: 'Категорії' },
+    listings: { title: 'Оголошення', search_placeholder: 'Пошук...', filters: 'Фільтри', category: 'Категорія', city: 'Місто', price_from: 'Ціна від', price_to: 'Ціна до', sort_newest: 'Найновіші', sort_price_asc: 'Ціна ↑', sort_price_desc: 'Ціна ↓', results: 'результатів', empty_state: 'Оголошень не знайдено', clear_filters: 'Скинути фільтри' },
+    how_it_works: { title: 'Як це працює', step1_title: 'Знайдіть товар чи авто', step1_desc: 'Шукайте серед тисяч перевірених оголошень з кодом VIN, ціною чи локацією.', step2_title: "Зв'яжіться з продавцем", step2_desc: 'Безпечний чат на платформі — не потрібно розкривати свій номер телефону.', step3_title: 'Безпечна угода', step3_desc: 'Захист Escrow — кошти виплачуються продавцю тільки після отримання товару.' },
+    cta: { title: 'Готові почати?', subtitle: 'Безкоштовна реєстрація. Жодних прихованих комісій.', register: 'Зареєструватися', browse: 'Переглянути каталог' },
+    auth: { login_title: 'Увійти', register_title: 'Реєстрація', email: 'Електронна пошта', password: 'Пароль', confirm_password: 'Підтвердження паролю', name: "Ім'я", no_account: 'Немає акаунту?', has_account: 'Вже зареєстровані?', login_btn: 'Увійти', register_btn: 'Зареєструватися', logging_in: 'Вхід...', registering: 'Реєстрація...' },
+    footer: { navigation: 'Навігація', account: 'Особистий кабінет', security: 'Безпека', escrow_desc: 'Захист Escrow', smart_id_desc: 'Верифікація Smart-ID', encrypted_desc: 'Шифрований чат', copyright: '© 2026 SellBuy.lv' },
+    common: { search: 'Пошук', loading: 'Завантаження...', error: 'Помилка', not_found: 'Не знайдено', return_home: 'На головну' },
+  },
   et: {
     nav: { sludinājumi: 'Kuulutused', kategorijas: 'Kategooriad', ievietot: 'Lisa kuulutus', par_mums: 'Meist', ieiet: 'Logi sisse', registrēties: 'Registreeru' },
     hero: { title: 'Osta ja müü üle Läti', subtitle: 'Tuhanded kuulutused usaldusväärsetelt müüjatelt. Smart-ID kinnitatud, Escrow kaitse.', search_placeholder: 'Otsi kuulutusi...', cta_primary: 'Lisa kuulutus', cta_secondary: 'Sirvi' },
