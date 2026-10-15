@@ -1,0 +1,176 @@
+openapi: 3.0.3
+info:
+  title: SellBuy.lv REST API
+  description: Core backend API for SellBuy.lv — Baltic marketplace, C2C classifieds, buyer escrow, and parcel logistics.
+  version: 1.0.0
+servers:
+  - url: https://boots-fabric-exclusion-succeed.trycloudflare.com/api
+    description: Production Cloudflare Tunnel
+  - url: http://localhost:3000/api
+    description: Local Development Environment
+
+paths:
+  /categories:
+    get:
+      summary: Retrieve root categories or full catalog tree
+      responses:
+        '200':
+          description: List of category items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+
+  /listings:
+    get:
+      summary: Search and filter listings
+      parameters:
+        - name: q
+          in: query
+          schema:
+            type: string
+        - name: category
+          in: query
+          schema:
+            type: string
+        - name: city
+          in: query
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+      responses:
+        '200':
+          description: Filtered listings with pagination
+    post:
+      summary: Create a new listing
+      security:
+        - BearerAuth: []
+        - CookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListingInput'
+      responses:
+        '201':
+          description: Listing created
+
+  /chats:
+    get:
+      summary: Get user conversation threads
+      responses:
+        '200':
+          description: Active chats
+    post:
+      summary: Initiate a chat for a listing
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - listingId
+              properties:
+                listingId:
+                  type: string
+      responses:
+        '200':
+          description: Existing or newly created chat
+
+  /saved-searches:
+    get:
+      summary: Get all saved searches for the authenticated user
+      responses:
+        '200':
+          description: List of saved searches
+    post:
+      summary: Save a search query with notification preferences
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - query
+              properties:
+                name:
+                  type: string
+                query:
+                  type: object
+                notifyEnabled:
+                  type: boolean
+      responses:
+        '201':
+          description: Saved search created
+    delete:
+      summary: Delete a saved search by ID
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Saved search deleted
+
+components:
+  schemas:
+    Category:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        nameLv:
+          type: string
+        nameRu:
+          type: string
+        nameEn:
+          type: string
+        nameUk:
+          type: string
+        path:
+          type: string
+
+    ListingInput:
+      type: object
+      required:
+        - title
+        - price
+        - categoryId
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        categoryId:
+          type: string
+        images:
+          type: array
+          items:
+            type: string
+        city:
+          type: string
+
+  securitySchemes:
+    CookieAuth:
+      type: apiKey
+      in: cookie
+      name: sellbuy_session
+    BearerAuth:
+      type: http
+      scheme: bearer
