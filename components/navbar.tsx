@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Plus, Menu, X, MessageSquare } from 'lucide-react';
+import { Plus, Menu, X, MessageSquare, Bookmark } from 'lucide-react';
 import { useState } from 'react';
 import { LanguageSwitcher } from '@/components/language-switcher';
 import { ThemeToggle } from '@/components/theme-toggle';
@@ -53,6 +53,15 @@ export function Navbar() {
             <LanguageSwitcher />
             <ThemeToggle />
             <NotificationBell />
+            <Link
+              href="/saved-searches"
+              className="p-2 rounded-lg border hover:bg-[var(--surface-hover)] transition-colors relative"
+              style={{ borderColor: 'var(--border)', color: 'var(--text-secondary)' }}
+              title="Saglabātie meklējumi"
+              aria-label="Saglabātie meklējumi"
+            >
+              <Bookmark className="h-4 w-4" />
+            </Link>
             <Link
               href="/messages"
               className="p-2 rounded-lg border hover:bg-[var(--surface-hover)] transition-colors relative"

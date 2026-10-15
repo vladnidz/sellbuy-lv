@@ -1,47 +1,46 @@
 # SellBuy.lv v2 — Feature Backlog
 
-> Cross-references each feature to the owning agent context and deliverable files on disk. Updated with specifications extracted from `docs/` (Full Feature Specifications, Functional Specs, Architecture & Integration Guides).
+> Synchronized with `sellbuy-backlog.md` (Product Backlog v0.1 · 15 Oct 2026).
+> Stack: Next.js 16, TypeScript, React 19 RC, Prisma 7, PostgreSQL 17 (ltree), Tailwind + shadcn/ui.
 
 ---
 
 ## Completed Items ✅
 
-| Feature | Cycle | Agent Context | Deliverable File(s) |
-|---|---|---|---|
-| Category taxonomy API (`/api/categories`, `/api/categories/tree`) + ltree + JSONB attribute schema | 2026-08-25 | agency/backend | `app/api/categories/route.ts`, `app/api/categories/tree/route.ts` |
-| Unique constraint on `Category.path` | 2026-08-24 | agency/backend | `prisma/schema.prisma` |
-| Listing model: `description` + `images` fields | 2026-08-24 | agency/backend | `prisma/schema.prisma`, `app/api/listings/route.ts` |
-| `/new-listing` page wired to live category tree | 2026-08-25 | agency/frontend | `app/new-listing/page.tsx` |
-| `/about` page (shadcn/ui) | 2026-08-25 | agency/frontend | `app/about/page.tsx` |
-| Listing detail page `/listings/[id]` | 2026-08-24 | agency/frontend | `app/listings/[id]/page.tsx` |
-| i18n support (7 languages: LV/RU/EN/LT/ET/DE/PL) + Theme Toggle | 2026-09-28 | agency/frontend | `app/lib/i18n.ts`, `components/navbar.tsx` |
-| User Profile API (`/api/users/[id]`) with rating aggregation | 2026-09-28 | agency/backend | `app/api/users/[id]/route.ts`, `app/profile/[id]/page.tsx` |
-| React 19 render purity & TypeScript build fixes | 2026-09-29 | agency/qa | `app/profile/[id]/page.tsx`, `app/api/auth/me/route.ts` |
-| GitHub CI & Pre-commit verification gate | 2026-09-29 | agency/devops | `.git/hooks/pre-commit`, `.github/workflows/ci.yml` |
-| Seller Ratings & Feedback API (`/api/ratings`) + Rating Form & UI | 2026-09-29 | agency/backend | `app/api/ratings/route.ts`, `components/rating-form.tsx`, `components/listing-ratings-section.tsx`, `__tests__/api-ratings.test.ts` |
-| Multi-Image Drag & Drop Upload | 2026-09-30 | agency/frontend | `components/image-uploader.tsx`, `app/new-listing/page.tsx`, `__tests__/image-uploader.test.tsx` |
-| AI Listing Assist Endpoint (`/api/listings/ai-assist`) | 2026-10-01 | agency/ai | `app/api/listings/ai-assist/route.ts`, `__tests__/api-ai-assist.test.ts` |
-| AI Listing Autofill Endpoint (`/api/ai/listing-autofill`) | 2026-10-02 | agency/ai | `app/api/ai/listing-autofill/route.ts`, `__tests__/api-ai-autofill.test.ts` |
-| Postgres Full-Text Search (FTS) | 2026-10-04 | agency/backend | `app/lib/search.ts`, `app/api/listings/route.ts`, `app/listings/page.tsx`, `__tests__/api-listings-fts.test.ts` |
-| User Verification & Trust Badges | 2026-10-04 | agency/frontend | `components/verification-badge.tsx`, `app/api/users/verify/route.ts`, `app/profile/[id]/page.tsx`, `__tests__/api-user-verification.test.ts` |
-| Omniva / DPD Locker Delivery Integration | 2026-10-08 | agency/integrations | `components/delivery-picker.tsx`, `app/api/delivery/route.ts`, `__tests__/delivery-picker.test.tsx`, `__tests__/api-delivery.test.ts` |
-| Escrow & Payment Protection API & UI | 2026-10-08 | agency/fullstack | `app/api/transactions/route.ts`, `app/api/transactions/[id]/route.ts`, `components/escrow-checkout.tsx`, `__tests__/api-transactions.test.ts` |
-| Real-Time Chat & Messaging UI & API | 2026-10-14 | agency/fullstack | `app/api/chats/[id]/route.ts`, `app/api/chats/[id]/messages/route.ts`, `app/messages/page.tsx`, `app/messages/[id]/page.tsx`, `__tests__/api-chat-messages.test.ts` |
-| Ukrainian Localization, 4-Level Taxonomy & Vehicle Verification | 2026-10-15 | agency/fullstack | `app/lib/i18n.ts`, `app/lib/translations.ts`, `prisma/deep-taxonomy-seed.ts`, `components/vehicle-verification-card.tsx`, `components/listing-card.tsx` |
+| Feature / Epic | Cycle | Agent Context | Deliverable File(s) | Notes |
+|---|---|---|---|---|
+| Category taxonomy API (`/api/categories`, `/api/categories/tree`) + ltree | 2026-08-25 | agency/backend | `app/api/categories/route.ts`, `app/api/categories/tree/route.ts` | Complete hierarchical category pathing |
+| Unique constraint on `Category.path` | 2026-08-24 | agency/backend | `prisma/schema.prisma` | DB level integrity |
+| Listing model: `description` + `images` fields | 2026-08-24 | agency/backend | `prisma/schema.prisma`, `app/api/listings/route.ts` | Data persistence |
+| `/new-listing` page wired to live category tree | 2026-08-25 | agency/frontend | `app/new-listing/page.tsx` | Wizard baseline |
+| `/about` page (shadcn/ui) | 2026-08-25 | agency/frontend | `app/about/page.tsx` | Static content |
+| Listing detail page `/listings/[id]` | 2026-08-24 | agency/frontend | `app/listings/[id]/page.tsx` | Full listing viewer |
+| i18n support (LV, RU, EN, LT, ET, DE, PL, UK) | 2026-09-28 | agency/frontend | `app/lib/i18n.ts`, `components/navbar.tsx` | Ukrainian added Oct 15 |
+| User Profile API (`/api/users/[id]`) with rating aggregation | 2026-09-28 | agency/backend | `app/api/users/[id]/route.ts`, `app/profile/[id]/page.tsx` | User management |
+| React 19 render purity & TypeScript build fixes | 2026-09-29 | agency/qa | `app/profile/[id]/page.tsx`, `app/api/auth/me/route.ts` | Engine stability |
+| GitHub CI & Pre-commit verification gate | 2026-09-29 | agency/devops | `.git/hooks/pre-commit`, `.github/workflows/ci.yml` | Quality gating |
+| Seller Ratings & Feedback API (`/api/ratings`) + Rating Form & UI | 2026-09-29 | agency/backend | `app/api/ratings/route.ts`, `components/rating-form.tsx` | Reputation engine |
+| Multi-Image Drag & Drop Upload | 2026-09-30 | agency/frontend | `components/image-uploader.tsx`, `app/new-listing/page.tsx` | Multi-image preview |
+| AI Listing Assist Endpoint (`/api/listings/ai-assist`) | 2026-10-01 | agency/ai | `app/api/listings/ai-assist/route.ts` | AI attributes & pricing |
+| AI Listing Autofill Endpoint (`/api/ai/listing-autofill`) | 2026-10-02 | agency/ai | `app/api/ai/listing-autofill/route.ts` | Automated metadata |
+| Postgres Full-Text Search (FTS) | 2026-10-04 | agency/backend | `app/lib/search.ts`, `app/api/listings/route.ts` | Trigram similarity & FTS |
+| User Verification & Trust Badges | 2026-10-04 | agency/frontend | `components/verification-badge.tsx`, `app/api/users/verify/route.ts` | Smart-ID / Phone L1/L2 |
+| Omniva / DPD Locker Delivery Integration | 2026-10-08 | agency/integrations | `components/delivery-picker.tsx`, `app/api/delivery/route.ts` | Locker network selection |
+| Escrow & Payment Protection API & UI | 2026-10-08 | agency/fullstack | `app/api/transactions/route.ts`, `components/escrow-checkout.tsx` | Secure transactions |
+| **Real-Time Chat & Messaging (US-05.01)** | 2026-10-14 | agency/fullstack | `app/api/chats/[id]/route.ts`, `app/messages/page.tsx` | In-app messaging & polling |
+| **Deep 4-Level Category Taxonomy (US-02.01)** | 2026-10-15 | agency/fullstack | `prisma/deep-taxonomy-seed.ts`, `app/categories/page.tsx` | Interactive 4-level catalog explorer |
+| **SellBuy Trust & Vehicle Verification (US-01.05)** | 2026-10-15 | agency/fullstack | `components/vehicle-verification-card.tsx`, `components/vehicle-search-widget.tsx` | Independent VIN & CSDD verification |
 
 ---
 
-## Production Roadmap Backlog (Extracted from `docs/` Specs) 🚀
+## Active & Upcoming Sprints (Aligned with `sellbuy-backlog.md`) 🚀
 
-| Priority | Feature | Specs Source | Agent Context | Target Deliverable File(s) | Notes |
-|---|---|---|---|---|---|
-| **P0** | **Listing Chat Initiation** | `docs/functional/chat.md` | agency/fullstack | `app/listings/[id]/page.tsx`, `app/api/chats/route.ts`, `components/chat-initiate-button.tsx` | ✅ Completed 2026-09-30. "Sazināties ar pārdevēju" button creates/opens chat with listing context prefilled. |
-| **P1** | **Multi-Image Drag & Drop Upload** | `docs/specifications/SellBuy-lv-Full-Feature-Specifications.md` | agency/frontend | `components/image-uploader.tsx`, `app/new-listing/page.tsx` | ✅ Completed 2026-10-03. Interactive photo uploader with preview, drag reordering, validation, and 9 passing tests. |
-| **P1** | **Postgres Full-Text Search (FTS)** | `docs/specifications/SellBuy-lv-Full-Feature-Specifications.md` | agency/backend | `app/api/listings/route.ts`, `app/listings/page.tsx` | ✅ Completed 2026-10-04. Weighted tsvector & trigram similarity search fallback across title, description, and city. |
-| **P1** | **User Verification & Trust Badges** | `docs/integrations/smart-id.md` | agency/frontend | `components/verification-badge.tsx`, `app/profile/[id]/page.tsx` | ✅ Completed 2026-10-04. Smart-ID / eParaksts / phone verification API endpoints, trust badges, and user profile integration. |
-| **P2** | **Omniva / DPD Locker Delivery Integration** | `docs/integrations/logistics.md` | agency/integrations | `components/delivery-picker.tsx`, `app/api/delivery/route.ts` | ✅ Completed 2026-10-08. Omniva/DPD/Latvijas Pasts locker picker component, delivery route API, rate calculation, and unit tests. |
-| **P2** | **AI Listing Assist Endpoint** | `docs/specifications/SellBuy-lv-Full-Feature-Specifications.md` | agency/ai | `app/api/listings/ai-assist/route.ts` | ✅ Completed 2026-10-01. Automated category suggestion, title cleanup, price benchmark, and scam detection for sellers. |
-| **P1** | **Escrow & Payment Protection API & UI** | `docs/specifications/SellBuy-lv-Full-Feature-Specifications.md` | agency/fullstack | `app/api/transactions/route.ts`, `app/api/transactions/[id]/route.ts`, `components/escrow-checkout.tsx` | ✅ Completed 2026-10-08. Payment initiation, escrow hold/release/dispute API, checkout UI modal, and comprehensive test suite. |
-| **P1** | **Saved Searches & Search Alert Notifications** | `docs/specifications/SellBuy-lv-Full-Feature-Specifications.md` §5 & §11 | agency/fullstack | `components/save-search-button.tsx`, `app/saved-searches/page.tsx`, `__tests__/api-saved-searches.test.ts` | ⏳ Pending. UI button to save query/filters from search results, user saved searches management dashboard, notification delivery toggle, and full test suite. |
-| **P1** | **Business Storefronts & Trader Info Verification** | `docs/specifications/SellBuy-lv-Full-Feature-Specifications.md` §9 & §10 | agency/backend | `prisma/schema.prisma`, `app/api/business/route.ts`, `app/shops/[slug]/page.tsx` | ⏳ Pending. Business profile data model, trader traceability data collection, storefront view, and listing association. |
-| **P2** | **Notice-and-Action Moderation Queue & Report API** | `docs/specifications/SellBuy-lv-Full-Feature-Specifications.md` §10 | agency/fullstack | `app/api/reports/route.ts`, `components/report-modal.tsx`, `app/admin/moderation/page.tsx` | ⏳ Pending. User reporting for scam/duplicate listings, statement of reasons removal flow, and moderation queue. |
+| ID | Release | Priority | Epic / Story | Agent Context | Target Deliverables | Notes |
+|---|---|---|---|---|---|---|
+| **US-04.04** | R1 | **P1 / Must** | **Saved Searches & Search Alert Notifications** | agency/fullstack | `prisma/schema.prisma`, `app/api/saved-searches/route.ts`, `components/save-search-button.tsx`, `app/saved-searches/page.tsx`, `__tests__/api-saved-searches.test.ts` | **DONE** (2026-10-15). Modal to save queries, notify toggle, dedicated management page (`/saved-searches`), navbar bookmark shortcut, and unit test suite (9 tests passing). |
+| **US-05.03** | R1 | **P1 / Must** | **Contact Details Masking & Safe Reveal** | agency/fullstack | `app/lib/chat-filter.ts`, `app/api/chats/[id]/messages/route.ts`, `components/message-bubble.tsx` | ⏳ **CURRENT ACTIVE ITEM**. Mask raw phone & emails in chat until mutual interest or verified L2 status. |
+| **US-05.04** | R2 | **P1 / Must** | **Structured In-Chat Offers & Counter-Offers** | agency/fullstack | `app/api/offers/route.ts`, `components/chat-offer-card.tsx`, `app/messages/[id]/page.tsx` | Structured bargaining widget directly inside conversation thread. |
+| **US-10.01** | R4 | **P1 / Must** | **Business Storefronts & Trader Info Verification** | agency/backend | `prisma/schema.prisma`, `app/api/business/route.ts`, `app/shops/[slug]/page.tsx` | Company account, Enterprise Registry (UR) / VIES check, and dedicated storefronts. |
+| **US-13.01** | R1 | **P2 / Must** | **Notice-and-Action Moderation Queue & Report API** | agency/fullstack | `app/api/reports/route.ts`, `components/report-modal.tsx`, `app/admin/moderation/page.tsx` | User reporting for scam/duplicate listings, statement of reasons, and moderation dashboard. |
+| **US-09.01** | R3 | **P2 / Must** | **Auctions: Atomic Bidding & Anti-Sniping** | agency/backend | `prisma/schema.prisma`, `app/api/auctions/route.ts`, `app/api/auctions/[id]/bid/route.ts` | Concurrency locks for atomic bids, proxy bidding, and 2-minute anti-sniping extension. |
+| **US-12.01** | R2 | **P2 / Must** | **Price Intelligence & 90-Day Sold Price History** | agency/ai | `app/lib/price-intelligence.ts`, `components/price-history-chart.tsx` | Min/median/max price context based on verified platform sales. |

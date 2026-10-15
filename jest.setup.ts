@@ -77,6 +77,16 @@ const mockPrisma = {
     update: jest.fn(),
     delete: jest.fn(),
   },
+  savedSearch: {
+    findMany: jest.fn(),
+    findUnique: jest.fn(),
+    findFirst: jest.fn(),
+    create: jest.fn(),
+    update: jest.fn(),
+    delete: jest.fn(),
+    deleteMany: jest.fn(),
+    count: jest.fn(),
+  },
   dispute: {
     findMany: jest.fn(),
     findUnique: jest.fn(),

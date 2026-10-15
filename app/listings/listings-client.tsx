@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Search, SlidersHorizontal, ChevronLeft, ChevronRight } from 'lucide-react';
 import { ListingCard } from '@/components/listing-card';
+import { SaveSearchButton } from '@/components/save-search-button';
 import { useLocale } from '@/app/lib/locale-context';
 
 interface Listing {
@@ -64,6 +65,7 @@ export function ListingsPageClient({ listings, categories, total, currentPage, t
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <h1 className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>{t('listings.title')}</h1>
         <div className="flex items-center gap-3">
+          <SaveSearchButton currentFilters={currentFilters} />
           <form onSubmit={handleSearch} className="flex items-center border rounded-lg overflow-hidden" style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--border)' }}>
             <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t('listings.search_placeholder')}
               className="bg-transparent px-3 py-2 text-sm outline-none w-40" style={{ color: 'var(--text-primary)' }} />
