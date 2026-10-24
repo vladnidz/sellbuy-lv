@@ -313,3 +313,176 @@ export function sanitizeMessageForDisplay(
     detectedTypes: maskInfo.detectedTypes,
   };
 }
+
+// ==========================================
+// US-05.03 Spec Functions for Backlog & Tests
+// ==========================================
+
+export interface DetectedContactsResult {
+  hasContacts: boolean;
+  phones: string[];
+  emails: string[];
+}
+
+export function detectContacts(text: string): DetectedContactsResult {
+  if (!text || typeof text !== 'string') {
+    return { hasContacts: false, phones: [], emails: [] };
+  }
+
+  // 1. Email detection
+  const emailRegex = /\b[a-zA-Z0-9._%+-]+(?:\s*(?:@|\[at\]|\(at\))\s*)[a-zA-Z0-9.-]+(?:\s*(?:\.|\[dot\]|\(dot\))\s*)[a-zA-Z]{2,}\b/gi;
+  const emails: string[] = [];
+  let emailMatch: RegExpExecArray | null;
+  while ((emailMatch = emailRegex.exec(text)) !== null) {
+    emails.push(emailMatch[0]);
+  }
+
+  // 2. Phone detection
+  const p1 = /(?:\+371|00371)[\s.-]*(?:\([26]\d\)|[26]|\*{1,6})[\s.-]*(?:[\d*][\s.-]?){3,7}[\d*]/gi;
+  const p2 = /(?<![\w+])(?:[26](?:[\s.-]?\d){7}|\([26]\d\)(?:[\s.-]?\d){6})(?![\w\d])/g;
+
+  interface Range {
+    start: number;
+    end: number;
+    match: string;
+  }
+  const phoneRanges: Range[] = [];
+
+  let m: RegExpExecArray | null;
+  while ((m = p1.exec(text)) !== null) {
+    phoneRanges.push({ start: m.index, end: m.index + m[0].length, match: m[0] });
+  }
+
+  while ((m = p2.exec(text)) !== null) {
+    const start = m.index;
+    const end = m.index + m[0].length;
+    const overlaps = phoneRanges.some((r) => !(end <= r.start || start >= r.end));
+    if (!overlaps) {
+      phoneRanges.push({ start, end, match: m[0] });
+    }
+  }
+
+  phoneRanges.sort((a, b) => a.start - b.start);
+  const phones = phoneRanges.map((r) => r.match);
+
+  return {
+    hasContacts: emails.length > 0 || phones.length > 0,
+    phones,
+    emails,
+  };
+}
+
+export function maskContacts(text: string): string {
+  if (!text || typeof text !== 'string') return '';
+
+  const emailRegex = /\b[a-zA-Z0-9._%+-]+(?:\s*(?:@|\[at\]|\(at\))\s*)[a-zA-Z0-9.-]+(?:\s*(?:\.|\[dot\]|\(dot\))\s*)[a-zA-Z]{2,}\b/gi;
+  const p1 = /(?:\+371|00371)[\s.-]*(?:\([26]\d\)|[26]|\*{1,6})[\s.-]*(?:[\d*][\s.-]?){3,7}[\d*]/gi;
+  const p2 = /(?<![\w+])(?:[26](?:[\s.-]?\d){7}|\([26]\d\)(?:[\s.-]?\d){6})(?![\w\d])/g;
+
+  interface Replacement {
+    start: number;
+    end: number;
+    label: string;
+  }
+  const replacements: Replacement[] = [];
+
+  let m: RegExpExecArray | null;
+  while ((m = emailRegex.exec(text)) !== null) {
+    replacements.push({
+      start: m.index,
+      end: m.index + m[0].length,
+      label: '[Slēpts e-pasts]',
+    });
+  }
+
+  const phoneRanges: Array<{ start: number; end: number }> = [];
+  while ((m = p1.exec(text)) !== null) {
+    phoneRanges.push({ start: m.index, end: m.index + m[0].length });
+  }
+  while ((m = p2.exec(text)) !== null) {
+    const start = m.index;
+    const end = m.index + m[0].length;
+    const overlaps = phoneRanges.some((r) => !(end <= r.start || start >= r.end));
+    if (!overlaps) {
+      phoneRanges.push({ start, end });
+    }
+  }
+
+  for (const r of phoneRanges) {
+    const overlapsEmail = replacements.some((rep) => !(r.end <= rep.start || r.start >= rep.end));
+    if (!overlapsEmail) {
+      replacements.push({
+        start: r.start,
+        end: r.end,
+        label: '[Slēpts tālrunis]',
+      });
+    }
+  }
+
+  if (replacements.length === 0) {
+    return text;
+  }
+
+  // Sort descending by start index to replace cleanly
+  replacements.sort((a, b) => b.start - a.start);
+
+  let result = text;
+  for (const rep of replacements) {
+    result = result.slice(0, rep.start) + rep.label + result.slice(rep.end);
+  }
+
+  return result;
+}
+
+export function canRevealContacts(
+  chat: { buyerId: string; sellerId: string; messages?: Array<{ senderId: string }> },
+  user: { id: string; isVerified?: boolean; verifiedTypes?: string[] }
+): {
+  canReveal: boolean;
+  reason: 'unauthorized' | 'mutual_exchange' | 'l2_verified' | 'requires_mutual_or_l2';
+} {
+  if (user.id !== chat.buyerId && user.id !== chat.sellerId) {
+    return { canReveal: false, reason: 'unauthorized' };
+  }
+
+  const isL2 = Boolean(
+    user.isVerified &&
+      (user.verifiedTypes?.includes('smart-id') ||
+        user.verifiedTypes?.includes('smart_id') ||
+        user.verifiedTypes?.includes('eparaksts'))
+  );
+
+  if (isL2) {
+    return { canReveal: true, reason: 'l2_verified' };
+  }
+
+  const messages = chat.messages || [];
+  const senders = new Set(messages.map((m) => m.senderId));
+  const hasMutual = senders.has(chat.buyerId) && senders.has(chat.sellerId);
+
+  if (hasMutual) {
+    return { canReveal: true, reason: 'mutual_exchange' };
+  }
+
+  return { canReveal: false, reason: 'requires_mutual_or_l2' };
+}
+
+export function auditRevealEvent(
+  chatId: string,
+  userId: string,
+  meta: { recipientId: string; reason: string }
+): {
+  event: 'phone.revealed';
+  chatId: string;
+  userId: string;
+  meta: { recipientId: string; reason: string };
+  timestamp: string;
+} {
+  return {
+    event: 'phone.revealed',
+    chatId,
+    userId,
+    meta,
+    timestamp: new Date().toISOString(),
+  };
+}
