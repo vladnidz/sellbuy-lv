@@ -9,7 +9,7 @@
     "dev": "next dev --turbopack",
     "build": "rm -rf .next && prisma generate && next build --webpack",
     "start": "next start",
-    "test": "jest",
+    "test": "jest --forceExit",
     "lint": "eslint . --report-unused-disable-directives --max-warnings 5"
   },
   "dependencies": {
